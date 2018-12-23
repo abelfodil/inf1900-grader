@@ -1,6 +1,4 @@
-from os import listdir, path
-from subprocess import run, PIPE, STDOUT
-from git import Repo
+from os import listdir
 from csv import writer, QUOTE_MINIMAL
 
 from grading import generate_grading_file_name

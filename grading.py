@@ -1,7 +1,6 @@
 from os import listdir, path
 from subprocess import run, PIPE, STDOUT
 from git import Repo
-from csv import writer, QUOTE_MINIMAL
 
 assignment_type_to_grading_file = {
     "code": "grading_sample_file.txt",
