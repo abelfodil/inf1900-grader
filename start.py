@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
+from os import path
 from cloning import clone
 from grading import grade
 from compiling import compile_grades
 from json import dump, load
+
+student_list_file = "students.json"
 
 print("Welcome to INF1900 interactive grading tool")
 
@@ -12,11 +15,9 @@ assignment_name = None
 student_list = None
 group = None
 
-try:
+if path.isfile(student_list_file):
     with open('students.json', 'r') as f:
         student_list = load(f)
-except:
-    pass
 
 while True:
     choice = input("What do you want to do? Please choose one of the following: "
@@ -24,7 +25,7 @@ while True:
 
     if choice == "clone":
         grading_directory, group, student_list = clone()
-        with open('students.json', 'w') as f:
+        with open(student_list_file, 'w') as f:
             dump(student_list, f)
     elif choice == "grade":
         grading_directory, group, assignment_name = grade(grading_directory, group)
