@@ -11,6 +11,7 @@ print("Welcome to INF1900 interactive grading tool")
 grading_directory = None
 assignment_name = None
 student_list = None
+group = None
 
 try:
     with open('students.json', 'r') as f:
@@ -23,11 +24,11 @@ while True:
                    "clone, grade, compile, quit ").strip()
 
     if choice == "clone":
-        grading_directory, student_list = clone()
+        grading_directory, group, student_list = clone()
         with open('students.json', 'w') as f:
             dump(student_list, f)
     elif choice == "grade":
-        grading_directory, assignment_name = grade(grading_directory)
+        grading_directory, group, assignment_name = grade(grading_directory, group)
     elif choice == "compile":
         compile_grades(grading_directory, assignment_name, student_list)
     elif choice == "quit":

@@ -8,7 +8,7 @@ INF1995: Projet initial en ingénierie informatique
 Grille de correction des programmes:
 
 Identification:
-  Travail Pratique # : __TRAVAIL_PRATIQUE__
+  Travail    : __TRAVAIL_PRATIQUE__
   Section #  : __SECTION__
   Équipe #   : __TEAM_NUMBER__
   Correcteur : __CORRECTEUR__

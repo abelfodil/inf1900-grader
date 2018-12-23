@@ -6,8 +6,14 @@
 # Comment ça marche
 - Lancez le script `./start.py`.
 - Suivez les étapes linéairement (clone, puis grade, puis compile).
-- Après avoir lancé l'option `grade`, il faut attribuer les notes manuellement, mais un la majorité du travail répétitif est déjà automatisée.
-- L'option `compile` enverra les notes automatiquement aux élèves et générera un fichier des notes automatiquement.
+- Après avoir lancé l'option `grade`, il faut attribuer les notes manuellement, mais un la majorité du travail 
+répétitif est déjà automatisée.
+- L'option `compile` enverra les notes automatiquement aux élèves et générera un fichier de notes 
+`grades.csv` automatiquement.
+
+# Notes importantes
+- Vous ne devez pas corriger plusieurs TP ou groupes en même temps, car cela risque d'écraser le fichier 
+`students.json` qui est autogénéré et qui sert à compiler les notes des étudiants.
 
 # Credits
 - Anes Belfodil (pythonification)

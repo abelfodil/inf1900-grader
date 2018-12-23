@@ -8,8 +8,8 @@ assignment_type_to_grading_file = {
 }
 
 
-def generate_partial_grading_file(assignment_name, group, grader_name, assignment_type):
-    with open(assignment_type_to_grading_file[assignment_type], 'r') as f:
+def generate_partial_grading_file(assignment_name, group, grader_name, sample_grading_file):
+    with open(sample_grading_file, 'r') as f:
         raw_grading_file_content = f.read()
 
     partial_grading_file_content = raw_grading_file_content \
@@ -27,14 +27,14 @@ def create_branch(repo_path, deadline, grading_name):
 
 
 def get_commit_info(repo_path):
-    header = "======================= Basé sur le commit suivant ============================="
+    header = "\n\n======================= Basé sur le commit suivant ============================="
     commit_info = Repo(repo_path).git.log("-1")
 
     return header + "\n" + commit_info
 
 
 def get_useless_files(repo_path):
-    header = "====================== Fichiers Indésirables ==================================="
+    header = "\n\n====================== Fichiers Indésirables ==================================="
 
     root_directory = path.dirname(path.realpath(__file__))
     bad_files_list = root_directory + "/bad-files.gitignore"
@@ -44,12 +44,11 @@ def get_useless_files(repo_path):
 
 
 def get_make_output(repo_path, subdirectories):
-    header = "====================== Output de make pour les problemes ======================="
+    header = "\n\n====================== Output de make pour les problemes ======================="
 
     make_output = ""
-
     for subdirectory in subdirectories:
-        make_output += "============== output make dans " + subdirectory + " ============================"
+        make_output += "============== output de make dans " + subdirectory + " ============================"
         result = run(["make", "-C", repo_path + "/" + subdirectory], stdout=PIPE, stderr=STDOUT)
         make_output += "\n" + result.stdout.decode('utf-8') + "\n"
 
@@ -64,8 +63,23 @@ def generate_grading_file_name(assignment_name):
     return generate_grading_name(assignment_name) + ".txt"
 
 
-def grade_all(grading_directory, subdirectories, deadline, assignment_name, partial_grading_text):
+def grade(grading_directory, group):
+    grader_name = input("What is your name? ")
+    assignment_name = input("What is the assignment name? ")
+    assignment_type = input("Is it a 'code' assignment or a 'report'? ")
+    sample_grading_file = assignment_type_to_grading_file[assignment_type]
+
+    if group is None:
+        group = input("What is your group? ")
+
+    if grading_directory is None:
+        grading_directory = input("What is the grading directory? ")
+
+    deadline = input("What is the assignment deadline (yyyy-mm-dd hh:mm)? ")
+    subdirectories = input("What are the subdirectories to correct separated by space (ex: tp/tp6/pb1 tp/tp6/pb2)? ")
     subdirectories_list = subdirectories.strip().split(" ")
+
+    partial_grading_text = generate_partial_grading_file(assignment_name, group, grader_name, sample_grading_file)
 
     teams = listdir(grading_directory)
     for team in teams:
@@ -73,29 +87,12 @@ def grade_all(grading_directory, subdirectories, deadline, assignment_name, part
         create_branch(repo_path, deadline, generate_grading_name(assignment_name)).checkout()
 
         grading_text = partial_grading_text.replace("__TEAM_NUMBER__", team)
-        grading_text += "\n\n" + get_commit_info(repo_path)
-        grading_text += "\n\n" + get_useless_files(repo_path)
-        grading_text += "\n\n" + get_make_output(repo_path, subdirectories_list)
+        grading_text += get_commit_info(repo_path)
+        grading_text += get_useless_files(repo_path)
+        grading_text += get_make_output(repo_path, subdirectories_list)
 
         grade_file_path = repo_path + "/" + generate_grading_file_name(assignment_name)
         with open(grade_file_path, 'w') as f:
             f.write(grading_text)
 
-
-def grade(grading_directory):
-    grader_name = input("What is your name? ")
-    assignment_name = input("What is the assignment name? ")
-    assignment_type = input("Is it a 'code' assignment or a 'report'? ")
-    group = input("What is your group? ")
-
-    partial_grading_text = generate_partial_grading_file(assignment_name, group, grader_name, assignment_type)
-
-    if grading_directory is None:
-        grading_directory = input("What is the grading directory? ")
-
-    deadline = input("What is the assignment deadline (yyyy-mm-dd hh:mm)? ")
-    subdirectories = input("What are the subdirectories to correct separated by space (ex: tp/tp6/pb1 tp/tp6/pb2)? ")
-
-    grade_all(grading_directory, subdirectories, deadline, assignment_name, partial_grading_text)
-
-    return grading_directory, assignment_name
+    return grading_directory, group, assignment_name
