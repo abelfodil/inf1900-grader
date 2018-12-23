@@ -2,17 +2,15 @@
 *.swo
 *.swm
 *.log
-*.txt
 *.xlsx
 *.tar
 *.json
 *.csv
 
 __pycache__/
-repos/
-.idea/
+
+workspace.xml
+
 correction-*/
 correction_*/
 
-# do not ignore these files
-!text/*
