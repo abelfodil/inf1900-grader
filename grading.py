@@ -8,7 +8,7 @@ assignment_type_to_grading_file = {
 }
 
 
-def generate_partial_grading_file(assignment_name, group, grader_name, sample_grading_file):
+def generate_partial_grading_file(assignment_name: str, group: str, grader_name: str, sample_grading_file: str):
     with open(sample_grading_file, 'r') as f:
         raw_grading_file_content = f.read()
 
@@ -20,20 +20,20 @@ def generate_partial_grading_file(assignment_name, group, grader_name, sample_gr
     return partial_grading_file_content
 
 
-def create_branch(repo_path, deadline, grading_name):
+def create_branch(repo_path: str, deadline: str, grading_name: str):
     repo = Repo(repo_path)
     deadline_commit = repo.git.rev_list("-n 1", '--before="' + deadline + '"', "master")
     return repo.create_head(grading_name, deadline_commit)
 
 
-def get_commit_info(repo_path):
+def get_commit_info(repo_path: str):
     header = "\n\n======================= Basé sur le commit suivant ============================="
     commit_info = Repo(repo_path).git.log("-1")
 
     return header + "\n" + commit_info
 
 
-def get_useless_files(repo_path):
+def get_useless_files(repo_path: str):
     header = "\n\n====================== Fichiers Indésirables ==================================="
 
     root_directory = path.dirname(path.realpath(__file__))
@@ -43,7 +43,7 @@ def get_useless_files(repo_path):
     return header + "\n" + useless_file_list
 
 
-def get_make_output(repo_path, subdirectories):
+def get_make_output(repo_path: str, subdirectories: list):
     header = "\n\n====================== Output de make pour les problemes ======================="
 
     make_output = ""
@@ -55,15 +55,15 @@ def get_make_output(repo_path, subdirectories):
     return header + "\n" + make_output
 
 
-def generate_grading_name(assignment_name):
+def generate_grading_name(assignment_name: str):
     return "Correction_" + assignment_name
 
 
-def generate_grading_file_name(assignment_name):
+def generate_grading_file_name(assignment_name: str):
     return generate_grading_name(assignment_name) + ".txt"
 
 
-def grade(grading_directory, group):
+def grade(grading_directory: str, group: str):
     grader_name = input("What is your name? ")
     assignment_name = input("What is the assignment name? ")
     assignment_type = input("Is it a 'code' assignment or a 'report'? ")

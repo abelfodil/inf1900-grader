@@ -9,7 +9,7 @@ team_size_to_type = {
 }
 
 
-def clone_repos(grading_dir, student_list):
+def clone_repos(grading_dir: str, student_list: list):
     if path.exists(grading_dir):
         print(grading_dir + " already exists. Please delete it or resume grading.")
         return
@@ -25,7 +25,7 @@ def clone_repos(grading_dir, student_list):
         Repo.clone_from(team_repo_url, output_dir)
 
 
-def fetch_student_list(team_type, group):
+def fetch_student_list(team_type: str, group: str):
     group_url = "http://www.groupes.polymtl.ca/inf1900/equipes/" + team_type + "Section" + group + ".php"
     raw_html = request.urlopen(group_url).read().decode("utf8")
     parsed_html = BeautifulSoup(raw_html, features="lxml")
