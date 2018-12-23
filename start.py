@@ -3,7 +3,6 @@
 from cloning import clone
 from grading import grade
 from compiling import compile_grades
-from error import tell_incorrect
 from json import dump, load
 
 print("Welcome to INF1900 interactive grading tool")
@@ -34,4 +33,4 @@ while True:
     elif choice == "quit":
         exit(0)
     else:
-        tell_incorrect()
+        print("Incorrect parameter, please try again.")

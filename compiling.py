@@ -1,7 +1,7 @@
+from csv import writer
 from os import listdir
-from csv import writer, QUOTE_MINIMAL
 
-from git import Repo, IndexFile
+from git import Repo
 
 from grading import generate_grading_file_name
 
@@ -15,12 +15,12 @@ def read_grade(grading_directory, team, assignment_name):
 
     grade = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
 
-    return float(grade.replace("Total: ", "").replace("/20", "").strip())
+    return str(float(grade.replace("Total: ", "").replace("/20", "").strip())).replace(".", ",")
 
 
 def write_grades_file(grades, student_list):
     with open('grades.csv', 'w', newline='') as csvfile:
-        csv_writer = writer(csvfile, delimiter=',', quotechar='|', quoting=QUOTE_MINIMAL)
+        csv_writer = writer(csvfile)
 
         csv_writer.writerow(["Nom", "Prénom", "Équipe", "Note"])
 
