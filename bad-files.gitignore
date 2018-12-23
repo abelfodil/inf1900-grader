@@ -1,0 +1,21 @@
+*.o
+*.a
+*.out
+*.hex
+*.out.map
+
+
+# Apple metadata for directories
+.DS_Store
+
+
+# Vim swap files
+.*.swp
+.*.swo
+.*.swn
+.*.swm
+
+
+*~
+.~lock.*.odt#
+.*.kate-swp
