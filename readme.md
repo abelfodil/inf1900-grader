@@ -8,18 +8,18 @@
 - Suivez les étapes linéairement (clone, puis grade, puis compile).
 - Après avoir lancé l'option `grade`, il faut attribuer les notes manuellement, mais la majorité du travail 
 répétitif est déjà automatisée.
-- L'option `compile` enverra les notes automatiquement aux élèves et générera un fichier de notes 
-`grades.csv` automatiquement.
+- L'option `compile` fera un commit et merge sur chaque repo, puis générera un fichier de notes `grades.csv`.
 
 # Notes importantes
-- Vous ne devez pas corriger plusieurs TP ou groupes en même temps, car cela risque d'écraser le fichier 
-`students.json` qui est autogénéré et qui sert à compiler les notes des étudiants.
+- Vous ne devez pas corriger plusieurs TP ou groupes en même temps, car cela écrasera le fichier 
+`students.json` qui est autogénéré et qui sert à compiler les notes des étudiants dans `grades.csv`.
 
 # Ce qui manque
 - Enregistrement de quelques informations pour ne pas avoir à les fournir à chaque reprise.
 - Installation automatique des dépendances.
 - Input sanitization pour ne pas faire crash l'outil.
-- Ajouter clang-format pour lint le code
+- Envoi du fichier de notes par email à Jérôme.
+- Ajouter clang-format pour lint le code.
 
 # Credits
 - Anes Belfodil (pythonification)

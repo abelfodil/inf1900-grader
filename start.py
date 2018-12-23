@@ -21,7 +21,7 @@ if path.isfile(student_list_file):
 
 while True:
     choice = input("What do you want to do? Please choose one of the following: "
-                   "clone, grade, compile, quit ").strip()
+                   "clone, grade, compile ").strip()
 
     if choice == "clone":
         grading_directory, group, student_list = clone()
@@ -31,7 +31,5 @@ while True:
         grading_directory, group, assignment_name = grade(grading_directory, group)
     elif choice == "compile":
         compile_grades(grading_directory, assignment_name, student_list)
-    elif choice == "quit":
-        exit(0)
     else:
         print("Incorrect parameter, please try again.")
