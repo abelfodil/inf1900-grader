@@ -1,6 +1,8 @@
 from os import listdir
 from csv import writer, QUOTE_MINIMAL
 
+from git import Repo, IndexFile
+
 from grading import generate_grading_file_name
 
 
@@ -27,6 +29,20 @@ def write_grades_file(grades, student_list):
             csv_writer.writerow(student_info.values())
 
 
+def commit_and_merge(grading_directory, team, assignment_name):
+    repo = Repo(grading_directory + "/" + team)
+    repo.index.add([generate_grading_file_name(assignment_name)])
+    repo.index.commit("Correction du " + assignment_name + ".")
+
+    grading_branch = repo.active_branch
+    master = repo.branches["master"]
+
+    repo.git.pull('origin', master)
+    repo.git.checkout("master")
+    repo.git.merge(grading_branch)
+    repo.git.push('origin', master)
+
+
 def compile_grades(grading_directory, assignment_name, student_list):
     if student_list is None:
         print("No student list available. Please clone directories first.")
@@ -41,6 +57,7 @@ def compile_grades(grading_directory, assignment_name, student_list):
     teams = listdir(grading_directory)
     grades = {}
     for team in teams:
+        commit_and_merge(grading_directory, team, assignment_name)
         grades[team] = read_grade(grading_directory, team, assignment_name)
 
     write_grades_file(grades, student_list)
