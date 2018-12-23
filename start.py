@@ -2,7 +2,7 @@
 
 from cloning import clone
 from grading import grade
-from compiling import compile
+from compiling import compile_grades
 from error import tell_incorrect
 from json import dump, load
 
@@ -29,7 +29,7 @@ while True:
     elif choice == "grade":
         grading_directory, assignment_name = grade(grading_directory)
     elif choice == "compile":
-        compile(grading_directory, assignment_name, student_list)
+        compile_grades(grading_directory, assignment_name, student_list)
     elif choice == "quit":
         exit(0)
     else:

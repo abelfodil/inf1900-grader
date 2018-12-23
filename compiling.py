@@ -27,7 +27,7 @@ def write_grades_file(grades, student_list):
             csv_writer.writerow(student_info.values())
 
 
-def compile(grading_directory, assignment_name, student_list):
+def compile_grades(grading_directory, assignment_name, student_list):
     if student_list is None:
         print("No student list available. Please clone directories first.")
         return
