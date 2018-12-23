@@ -1,5 +1,5 @@
 # Dépendances
-- Python 3
+- Python 3.6+
 - bs4
 - GitPython
 
@@ -19,6 +19,7 @@ répétitif est déjà automatisée.
 - Enregistrement de quelques informations pour ne pas avoir à les fournir à chaque reprise.
 - Installation automatique des dépendances.
 - Input sanitization pour ne pas faire crash l'outil.
+- Ajouter clang-format pour lint le code
 
 # Credits
 - Anes Belfodil (pythonification)
