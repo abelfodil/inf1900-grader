@@ -10,6 +10,7 @@
 __pycache__/
 
 workspace.xml
+vcs.xml
 
 correction-*/
 correction_*/

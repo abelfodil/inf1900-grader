@@ -1,0 +1,41 @@
+Polytechnique Montréal
+
+Département de génie informatique et génie logiciel
+
+INF1995: Projet initial en ingénierie informatique
+         et travail en équipe
+
+Grille de correction des programmes:
+
+Identification:
+  Travail Pratique # : __TRAVAIL_PRATIQUE__
+  Section #  : __SECTION__
+  Équipe #   : __TEAM_NUMBER__
+  Correcteur : __CORRECTEUR__
+
+
+Lisibilité:(/5)
+  En-têtes en début de programme et de fonctions   (1 point) :
+  Identificateurs significatifs (variables, etc.)  (1 point) :
+  Commentaires aux endroits stratégiques           (1 point) :
+  Indentation et facilité de lecture               (1 point) :
+  Broches, ressources matérielles bien identifiées (1 point) :
+
+Modularité et comprehension: (/5)
+  Les fonctions sont assez courtes, bien
+        établies et avec de bons paramètres        (1 point) :
+  Le code reflète une bonne compréhension
+        des concepts de base                       (2 points):
+  Le code montre que la solution proposée
+        permet de bien résoudre le problème        (2 points):
+
+Fonctionnalité:(/10)
+  Soumission réussie sous GIT (bon endroit,
+        sans fichiers inutiles)                    (3 points):
+  Compilation sans "warnings" et sans erreurs      (2 point) :
+  Fonctionnement correct (évalué en "boite noire") (5 points):
+
+
+Total: /20
+
+Commentaires du correcteur:
