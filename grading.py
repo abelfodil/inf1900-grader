@@ -3,8 +3,8 @@ from subprocess import run, PIPE, STDOUT
 from git import Repo
 
 assignment_type_to_grading_file = {
-    "code": "grading_sample_file.txt",
-    "report": "grading_sample_file_tp7.txt"
+    "code": "samples/grading_file.txt",
+    "report": "samples/grading_file_tp7.txt"
 }
 
 
@@ -37,7 +37,7 @@ def get_useless_files(repo_path: str):
     header = "\n\n====================== Fichiers Indésirables ==================================="
 
     root_directory = path.dirname(path.realpath(__file__))
-    bad_files_list = root_directory + "/bad-files.gitignore"
+    bad_files_list = root_directory + "/samples/bad-files.gitignore"
     useless_file_list = Repo(repo_path).git.ls_files("-i", "--exclude-from=" + bad_files_list)
 
     return header + "\n" + useless_file_list
