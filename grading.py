@@ -83,6 +83,8 @@ def grade(grading_directory: str, group: str):
 
     teams = listdir(grading_directory)
     for team in teams:
+        print("Grading team " + team + "...")
+
         repo_path = grading_directory + "/" + team
         create_branch(repo_path, deadline, generate_grading_name(assignment_name)).checkout()
 

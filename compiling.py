@@ -55,6 +55,8 @@ def compile_grades(grading_directory: str, assignment_name: str, student_list: l
     teams = listdir(grading_directory)
     grades = {}
     for team in teams:
+        print("Sending grades to team " + team + "...")
+
         commit_and_merge(grading_directory, team, assignment_name)
         grades[team] = read_grade(grading_directory, team, assignment_name)
 
