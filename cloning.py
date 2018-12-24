@@ -4,7 +4,7 @@ from urllib import request
 from bs4 import BeautifulSoup
 from git import Repo
 
-from asking import get_grading_directory, get_group_number, get_team_type
+from asking import get_team_type
 
 student_list_file = "students.json"
 
@@ -37,8 +37,8 @@ def clone_repos(grading_dir: str, student_list: list):
         Repo.clone_from(team_repo_url, output_dir)
 
 
-def fetch_student_list(team_type: str, group: str):
-    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type}Section{group}.php"
+def fetch_student_list(group: str):
+    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{get_team_type()}Section{group}.php"
     html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
 
     html_student_list = html.find_all("table")[-1].find_all("tr")[1:-1]
@@ -55,15 +55,13 @@ def fetch_student_list(team_type: str, group: str):
     return student_list
 
 
-def clone(state):
-    state.group = get_group_number()
-    team_type = get_team_type()
-    state.grading_directory = get_grading_directory()
+def clone(info):
+    info.reset()
 
-    if path.exists(state.grading_directory):
-        print(f"{state.grading_directory} already exists. Please delete it or resume grading.")
+    if path.exists(info.grading_directory):
+        print(f"{info.grading_directory} already exists. Please delete it or resume grading.")
     else:
-        mkdir(state.grading_directory)
-        student_list = fetch_student_list(team_type, state.group)
-        write_student_list(state.grading_directory, student_list)
-        clone_repos(state.grading_directory, student_list)
+        mkdir(info.grading_directory)
+        student_list = fetch_student_list(info.group)
+        write_student_list(info.grading_directory, student_list)
+        clone_repos(info.grading_directory, student_list)
