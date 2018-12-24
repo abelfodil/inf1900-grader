@@ -1,5 +1,53 @@
 from os import path
 
+
+class SharedInformation:
+    _grading_directory = None
+    _assignment_name = None
+    _group = None
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self._grading_directory = None
+        self._assignment_name = None
+        self._group = None
+
+    @property
+    def grading_directory(self):
+        if self._grading_directory is None:
+            self._grading_directory = get_grading_directory()
+
+        return self._grading_directory
+
+    @grading_directory.setter
+    def grading_directory(self, value):
+        self._grading_directory = value
+
+    @property
+    def group(self):
+        if self._group is None:
+            self._group = get_group_number()
+
+        return self._group
+
+    @group.setter
+    def group(self, value):
+        self._group = value
+
+    @property
+    def assignment_name(self):
+        if self._assignment_name is None:
+            self._assignment_name = get_assignment_short_name()
+
+        return self._assignment_name
+
+    @assignment_name.setter
+    def assignment_name(self, value):
+        self._assignment_name = value
+
+
 team_size_to_type = {
     2: "duos",
     4: "quatuors"
@@ -24,6 +72,10 @@ def get_assignment_deadline():
 def get_assignment_subdirectories():
     subdirectories = input("What are the subdirectories to correct separated by space (ex: tp/tp6/pb1 tp/tp6/pb2)? ")
     return subdirectories.strip().split(" ")
+
+
+def get_assignment_long_name():
+    return input("What is the assignment long name (ex: Code final)? ")
 
 
 def get_assignment_short_name():
