@@ -45,19 +45,19 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
     repo.git.push('origin', master)
 
 
-def compile_grades(grading_directory: str, assignment_name: str):
-    if grading_directory is None:
-        grading_directory = get_grading_directory()
+def compile_grades(state):
+    if state.grading_directory is None:
+        state.grading_directory = get_grading_directory()
 
-    if assignment_name is None:
-        assignment_name = get_assignment_short_name()
+    if state.assignment_name is None:
+        state.assignment_name = get_assignment_short_name()
 
-    teams = get_teams_list(grading_directory)
+    teams = get_teams_list(state.grading_directory)
     grades = {}
     for team in teams:
         print(f"Sending grades to team {team}...")
 
-        commit_and_merge(grading_directory, team, assignment_name)
-        grades[team] = read_grade(grading_directory, team, assignment_name)
+        commit_and_merge(state.grading_directory, team, state.assignment_name)
+        grades[team] = read_grade(state.grading_directory, team, state.assignment_name)
 
-    write_grades_file(grading_directory, grades)
+    write_grades_file(state.grading_directory, grades)

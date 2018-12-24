@@ -4,21 +4,26 @@ from cloning import clone
 from grading import grade
 from compiling import compile_grades
 
-print("Welcome to INF1900 interactive grading tool")
 
-grading_directory = None
-assignment_name = None
-group = None
+class Information:
+    grading_directory = None
+    assignment_name = None
+    group = None
+
+
+info = Information()
+
+print("Welcome to INF1900 interactive grading tool")
 
 while True:
     choice = input("What do you want to do? Please choose one of the following: "
                    "clone, grade, compile ").strip()
 
     if choice == "clone":
-        grading_directory, group = clone()
+        clone(info)
     elif choice == "grade":
-        grading_directory, group, assignment_name = grade(grading_directory, group)
+        grade(info)
     elif choice == "compile":
-        compile_grades(grading_directory, assignment_name)
+        compile_grades(info)
     else:
         print("Incorrect parameter, please try again.")

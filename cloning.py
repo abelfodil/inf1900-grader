@@ -55,17 +55,15 @@ def fetch_student_list(team_type: str, group: str):
     return student_list
 
 
-def clone():
-    group = get_group_number()
+def clone(state):
+    state.group = get_group_number()
     team_type = get_team_type()
-    grading_directory = get_grading_directory()
+    state.grading_directory = get_grading_directory()
 
-    if path.exists(grading_directory):
-        print(f"{grading_directory} already exists. Please delete it or resume grading.")
+    if path.exists(state.grading_directory):
+        print(f"{state.grading_directory} already exists. Please delete it or resume grading.")
     else:
-        mkdir(grading_directory)
-        student_list = fetch_student_list(team_type, group)
-        write_student_list(grading_directory, student_list)
-        clone_repos(grading_directory, student_list)
-
-    return grading_directory, group
+        mkdir(state.grading_directory)
+        student_list = fetch_student_list(team_type, state.group)
+        write_student_list(state.grading_directory, student_list)
+        clone_repos(state.grading_directory, student_list)
