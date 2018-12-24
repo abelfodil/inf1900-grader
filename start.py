@@ -5,6 +5,8 @@ from cloning import clone
 from grading import grade
 from compiling import compile_grades
 from json import dump, load
+from tabCompleter import tabCompleter
+import readline
 
 student_list_file = "students.json"
 
@@ -19,9 +21,24 @@ if path.isfile(student_list_file):
     with open('students.json', 'r') as f:
         student_list = load(f)
 
+def get_choice_from_list(prompt, choices):
+    t = tabCompleter()
+    t.createListCompleter(choices)
+
+    readline.set_completer_delims('\t')
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(t.listCompleter)
+
+    return input(prompt)
+
+def get_main_choice():
+    choices = ['clone', 'grade', 'compile']
+    prompt = "What do you want to do? Please choose one of the following: {} ".format(choices)
+    return get_choice_from_list(prompt, choices).strip()
+
+
 while True:
-    choice = input("What do you want to do? Please choose one of the following: "
-                   "clone, grade, compile ").strip()
+    choice = get_main_choice()
 
     if choice == "clone":
         grading_directory, group, student_list = clone()

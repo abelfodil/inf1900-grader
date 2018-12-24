@@ -3,7 +3,7 @@ import sys
 import readline
 import glob
 
-# TAKEN FROM : https://github.com/iamatypeofwalrus/5637895
+# TAKEN FROM : https://gist.github.com/iamatypeofwalrus/5637895
 
 class tabCompleter(object):
     """
