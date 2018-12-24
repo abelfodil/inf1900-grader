@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
 
+from asking import SharedInformation
 from cloning import clone
 from grading import grade
 from assembling import assemble
 
-
-class Information:
-    grading_directory = None
-    assignment_name = None
-    group = None
-
-
-info = Information()
+info = SharedInformation()
 
 choices = [
     clone.__name__,
