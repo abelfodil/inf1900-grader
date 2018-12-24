@@ -28,7 +28,7 @@ def write_grades_file(grading_directory: str, grades: dict):
 
         for student_info in student_list:
             student_info["grade"] = grades[student_info["team"]]
-            csv_writer.writerow(student_values())
+            csv_writer.writerow(student_info.values())
 
 
 def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
