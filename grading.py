@@ -1,6 +1,6 @@
+from git import Repo
 from os import listdir, path
 from subprocess import run, PIPE, STDOUT
-from git import Repo, GitConfigParser
 
 from asking import get_assignment_deadline, get_assignment_subdirectories, get_sample_grading_file, \
     get_assignment_long_name, get_assignment_short_name, get_grading_directory, get_group_number
@@ -14,7 +14,7 @@ def get_teams_list(grading_directory: str):
 
 
 def get_grader_name():
-    return GitConfigParser([path.normpath(path.expanduser("~/.gitconfig"))], read_only=True).get_value("user", "name")
+    return run(["git", "config", "user.name"], stdout=PIPE).stdout.decode('utf-8').strip()
 
 
 def generate_partial_grading_file():
