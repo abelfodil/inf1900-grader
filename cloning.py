@@ -11,26 +11,25 @@ team_size_to_type = {
 
 def clone_repos(grading_dir: str, student_list: list):
     if path.exists(grading_dir):
-        print(grading_dir + " already exists. Please delete it or resume grading.")
+        print(f"{grading_dir} already exists. Please delete it or resume grading.")
         return
 
     mkdir(grading_dir)
 
     unique_team_list = sorted(set([student['team'] for student in student_list]))
     for team in unique_team_list:
-        team_repo_url = "https://githost.gi.polymtl.ca/git/inf1900-" + team
-        output_dir = grading_dir + "/" + team
+        team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
+        output_dir = f"{grading_dir}/{team}"
 
-        print("Cloning team " + team + "'s repository...")
+        print(f"Cloning team {team}'s repository...")
         Repo.clone_from(team_repo_url, output_dir)
 
 
 def fetch_student_list(team_type: str, group: str):
-    group_url = "http://www.groupes.polymtl.ca/inf1900/equipes/" + team_type + "Section" + group + ".php"
-    raw_html = request.urlopen(group_url).read().decode("utf8")
-    parsed_html = BeautifulSoup(raw_html, features="lxml")
+    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type}Section{group}.php"
+    html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
 
-    html_student_list = parsed_html.find_all("table")[-1].find_all("tr")[1:-1]
+    html_student_list = html.find_all("table")[-1].find_all("tr")[1:-1]
     student_list = []
     for html_student in html_student_list:
         html_student = html_student.find_all("td")

@@ -1,6 +1,7 @@
 # Dépendances
 - Python 3.6+
 - bs4
+- html5lib
 - GitPython
 
 # Comment ça marche
