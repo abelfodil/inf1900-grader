@@ -4,10 +4,7 @@ from urllib import request
 from bs4 import BeautifulSoup
 from git import Repo
 
-team_size_to_type = {
-    2: "duos",
-    4: "quatuors"
-}
+from asking import get_grading_directory, get_group_number, get_team_type
 
 student_list_file = "students.json"
 
@@ -59,10 +56,9 @@ def fetch_student_list(team_type: str, group: str):
 
 
 def clone():
-    team_size = int(input("Are you correcting teams of two (2) or four (4) members? "))
-    team_type = team_size_to_type[team_size]
-    group = str(int(input("What is your group (ex: 1)? ")))
-    grading_directory = input("What is your grading directory? ")
+    group = get_group_number()
+    team_type = get_team_type()
+    grading_directory = get_grading_directory()
 
     if path.exists(grading_directory):
         print(f"{grading_directory} already exists. Please delete it or resume grading.")
