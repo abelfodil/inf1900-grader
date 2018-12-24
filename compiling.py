@@ -1,7 +1,7 @@
 from csv import writer
-from os import listdir
 from git import Repo
-from grading import generate_grading_file_name
+from cloning import read_student_list
+from grading import generate_grading_file_name, get_teams_list
 
 
 def read_grade(grading_directory: str, team: str, assignment_name: str):
@@ -16,8 +16,10 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
     return str(float(grade.replace("Total: ", "").replace("/20", "").strip())).replace(".", ",")
 
 
-def write_grades_file(grades: dict, student_list: list):
-    with open('grades.csv', 'w', newline='') as csvfile:
+def write_grades_file(grading_directory: str, grades: dict):
+    student_list = read_student_list(grading_directory)
+
+    with open(f"{grading_directory}/grades.csv", 'w', newline='') as csvfile:
         csv_writer = writer(csvfile)
 
         csv_writer.writerow(["Nom", "Prénom", "Équipe", "Note"])
@@ -28,7 +30,7 @@ def write_grades_file(grades: dict, student_list: list):
 
 
 def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
-    repo = Repo(grading_directory + "/" + team)
+    repo = Repo(f"{grading_directory}/{team}")
     repo.index.add([generate_grading_file_name(assignment_name)])
     repo.index.commit(f"Correction du {assignment_name}.")
 
@@ -41,18 +43,14 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
     repo.git.push('origin', master)
 
 
-def compile_grades(grading_directory: str, assignment_name: str, student_list: list):
-    if student_list is None:
-        print("No student list available. Please clone directories first.")
-        return
-
+def compile_grades(grading_directory: str, assignment_name: str):
     if grading_directory is None:
         grading_directory = input("What is the grading directory? ")
 
     if assignment_name is None:
         assignment_name = input("What is the assignment name? ")
 
-    teams = listdir(grading_directory)
+    teams = get_teams_list(grading_directory)
     grades = {}
     for team in teams:
         print(f"Sending grades to team {team}...")
@@ -60,4 +58,4 @@ def compile_grades(grading_directory: str, assignment_name: str, student_list: l
         commit_and_merge(grading_directory, team, assignment_name)
         grades[team] = read_grade(grading_directory, team, assignment_name)
 
-    write_grades_file(grades, student_list)
+    write_grades_file(grading_directory, grades)
