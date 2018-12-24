@@ -12,11 +12,12 @@
 - Suivez les étapes linéairement (clone, puis grade, puis compile).
 - Après avoir lancé l'option `grade`, il faut attribuer les notes manuellement, mais la majorité du travail 
 répétitif est déjà automatisée.
-- L'option `compile` fera un commit et merge sur chaque repo, puis générera un fichier de notes `grades.csv`.
-- Il est possible de corriger plusieurs travaux simultanément.
+- L'option `assemble` fera un commit et merge sur chaque repo, puis générera un fichier de notes `grades.csv`.
+
+# Notes
+- Certaines informations sont redemandées entre plusieurs étapes afin de pouvoir corriger plusieurs travaux simultanément.
 
 # Ce qui manque
-- Enregistrement de quelques informations pour ne pas avoir à les fournir à chaque reprise.
 - Installation automatique des dépendances.
 - Input sanitization pour ne pas faire crash l'outil.
 - Envoi du fichier de notes par email à Jérôme.
