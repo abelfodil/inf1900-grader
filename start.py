@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
-from asking import SharedInformation
 from cloning import clone
 from grading import grade
 from assembling import assemble
-
-info = SharedInformation()
 
 choices = [
     clone.__name__,
@@ -19,6 +16,6 @@ while True:
     choice = input(f"What do you want to do? Please choose one of the following: {choices} ").strip()
 
     if choice in choices:
-        globals()[choice](info)
+        globals()[choice]()
     else:
         print("Incorrect parameter, please try again.")
