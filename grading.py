@@ -2,14 +2,11 @@ from os import listdir, path
 from subprocess import run, PIPE, STDOUT
 from git import Repo
 
+from asking import get_assignment_short_name, get_grader_name, get_group_number, get_grading_directory, \
+    get_assignment_deadline, get_assignment_subdirectories, get_sample_grading_file
+
 root_directory = path.dirname(path.realpath(__file__))
-
 bad_files_list = f"{root_directory}/samples/bad-files.gitignore"
-
-assignment_type_to_grading_file = {
-    "code": f"{root_directory}/samples/grading_file.txt",
-    "report": f"{root_directory}/samples/grading_file_tp7.txt"
-}
 
 
 def get_teams_list(grading_directory: str):
@@ -67,20 +64,18 @@ def generate_grading_file_name(assignment_name: str):
 
 
 def grade(grading_directory: str, group: str):
-    grader_name = input("What is your name? ")
-    assignment_name = input("What is the assignment name? ")
-    assignment_type = input("Is it a 'code' assignment or a 'report'? ")
-    sample_grading_file = assignment_type_to_grading_file[assignment_type]
+    grader_name = get_grader_name()
+    assignment_name = get_assignment_short_name()
+    sample_grading_file = get_sample_grading_file()
 
     if group is None:
-        group = input("What is your group? ")
+        group = get_group_number()
 
     if grading_directory is None:
-        grading_directory = input("What is the grading directory? ")
+        grading_directory = get_grading_directory()
 
-    deadline = input("What is the assignment deadline (yyyy-mm-dd hh:mm)? ")
-    subdirectories = input("What are the subdirectories to correct separated by space (ex: tp/tp6/pb1 tp/tp6/pb2)? ")
-    subdirectories_list = subdirectories.strip().split(" ")
+    deadline = get_assignment_deadline()
+    subdirectories = get_assignment_subdirectories()
 
     partial_grading_text = generate_partial_grading_file(assignment_name, group, grader_name, sample_grading_file)
 
@@ -94,7 +89,7 @@ def grade(grading_directory: str, group: str):
         grading_text = partial_grading_text.replace("__TEAM_NUMBER__", team)
         grading_text += get_commit_info(repo_path)
         grading_text += get_useless_files(repo_path)
-        grading_text += get_make_output(repo_path, subdirectories_list)
+        grading_text += get_make_output(repo_path, subdirectories)
 
         grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_name)}"
         with open(grade_file_path, 'w') as f:
