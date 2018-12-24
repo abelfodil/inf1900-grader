@@ -8,10 +8,8 @@
 *.csv
 
 __pycache__/
+correction*/
+grading*/
 
 workspace.xml
 vcs.xml
-
-correction-*/
-correction_*/
-
