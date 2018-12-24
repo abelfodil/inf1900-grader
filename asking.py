@@ -90,10 +90,6 @@ def get_group_number():
     return str(int(input("What is your group (ex: 1)? ")))
 
 
-def get_grader_name():
-    return input("What is your name? ")
-
-
 def get_team_type():
     team_size = int(input("Are you correcting teams of two (2) or four (4) members? "))
     return team_size_to_type[team_size]
