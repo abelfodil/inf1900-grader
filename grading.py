@@ -12,6 +12,10 @@ assignment_type_to_grading_file = {
 }
 
 
+def get_teams_list(grading_directory: str):
+    return [team for team in listdir(grading_directory) if path.isdir(path.join(grading_directory, team))]
+
+
 def generate_partial_grading_file(assignment_name: str, group: str, grader_name: str, sample_grading_file: str):
     with open(sample_grading_file, 'r') as f:
         raw_grading_file_content = f.read()
@@ -80,7 +84,7 @@ def grade(grading_directory: str, group: str):
 
     partial_grading_text = generate_partial_grading_file(assignment_name, group, grader_name, sample_grading_file)
 
-    teams = listdir(grading_directory)
+    teams = get_teams_list(grading_directory)
     for team in teams:
         print(f"Grading team {team}...")
 
