@@ -2,9 +2,13 @@ from os import listdir, path
 from subprocess import run, PIPE, STDOUT
 from git import Repo
 
+root_directory = path.dirname(path.realpath(__file__))
+
+bad_files_list = f"{root_directory}/samples/bad-files.gitignore"
+
 assignment_type_to_grading_file = {
-    "code": "samples/grading_file.txt",
-    "report": "samples/grading_file_tp7.txt"
+    "code": f"{root_directory}/samples/grading_file.txt",
+    "report": f"{root_directory}/samples/grading_file_tp7.txt"
 }
 
 
@@ -29,17 +33,12 @@ def create_branch(repo_path: str, deadline: str, grading_name: str):
 def get_commit_info(repo_path: str):
     header = "\n\n======================= Basé sur le commit suivant ============================="
     commit_info = Repo(repo_path).git.log("-1")
-
     return f"{header}\n{commit_info}"
 
 
 def get_useless_files(repo_path: str):
     header = "\n\n====================== Fichiers Indésirables ==================================="
-
-    root_directory = path.dirname(path.realpath(__file__))
-    bad_files_list = f"{root_directory}/samples/bad-files.gitignore"
     useless_file_list = Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}")
-
     return f"{header}\n{useless_file_list}"
 
 
