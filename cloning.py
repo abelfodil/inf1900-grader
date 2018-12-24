@@ -1,3 +1,4 @@
+from json import dump, load
 from os import mkdir, path, getcwd
 from urllib import request
 from bs4 import BeautifulSoup
@@ -10,14 +11,28 @@ team_size_to_type = {
     4: "quatuors"
 }
 
+student_list_file = "students.json"
+
+
+def get_student_list_path(grading_directory: str):
+    return f"{grading_directory}/{student_list_file}"
+
+
+def write_student_list(grading_directory: str, student_list: list):
+    with open(get_student_list_path(grading_directory), 'w') as f:
+        dump(student_list, f)
+
+
+def read_student_list(grading_directory: str):
+    student_list_path = get_student_list_path(grading_directory)
+    if path.isfile(student_list_path):
+        with open(student_list_path, 'r') as f:
+            return load(f)
+    else:
+        return []
+
 
 def clone_repos(grading_dir: str, student_list: list):
-    if path.exists(grading_dir):
-        print(f"{grading_dir} already exists. Please delete it or resume grading.")
-        return
-
-    mkdir(grading_dir)
-
     unique_team_list = sorted(set([student['team'] for student in student_list]))
     for team in unique_team_list:
         team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
@@ -69,7 +84,12 @@ def clone():
     group = str(int(input("What is your group (ex: 1)? ")))
     grading_directory = get_grading_directory()
 
-    student_list = fetch_student_list(team_type, group)
-    clone_repos(grading_directory, student_list)
+    if path.exists(grading_directory):
+        print(f"{grading_directory} already exists. Please delete it or resume grading.")
+    else:
+        mkdir(grading_directory)
+        student_list = fetch_student_list(team_type, group)
+        write_student_list(grading_directory, student_list)
+        clone_repos(grading_directory, student_list)
 
-    return grading_directory, group, student_list
+    return grading_directory, group
