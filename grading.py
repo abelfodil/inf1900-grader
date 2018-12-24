@@ -3,7 +3,7 @@ from subprocess import run, PIPE, STDOUT
 from git import Repo, GitConfigParser
 
 from asking import get_assignment_deadline, get_assignment_subdirectories, get_sample_grading_file, \
-    get_assignment_long_name, get_assignment_short_name
+    get_assignment_long_name, get_assignment_short_name, get_grading_directory, get_group_number
 
 root_directory = path.dirname(path.realpath(__file__))
 bad_files_list = f"{root_directory}/samples/bad-files.gitignore"
@@ -17,14 +17,14 @@ def get_grader_name():
     return GitConfigParser([path.normpath(path.expanduser("~/.gitconfig"))], read_only=True).get_value("user", "name")
 
 
-def generate_partial_grading_file(group: str):
+def generate_partial_grading_file():
     with open(get_sample_grading_file(), 'r') as f:
         raw_grading_file_content = f.read()
 
     partial_grading_file_content = raw_grading_file_content \
+        .replace("__SECTION__", get_group_number()) \
         .replace("__CORRECTEUR__", get_grader_name()) \
-        .replace("__TRAVAIL_PRATIQUE__", get_assignment_long_name()) \
-        .replace("__SECTION__", group)
+        .replace("__TRAVAIL_PRATIQUE__", get_assignment_long_name())
 
     return partial_grading_file_content
 
@@ -67,24 +67,26 @@ def generate_grading_file_name(assignment_short_name: str):
     return f"{generate_grading_name(assignment_short_name)}.txt"
 
 
-def grade(info):
-    partial_grading_text = generate_partial_grading_file(info.group)
-    info.assignment_name = get_assignment_short_name()
+def grade():
+    grading_directory = get_grading_directory()
+
+    partial_grading_text = generate_partial_grading_file()
+    assignment_name = get_assignment_short_name()
     subdirectories = get_assignment_subdirectories()
     deadline = get_assignment_deadline()
 
-    teams = get_teams_list(info.grading_directory)
+    teams = get_teams_list(grading_directory)
     for team in teams:
         print(f"Grading team {team}...")
 
-        repo_path = f"{info.grading_directory}/{team}"
-        create_branch(repo_path, deadline, generate_grading_name(info.assignment_name)).checkout()
+        repo_path = f"{grading_directory}/{team}"
+        create_branch(repo_path, deadline, generate_grading_name(assignment_name)).checkout()
 
         grading_text = partial_grading_text.replace("__TEAM_NUMBER__", team)
         grading_text += get_commit_info(repo_path)
         grading_text += get_useless_files(repo_path)
         grading_text += get_make_output(repo_path, subdirectories)
 
-        grade_file_path = f"{repo_path}/{generate_grading_file_name(info.assignment_name)}"
+        grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_name)}"
         with open(grade_file_path, 'w') as f:
             f.write(grading_text)
