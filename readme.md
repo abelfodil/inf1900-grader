@@ -22,6 +22,6 @@ répétitif est déjà automatisée.
 - Envoi du fichier de notes par email à Jérôme.
 - Ajouter clang-format pour lint le code.
 
-# Credits
-- Anes Belfodil (pythonification)
-- Philippe Carphin (idée originale https://github.com/PhilippeCarphin/git-teacher-tools)
+# Contributeurs
+- Anes Belfodil
+- Philippe Carphin
