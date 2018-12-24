@@ -10,10 +10,7 @@
 - Après avoir lancé l'option `grade`, il faut attribuer les notes manuellement, mais la majorité du travail 
 répétitif est déjà automatisée.
 - L'option `compile` fera un commit et merge sur chaque repo, puis générera un fichier de notes `grades.csv`.
-
-# Notes importantes
-- Vous ne devez pas corriger plusieurs TP ou groupes en même temps, car cela écrasera le fichier 
-`students.json` qui est autogénéré et qui sert à compiler les notes des étudiants dans `grades.csv`.
+- Il est possible de corriger plusieurs travaux simultanément.
 
 # Ce qui manque
 - Enregistrement de quelques informations pour ne pas avoir à les fournir à chaque reprise.
