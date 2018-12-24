@@ -45,7 +45,7 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
     repo.git.push('origin', master)
 
 
-def compile_grades(state):
+def assemble(state):
     if state.grading_directory is None:
         state.grading_directory = get_grading_directory()
 
