@@ -6,7 +6,7 @@ from git import Repo
 from tabCompleter import tabCompleter
 import readline
 
-from asking import get_grading_directory, get_group_number, get_team_type
+from asking import get_team_type, get_grading_directory, get_group_number
 
 student_list_file = "students.json"
 
@@ -39,8 +39,8 @@ def clone_repos(grading_dir: str, student_list: list):
         Repo.clone_from(team_repo_url, output_dir)
 
 
-def fetch_student_list(team_type: str, group: str):
-    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type}Section{group}.php"
+def fetch_student_list():
+    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{get_team_type()}Section{get_group_number()}.php"
     html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
 
     html_student_list = html.find_all("table")[-1].find_all("tr")[1:-1]
@@ -75,16 +75,12 @@ def get_grading_directory():
     return grading_directory
 
 def clone():
-    group = get_group_number()
-    team_type = get_team_type()
     grading_directory = get_grading_directory()
 
     if path.exists(grading_directory):
         print(f"{grading_directory} already exists. Please delete it or resume grading.")
     else:
         mkdir(grading_directory)
-        student_list = fetch_student_list(team_type, group)
+        student_list = fetch_student_list()
         write_student_list(grading_directory, student_list)
         clone_repos(grading_directory, student_list)
-
-    return grading_directory, group

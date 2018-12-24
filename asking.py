@@ -26,6 +26,10 @@ def get_assignment_subdirectories():
     return subdirectories.strip().split(" ")
 
 
+def get_assignment_long_name():
+    return input("What is the assignment long name (ex: Code final)? ")
+
+
 def get_assignment_short_name():
     return input("What is the assignment short name (ex: tp6)? ")
 
@@ -36,10 +40,6 @@ def get_grading_directory():
 
 def get_group_number():
     return str(int(input("What is your group (ex: 1)? ")))
-
-
-def get_grader_name():
-    return input("What is your name? ")
 
 
 def get_team_type():

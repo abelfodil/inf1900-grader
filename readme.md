@@ -4,6 +4,9 @@
 - html5lib
 - GitPython
 
+# Prérequis
+- `git config --global user.name "Votre Nom"`
+
 # Comment ça marche
 - Lancez le script `./start.py`.
 - Suivez les étapes linéairement (clone, puis grade, puis compile).

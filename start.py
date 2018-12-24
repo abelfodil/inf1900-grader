@@ -2,15 +2,18 @@
 
 from cloning import clone
 from grading import grade
-from compiling import compile_grades
+from assembling import assemble
 from tabCompleter import tabCompleter
+
 import readline
 
-print("Welcome to INF1900 interactive grading tool")
+choices = [
+    clone.__name__,
+    grade.__name__,
+    assemble.__name__
+]
 
-grading_directory = None
-assignment_name = None
-group = None
+print("Welcome to INF1900 interactive grading tool")
 
 if path.isfile(student_list_file):
     with open('students.json', 'r') as f:
@@ -27,18 +30,12 @@ def get_choice_from_list(prompt, choices):
     return input(prompt)
 
 def get_main_choice():
-    choices = ['clone', 'grade', 'compile']
     prompt = "What do you want to do? Please choose one of the following: {} ".format(choices)
     return get_choice_from_list(prompt, choices).strip()
   
 while True:
     choice = get_main_choice()
-
-    if choice == "clone":
-        grading_directory, group = clone()
-    elif choice == "grade":
-        grading_directory, group, assignment_name = grade(grading_directory, group)
-    elif choice == "compile":
-        compile_grades(grading_directory, assignment_name)
+    if choice in choices:
+        globals()[choice]()
     else:
         print("Incorrect parameter, please try again.")
