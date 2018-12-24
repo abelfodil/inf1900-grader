@@ -1,7 +1,9 @@
-from os import mkdir, path
+from os import mkdir, path, getcwd
 from urllib import request
 from bs4 import BeautifulSoup
 from git import Repo
+from tabCompleter import tabCompleter
+import readline
 
 team_size_to_type = {
     2: "duos",
@@ -42,12 +44,30 @@ def fetch_student_list(team_type: str, group: str):
 
     return student_list
 
+def get_dir_with_completion(prompt):
+    t = tabCompleter()
+    readline.set_completer_delims('\t')
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(t.pathCompleter)
+    user_input = input(prompt)
+    return user_input
+
+def get_grading_directory():
+    pwd = getcwd()
+
+    grading_directory = get_dir_with_completion("What is your grading directory? (Default : {}) ".format(pwd))
+
+    if grading_directory == "":
+        grading_directory = pwd
+
+    return grading_directory
 
 def clone():
     team_size = int(input("Are you correcting teams of two (2) or four (4) members? "))
+
     team_type = team_size_to_type[team_size]
     group = str(int(input("What is your group (ex: 1)? ")))
-    grading_directory = input("What is your grading directory? ")
+    grading_directory = get_grading_directory()
 
     student_list = fetch_student_list(team_type, group)
     clone_repos(grading_directory, student_list)
