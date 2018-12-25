@@ -14,8 +14,12 @@ assignment_type_to_grading_file = {
 
 
 def get_sample_grading_file():
-    assignment_type = input("Is it a 'code' assignment or a 'report'? ").strip()
-    return assignment_type_to_grading_file[assignment_type]
+    while True:
+        assignment_type = input("Is it a 'code' assignment or a 'report'? ").strip()
+        try:
+            return assignment_type_to_grading_file[assignment_type]
+        except:
+            print("Invalid option.")
 
 
 def get_assignment_deadline():

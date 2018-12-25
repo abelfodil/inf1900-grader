@@ -9,7 +9,7 @@
 
 # Comment ça marche
 - Lancez le script `./start.py`.
-- Suivez les étapes linéairement (clone, puis grade, puis compile).
+- Suivez les étapes linéairement (clone, puis grade, puis assemble).
 - Après avoir lancé l'option `grade`, il faut attribuer les notes manuellement, mais la majorité du travail 
 répétitif est déjà automatisée.
 - L'option `assemble` fera un commit et merge sur chaque repo, puis générera un fichier de notes `grades.csv`.
@@ -19,7 +19,6 @@ répétitif est déjà automatisée.
 
 # Ce qui manque
 - Installation automatique des dépendances.
-- Input sanitization pour ne pas faire crash l'outil.
 - Envoi du fichier de notes par email à Jérôme.
 - Ajouter clang-format pour lint le code.
 
