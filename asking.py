@@ -1,4 +1,5 @@
 from os import path
+from time import strptime
 
 team_size_to_type = {
     2: "duos",
@@ -13,12 +14,18 @@ assignment_type_to_grading_file = {
 
 
 def get_sample_grading_file():
-    assignment_type = input("Is it a 'code' assignment or a 'report'? ")
+    assignment_type = input("Is it a 'code' assignment or a 'report'? ").strip()
     return assignment_type_to_grading_file[assignment_type]
 
 
 def get_assignment_deadline():
-    return input("What is the assignment deadline (yyyy-mm-dd hh:mm)? ")
+    while True:
+        deadline = input("What is the assignment deadline (yyyy-mm-dd hh:mm)? ")
+        try:
+            strptime(deadline, "%Y-%m-%d %H:%M")
+            return deadline
+        except:
+            print("Incorrect datetime format.")
 
 
 def get_assignment_subdirectories():
