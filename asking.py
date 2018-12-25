@@ -34,8 +34,16 @@ def get_assignment_short_name():
     return input("What is the assignment short name (ex: tp6)? ")
 
 
-def get_grading_directory():
-    return input("What is the grading directory? ")
+def get_grading_directory(ensure_exists: bool = True):
+    while True:
+        directory = input("What is the grading directory? ")
+        if ensure_exists:
+            if path.isdir(directory):
+                return directory
+            else:
+                print("The grading directory specified does not exist.")
+        else:
+            return directory
 
 
 def get_group_number():

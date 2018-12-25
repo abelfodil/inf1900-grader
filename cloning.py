@@ -56,7 +56,7 @@ def fetch_student_list():
 
 
 def clone():
-    grading_directory = get_grading_directory()
+    grading_directory = get_grading_directory(ensure_exists=False)
 
     if path.exists(grading_directory):
         print(f"{grading_directory} already exists. Please delete it or resume grading.")
