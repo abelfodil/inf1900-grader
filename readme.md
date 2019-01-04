@@ -23,7 +23,6 @@
   de pouvoir corriger plusieurs travaux simultanément.
 
 # Ce qui manque
-- Installation automatique des dépendances.
 - Ajouter clang-format pour lint le code.
 - Envoi du fichier de notes par email à Jérôme.
 
