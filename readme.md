@@ -59,3 +59,4 @@ vous devez installer le programme __virtualenv__.
 # Contributeurs
 - Anes Belfodil
 - Philippe Carphin
+- Olivier Dion
