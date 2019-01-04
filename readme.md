@@ -1,6 +1,6 @@
 # Prérequis
 - `$ git config --global user.name "Votre Nom"`
-- `$ pip install -r requirements.txt`
+- `$ pip install --user -r requirements.txt`
 
 # Comment ça marche
 - Lancez le script `./start.py`.
