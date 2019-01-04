@@ -1,4 +1,5 @@
 # Prérequis
+- `$ git config --global credential.helper store`
 - `$ git config --global user.name "Votre Nom"`
 - `$ pip install --user -r requirements.txt`
 
