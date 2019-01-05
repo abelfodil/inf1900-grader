@@ -25,7 +25,7 @@
   de pouvoir corriger plusieurs travaux simultanément.
 
 # Ce qui manque
-- Ajouter clang-format pour lint le code.
+- Utiliser clang-format et clang-tidy pour plus d'automatisations.
 - Envoi du fichier de notes par email à Jérôme.
 
 # Contributeurs
