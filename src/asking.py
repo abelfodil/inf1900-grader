@@ -7,10 +7,10 @@ team_size_to_type = {
     4: "quatuors"
 }
 
-root_directory = path.dirname(path.realpath(argv[0]))
+script_root_directory = path.dirname(path.realpath(argv[0]))
 assignment_type_to_grading_file = {
-    "code": f"{root_directory}/samples/grading_file_code.txt",
-    "report": f"{root_directory}/samples/grading_file_report.txt"
+    "code": f"{script_root_directory}/samples/grading_file_code.txt",
+    "report": f"{script_root_directory}/samples/grading_file_report.txt"
 }
 
 
