@@ -5,7 +5,7 @@
 - [Outils AVR](http://www.groupes.polymtl.ca/inf1900/fichiers/)
 
 # Comment ça marche
-- Lancez le script `./start.py`.
+- Lancez le script `./grader`.
 - Suivez les étapes linéairement (`clone`, puis `grade`, puis `assemble`).
 
 # Résumé des différentes étapes
