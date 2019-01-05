@@ -6,7 +6,7 @@
 
 # Comment ça marche
 - Lancez le script `./grader`.
-- Suivez les étapes linéairement (`clone`, puis `grade`, puis `assemble`).
+- Suivez les étapes linéairement (`clone` -> `grade` -> `assemble`).
 
 # Résumé des différentes étapes
 - `clone` récupérera les informations des élèves (nom, prénom, équipe,
