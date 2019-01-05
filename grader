@@ -6,13 +6,11 @@ from src.assemble import assemble
 from src.mail import mail
 from src.parser import Parser
 
-
-# Nice hack btw!
 choices = [
-    clone.__name__,
-    grade.__name__,
-    assemble.__name__,
-    mail.__name__
+    clone,
+    grade,
+    assemble,
+    mail
 ]
 
 if __name__ == "__main__":
@@ -23,9 +21,9 @@ if __name__ == "__main__":
 
     while True:
 
-        choice = input(f"What do you want to do? Please choose one of the following: {choices} ").strip()
+        choice = input("What do you want to do? Please choose one of the following: " + " ".join(choicesDict.keys()) + "\n").strip()
 
-        if choice in choices:
-            globals()[choice](*parser.vargs)
+        if choice in choicesDict:
+            choicesDict[choice]()
         else:
             print("Incorrect parameter, please try again.")
