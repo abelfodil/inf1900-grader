@@ -55,7 +55,7 @@ def fetch_student_list():
     return student_list
 
 
-def clone():
+def clone(options, args):
     grading_directory = get_grading_directory(ensure_exists=False)
 
     if path.exists(grading_directory):

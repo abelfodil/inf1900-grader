@@ -45,7 +45,7 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
     repo.git.push('origin', master)
 
 
-def assemble():
+def assemble(options, args):
     grading_directory = get_grading_directory()
     assignment_name = get_assignment_short_name()
 

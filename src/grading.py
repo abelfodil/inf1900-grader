@@ -68,7 +68,7 @@ def generate_grading_file_name(assignment_short_name: str):
     return f"{generate_grading_name(assignment_short_name)}.txt"
 
 
-def grade():
+def grade(options, args):
     grading_directory = get_grading_directory()
 
     partial_grading_text = generate_partial_grading_file()

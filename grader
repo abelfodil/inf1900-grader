@@ -3,19 +3,28 @@
 from src.cloning import clone
 from src.grading import grade
 from src.assembling import assemble
+from src.mail import mail
+from src.parser import Parser
 
+# Nice hack btw!
 choices = [
     clone.__name__,
     grade.__name__,
-    assemble.__name__
+    assemble.__name__,
+    mail.__name__
 ]
 
-print("Welcome to INF1900 interactive grading tool")
+if __name__ == "__main__":
 
-while True:
-    choice = input(f"What do you want to do? Please choose one of the following: {choices} ").strip()
+    parser = Parser()
 
-    if choice in choices:
-        globals()[choice]()
-    else:
-        print("Incorrect parameter, please try again.")
+    print("Welcome to INF1900 interactive grading tool")
+
+    while True:
+
+        choice = input(f"What do you want to do? Please choose one of the following: {choices} ").strip()
+
+        if choice in choices:
+            globals()[choice](*parser.vargs)
+        else:
+            print("Incorrect parameter, please try again.")
