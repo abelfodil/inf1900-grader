@@ -2,7 +2,7 @@ from git import Repo
 from os import listdir, path
 from subprocess import run, PIPE, STDOUT
 
-from asking import get_assignment_deadline, get_assignment_subdirectories, get_sample_grading_file, \
+from src.asking import get_assignment_deadline, get_assignment_subdirectories, get_sample_grading_file, \
     get_assignment_long_name, get_assignment_short_name, get_grading_directory, get_group_number
 
 root_directory = path.dirname(path.realpath(__file__))

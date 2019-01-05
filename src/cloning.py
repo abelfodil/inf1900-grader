@@ -4,7 +4,7 @@ from urllib import request
 from bs4 import BeautifulSoup
 from git import Repo
 
-from asking import get_team_type, get_grading_directory, get_group_number
+from src.asking import get_team_type, get_grading_directory, get_group_number
 
 student_list_file = "students.json"
 
