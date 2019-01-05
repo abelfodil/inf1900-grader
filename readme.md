@@ -2,6 +2,7 @@
 - `$ git config --global credential.helper store`
 - `$ git config --global user.name "Votre Nom"`
 - `$ pip install --user -r requirements.txt`
+- [Outils AVR](http://www.groupes.polymtl.ca/inf1900/fichiers/)
 
 # Comment ça marche
 - Lancez le script `./start.py`.
