@@ -1,9 +1,9 @@
 from csv import writer
 from git import Repo
 
-from src.asking import get_grading_directory, get_assignment_short_name
-from src.cloning import read_student_list
-from src.grading import generate_grading_file_name, get_teams_list
+from src.ask import get_grading_directory, get_assignment_short_name
+from src.clone import read_student_list
+from src.grade import generate_grading_file_name, get_teams_list
 
 
 def read_grade(grading_directory: str, team: str, assignment_name: str):

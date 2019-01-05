@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from src.cloning import clone
-from src.grading import grade
-from src.assembling import assemble
+from src.clone import clone
+from src.grade import grade
+from src.assemble import assemble
 
 choices = [
     clone.__name__,
