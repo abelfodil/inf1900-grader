@@ -15,7 +15,7 @@ def get_teams_list(grading_directory: str):
 
 
 def get_grader_name():
-    return run(["git", "config", "user.name"], stdout=PIPE).stdout.decode('utf-8').strip()
+    return Repo(".").config_reader().get_value("user", "name")
 
 
 def generate_partial_grading_file():
