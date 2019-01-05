@@ -15,7 +15,7 @@ def get_teams_list(grading_directory: str):
 
 
 def get_grader_name():
-    return Repo(".").config_reader().get_value("user", "name")
+    return Repo(script_root_directory).config_reader().get_value("user", "name")
 
 
 def generate_partial_grading_file():
