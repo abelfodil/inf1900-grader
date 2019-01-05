@@ -1,12 +1,13 @@
 from os import path
 from time import strptime
+from sys import argv
 
 team_size_to_type = {
     2: "duos",
     4: "quatuors"
 }
 
-root_directory = path.dirname(path.realpath(__file__))
+root_directory = path.dirname(path.realpath(argv[0]))
 assignment_type_to_grading_file = {
     "code": f"{root_directory}/samples/grading_file_code.txt",
     "report": f"{root_directory}/samples/grading_file_report.txt"
