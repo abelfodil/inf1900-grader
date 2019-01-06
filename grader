@@ -8,6 +8,7 @@ from src.mail     import mail
 from src.parser   import Parser
 from src.tui      import TUI
 
+
 if __name__ == "__main__":
 
     parser = Parser()
@@ -25,7 +26,7 @@ if __name__ == "__main__":
     menu_heads = [
         (
             'c',
-            clone,
+            clone,              # will crash
             "Clone",
             False
         ),
