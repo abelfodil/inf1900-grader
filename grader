@@ -8,7 +8,6 @@ from src.mail     import mail
 from src.parser   import Parser
 from src.tui      import TUI
 
-
 if __name__ == "__main__":
 
     parser = Parser()
@@ -17,24 +16,36 @@ if __name__ == "__main__":
 
     mail_hydra = mail(tui, parser.get_options())
 
+#   clone_hydra = clone(tui, parser.get_options())
+
     menu_hydra = Hydra("menu", [],
                        "Welcome to INF1900 interactive grading tool!",
-                       color=Hydra.teal)
+                       color=Hydra.teal,
+                       pre=lambda:tui.echo(""))
     menu_heads = [
-        ('c', None, 'Clone'),
+        (
+            'c',
+            clone,
+            "Clone",
+            False
+        ),
         ('g', None, 'Grade'),
         ('a', None, 'Assemble'),
-        ('m',
-         lambda:(tui.push_hydra(menu_hydra), tui.set_hydra(mail_hydra)),
-         "mail"),
+        (
+            'm',
+            lambda:(tui.push_hydra(menu_hydra), tui.set_hydra(mail_hydra)),
+            "mail"
+        ),
         ('q', TUI.quit, "quit")
     ]
 
-    menu_hydra.add_heads(menu_heads)
-
     # Needed! Or else GC will bite us
     tui.add_hydras([menu_hydra,
-                    mail_hydra])
+                    mail_hydra,
+                  ])
+
+    # Needed because of stack of hydras
+    menu_hydra.add_heads(menu_heads)
 
     # Bootstrap first hydra
     tui.set_hydra(menu_hydra)

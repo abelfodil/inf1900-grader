@@ -2,6 +2,8 @@
 from optparse import OptionParser
 
 from git import Repo
+from os import path
+from sys import argv
 
 # Email a jerome
 DEFAULT_RECEIVER = "olivier.dion@polymtl.ca"

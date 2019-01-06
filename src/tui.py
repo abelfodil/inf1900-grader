@@ -63,8 +63,8 @@ class TUI:
         elif mode == TUI.metaX_mode:
             self.activate_mini_buffer("M-x: ")
 
-    def echo(self, text):
-        self.echo_zone.set_text(text)
+    def echo(self, *args):
+        self.echo_zone.set_text(args[0])
 
     def key_pressed(self, key):
 
@@ -97,6 +97,11 @@ class TUI:
     def pop_hydra(self):
         self.set_hydra(self.stack.pop())
 
+    def input(self, prompt):
+        self.echo(prompt)
+        self.select_mode(TUI.edit_mode)
+
+
     def set_hydra(self, hydra):
         if hydra.name in self.hydras:
 
@@ -108,7 +113,7 @@ class TUI:
             try:
                 hydra.pre()
             except Exception as e:
-                print(e)
+                pass
 
             self.hydra = HydraBox(hydra)
             self.pile.contents[TUI.hydra_index] = (self.hydra.text, ('pack', None))
@@ -167,25 +172,23 @@ class MiniBuffer(urwid.Edit):
 
     def keypress(self, size, key):
 
-        if key == "esc":
-            self.tui.toggle_mode()
+        if key == "esc" and self.tui.mode != TUI.edit_mode:
+            self.tui.select_mode(TUI.modal_mode)
 
         elif key == "enter":
 
             if self.tui.mode == TUI.metaX_mode:
                 text = self.get_edit_text()
 
-                if text in self.tui.global_commands:
+                if text in self.tui.commands:
                     self.tui.commands[text]()
+
+            elif self.tui.mode == TUI.edit_mode:
+                self.tui.flush_mini_buffer()
 
         else:
             return super().keypress(size, key)
 
-
-
-def foo():
-    with open("foo", "w") as f:
-        f.write("foo")
 
 
 if __name__ == "__main__":
