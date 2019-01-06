@@ -1,7 +1,6 @@
 from csv import writer
 from git import Repo
 
-from src.ask import get_grading_directory, get_assignment_short_name
 from src.clone import read_student_list
 from src.grade import generate_grading_file_name, get_teams_list
 
@@ -46,17 +45,14 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
     repo.git.push('origin', master)
 
 
-def assemble():
-    grading_directory = get_grading_directory()
-    assignment_name = get_assignment_short_name()
-
+def assemble(grading_directory: str, assignment_sname: str):
     grades = {}
 
     teams = get_teams_list(grading_directory)
     for team in teams:
         print(f"Sending grades to team {team}...")
 
-        commit_and_merge(grading_directory, team, assignment_name)
-        grades[team] = read_grade(grading_directory, team, assignment_name)
+        commit_and_merge(grading_directory, team, assignment_sname)
+        grades[team] = read_grade(grading_directory, team, assignment_sname)
 
-    write_grades_file(grading_directory, grades, assignment_name)
+    write_grades_file(grading_directory, grades, assignment_sname)
