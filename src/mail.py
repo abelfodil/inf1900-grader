@@ -83,10 +83,14 @@ def mail():
                 receiver,
                 attachments)
 
+    prompt = f"""
+Send file: {filename}
+FROM:      {sender}
+TO:        {receiver}
+"""
+
     while 1:
-        print("You're about to send the file {}".format(filename))
-        print("FROM: {}".format(sender))
-        print("TO:   {}".format(receiver))
+        print(prompt)
 
         answer = input("Are you sure of this operation? [y/n] ").strip().lower()
 
@@ -94,7 +98,7 @@ def mail():
             mail.send()
             break
 
-        elif answer[0]== 'n':
+        elif answer[0] == 'n':
             break
 
         else:
