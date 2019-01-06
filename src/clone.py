@@ -6,11 +6,9 @@ from git import Repo
 
 from src.ask import get_team_type, get_grading_directory, get_group_number
 
-student_list_file = "students.json"
-
 
 def get_student_list_path(grading_directory: str):
-    return f"{grading_directory}/{student_list_file}"
+    return f"{grading_directory}/students.json"
 
 
 def write_student_list(grading_directory: str, student_list: list):
