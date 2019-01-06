@@ -4,11 +4,6 @@ from sys import argv
 
 from git import Repo
 
-team_size_to_type = {
-    2: "duos",
-    4: "quatuors"
-}
-
 script_root_directory = path.dirname(path.realpath(argv[0]))
 
 
@@ -57,8 +52,3 @@ def get_grading_directory(ensure_exists: bool = True):
 
 def get_group_number():
     return str(int(input("What is your group (ex: 1)? ")))
-
-
-def get_team_type():
-    team_size = int(input("Are you correcting teams of two (2) or four (4) members? "))
-    return team_size_to_type[team_size]
