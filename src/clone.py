@@ -11,7 +11,6 @@ class TeamType(Enum):
     QUARTET = "quatuors"
 
 
-
 def get_student_list_path(grading_directory: str):
     return f"{grading_directory}/students.json"
 
