@@ -4,6 +4,7 @@ import smtplib
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
+from os.path import isfile
 
 from src.ask import get_grading_directory
 from src.ask import get_grader_email
@@ -71,9 +72,11 @@ def mail():
     sender = f"{get_grader_email()}"
     filename = f"{get_grading_directory(True)}/grades.csv"
 
-    attachments = [MailAttachment("text/csv",
-                                  filename)]
+    if not isfile(filename):
+        print(f"{filename} does not exist. Please assemble your grades first.")
+        return
 
+    attachments = [MailAttachment("text/csv", filename)]
     mail = Mail(default_subject, sender, receiver, attachments)
 
     print(f"""
