@@ -63,9 +63,9 @@ class Mail:
         self.sent = True
 
 
-def mail(sender: str, recipient: str, grades_path: str):
+def mail(subject: str, sender: str, recipient: str, grades_path: str):
     attachments = [MailAttachment("text/csv", grades_path)]
-    mail = Mail(default_subject, sender, recipient, attachments)
+    mail = Mail(subject, sender, recipient, attachments)
 
     print(f"""
 Send file: {grades_path}
