@@ -27,4 +27,4 @@
 
 # Ce qui manque
 - Utiliser clang-format et clang-tidy pour plus d'automatisations.
-- Envoi du fichier de notes par email à Jérôme.
+- Envoi du fichier de notes par email à Jérôme (WIP).
