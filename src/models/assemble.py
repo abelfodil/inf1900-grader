@@ -20,7 +20,7 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
 def write_grades_file(grading_directory: str, grades: dict, assignment_name: str):
     student_list = read_student_list(grading_directory)
 
-    with open(f"{grading_directory}/grades.csv", 'w', newline='') as csvfile:
+    with open(f"{grading_directory}/grades.csv", 'w', newline='', encoding="utf-8") as csvfile:
         csv_writer = writer(csvfile)
 
         csv_writer.writerow(["Travail:", assignment_name])
