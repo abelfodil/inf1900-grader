@@ -5,9 +5,6 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 
-from src.ask import get_grading_directory
-from src.ask import get_grader_email
-
 default_subject = "[DO NOT REPLY] inf1900-grader"
 
 # You can spam that one
@@ -66,20 +63,14 @@ class Mail:
         self.sent = True
 
 
-def mail():
-    receiver = default_receiver
-    sender = f"{get_grader_email()}"
-    filename = f"{get_grading_directory(True)}/grades.csv"
-
-    attachments = [MailAttachment("text/csv",
-                                  filename)]
-
-    mail = Mail(default_subject, sender, receiver, attachments)
+def mail(sender: str, recipient: str, grades_path: str):
+    attachments = [MailAttachment("text/csv", grades_path)]
+    mail = Mail(default_subject, sender, recipient, attachments)
 
     print(f"""
-Send file: {filename}
+Send file: {grades_path}
 FROM:      {sender}
-TO:        {receiver}
+TO:        {recipient}
 """)
 
     while True:
