@@ -3,12 +3,12 @@ from os import mkdir, path
 from urllib import request
 from bs4 import BeautifulSoup
 from git import Repo
-from enum import Enum, auto
+from enum import Enum
 
 
 class TeamType(Enum):
-    DUOS = auto()
-    QUATUORS = auto()
+    DUOS = "duos"
+    QUARTET = "quatuors"
 
 
 student_list_file = "students.json"

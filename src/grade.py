@@ -2,20 +2,15 @@ from os import listdir, path
 from subprocess import run, PIPE, STDOUT
 from sys import argv
 from git import Repo
-from enum import Enum, auto
-
-
-class AssignmentType(Enum):
-    CODE = auto()
-    REPORT = auto()
-
+from enum import Enum
 
 script_root_directory = path.dirname(path.realpath(argv[0]))
 bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
-assignment_type_to_grading_file = {
-    AssignmentType.CODE: f"{script_root_directory}/samples/grading_file_code.txt",
-    AssignmentType.REPORT: f"{script_root_directory}/samples/grading_file_report.txt"
-}
+
+
+class AssignmentType(Enum):
+    CODE = f"{script_root_directory}/samples/grading_file_code.txt"
+    REPORT = f"{script_root_directory}/samples/grading_file_report.txt"
 
 
 def get_teams_list(grading_directory: str):
@@ -24,7 +19,7 @@ def get_teams_list(grading_directory: str):
 
 def generate_partial_grading_file_content(grader_name: str, group_number: int,
                                           assignment_type: AssignmentType, assignment_long_name: str):
-    with open(assignment_type_to_grading_file[assignment_type], 'r') as f:
+    with open(assignment_type.value, 'r') as f:
         raw_grading_file_content = f.read()
 
     partial_grading_file_content = raw_grading_file_content \
