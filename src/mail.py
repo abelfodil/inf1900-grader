@@ -76,15 +76,13 @@ def mail():
 
     mail = Mail(default_subject, sender, receiver, attachments)
 
-    prompt = f"""
+    print(f"""
 Send file: {filename}
 FROM:      {sender}
 TO:        {receiver}
-"""
+""")
 
     while True:
-        print(prompt)
-
         answer = input("Are you sure of this operation? [y/n] ").strip().lower()
 
         if answer[0] == 'y':
