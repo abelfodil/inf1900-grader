@@ -10,7 +10,7 @@ from os.path import isfile
 from src.ask import get_grading_directory
 from src.ask import get_grader_email
 
-default_receiver = "olivier-dion@hotmail.com"
+default_receiver = "jerome.collin@polymtl.ca"
 default_subject = "[NO-REPLY] inf1900-grader"
 default_message = "Correction d'un travail terminée."
 
