@@ -3,11 +3,13 @@
 from src.clone import clone
 from src.grade import grade
 from src.assemble import assemble
+from src.mail import mail
 
 choices = [
     clone,
     grade,
-    assemble
+    assemble,
+    mail
 ]
 
 choices_dict = {function.__name__: function for function in choices}
