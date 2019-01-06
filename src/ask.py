@@ -20,6 +20,10 @@ def get_grader_name():
     return Repo(script_root_directory).config_reader().get_value("user", "name")
 
 
+def get_grader_email():
+    return Repo(script_root_directory).config_reader().get_value("user", "email")
+
+
 def get_sample_grading_file():
     while True:
         assignment_type = input("Is it a 'code' assignment or a 'report'? ").strip()
