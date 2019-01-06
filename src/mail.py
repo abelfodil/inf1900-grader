@@ -1,33 +1,11 @@
 # Author: Olivier Dion - 2019
 
-# Mail client
 import smtplib
 
-# MIME types
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 
-# ANSI escape code Colors
-NORMAL = "\033[0m"
-BOLD   = "\033[1m"
-RED    = "\033[38;2;255;0;0m"
-GREEN  = "\033[38;2;0;255;0m"
-YELLOW = "\033[38;2;255;255;0m"
-
-
-# Maybe put this in a class so we can reeuse it in other modules?
-def ok(msg):
-    return (GREEN + msg + NORMAL)
-
-def warning(msg):
-    return (YELLOW + msg + NORMAL)
-
-def error(msg):
-    return (RED + msg + NORMAL)
-
-def bold(msg):
-    return (BOLD + msg + NORMAL)
-
+from src.hydra import Hydra
 
 class Mail:
 
@@ -59,49 +37,30 @@ class Mail:
         smtp.send_message(self.msg, self.msg["From"], self.msg["To"])
         smtp.quit()
 
-    # For debugging purpose
-    def echo(self):
-        print(self.msg.as_string())
+
+def confirm_mail(tui, options):
+
+    text = """
+    Send file: {}
+    TO:        {}
+    FROM:      {}""".format(options.csv_file,
+                            options.receiver,
+                            options.sender)
+    tui.echo(text)
 
 
-def resolve_sender():
+def mail(tui, options):
 
-    print("I can't find a valid sender name.")
-    print("Please set your email with git so I can use it.")
+    mail_heads = [
+        ("y",
+         lambda:Mail(options.csv_file, options.sender, options.receiver).send(),
+         "yes"),
+        ("n", None, "no")
+    ]
 
+    mail_hydra = Hydra("mail", mail_heads, "Mail Menu",
+                       on_kill=lambda:tui.pop_hydra(),
+                       pre=lambda: confirm_mail(tui, options),
+                       color=Hydra.teal)
 
-def mail(options, args):
-
-    if options.sender == "":
-        resolve_sender()
-        print("Operation {}".format(warning("ABORTED")))
-        exit(1)
-
-
-    filename = options.csv_file
-    sender   = options.sender
-    receiver = options.receiver
-
-    while 1:
-        print("You're about to send the file {}".format(bold(filename)))
-        print("FROM: {}".format(sender))
-        print("TO:   {}".format(receiver))
-
-        answer = input("Are you sure of this operation? [y/n] ")
-
-        if answer[0].lower() == 'y':
-            try:
-                Mail(filename, sender, receiver).send()
-                print("Operation {}".format(ok("TERMINATED")))
-            except Exception as e:
-                print(e)
-                print("Operation {}".format(error("FAILED")))
-
-            break
-
-        elif answer[0].lower() == 'n':
-            print("Operation {}".format(warning("ABORTED")))
-            break
-
-        else:
-            print("Invalid answer")
+    return mail_hydra

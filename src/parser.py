@@ -1,17 +1,14 @@
- # Args parser
+
 from optparse import OptionParser
 
-# Git client
 from git import Repo
-
-# Globals
 
 # Email a jerome
 DEFAULT_RECEIVER = "olivier.dion@polymtl.ca"
 
 def default_sender():
 
-    repo = Repo(".")
+    repo = Repo(path.dirname(path.realpath(argv[0])))
 
     # Try to fetch from git configuration
     try:
