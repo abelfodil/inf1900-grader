@@ -1,8 +1,8 @@
 from csv import writer
 from git import Repo
 
-from src.clone import read_student_list
-from src.grade import generate_grading_file_name, get_teams_list
+from src.models.clone import read_student_list
+from src.models.grade import generate_grading_file_name, get_teams_list
 
 
 def read_grade(grading_directory: str, team: str, assignment_name: str):
