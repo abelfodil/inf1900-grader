@@ -4,7 +4,7 @@ from subprocess import run, PIPE, STDOUT
 from sys import argv
 
 from src.ask import get_assignment_deadline, get_assignment_subdirectories, get_sample_grading_file, \
-    get_assignment_long_name, get_assignment_short_name, get_grading_directory, get_group_number
+    get_assignment_long_name, get_assignment_short_name, get_grading_directory, get_group_number, get_grader_name
 
 script_root_directory = path.dirname(path.realpath(argv[0]))
 bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
@@ -12,10 +12,6 @@ bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
 
 def get_teams_list(grading_directory: str):
     return [team for team in listdir(grading_directory) if path.isdir(path.join(grading_directory, team))]
-
-
-def get_grader_name():
-    return Repo(script_root_directory).config_reader().get_value("user", "name")
 
 
 def generate_partial_grading_file():

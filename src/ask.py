@@ -2,6 +2,8 @@ from os import path
 from time import strptime
 from sys import argv
 
+from git import Repo
+
 team_size_to_type = {
     2: "duos",
     4: "quatuors"
@@ -12,6 +14,10 @@ assignment_type_to_grading_file = {
     "code": f"{script_root_directory}/samples/grading_file_code.txt",
     "report": f"{script_root_directory}/samples/grading_file_report.txt"
 }
+
+
+def get_grader_name():
+    return Repo(script_root_directory).config_reader().get_value("user", "name")
 
 
 def get_sample_grading_file():
