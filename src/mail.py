@@ -16,12 +16,12 @@ default_message = "Correction d'un travail terminée."
 
 
 class MailException(Exception):
-    def __init__(self, msg):
+    def __init__(self, msg: str):
         super().__init__(msg)
 
 
 class MailAttachment:
-    def __init__(self, type_, path, filename):
+    def __init__(self, type_, path: str, filename: str):
         self.path = path
         self.filename = filename
         self.main_type, self.sub_type = type_.split("/")
@@ -36,7 +36,7 @@ class MailAttachment:
 
 
 class Mail:
-    def __init__(self, sender, receiver, subject, message="", attachments=[]):
+    def __init__(self, sender: str, receiver: str, subject: str, message: str = "", attachments: list = []):
 
         msg = MIMEMultipart()
 
@@ -52,7 +52,7 @@ class Mail:
         self.msg = msg
         self.sent = False
 
-    def send(self, smtp_addr="smtp.polymtl.ca", port=587):
+    def send(self, smtp_addr: str = "smtp.polymtl.ca", port: int = 587):
 
         if self.sent:
             raise MailException("Mail was already sent!")
