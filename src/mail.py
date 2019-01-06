@@ -5,10 +5,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 
-from src.hydra import Hydra
-
-
 default_subject = "[DO NOT REPLY] inf1900-grader"
+
+class MailException(Exception):
+
+    def __init__(self, msg):
+        super().__init__(msg)
 
 class MailAttachment:
 
@@ -58,59 +60,14 @@ class Mail:
         self.was_sended = False
 
     # Connect to smtp_addr:port and send the email
-    def send(self, smtp_addr="smtp.polymtl.ca", port=587, **kwargs):
-
-        if "tui" in kwargs:
-            echo = kwargs["tui"].echo
-        else:
-            echo = print
+    def send(self, smtp_addr="smtp.polymtl.ca", port=587):
 
         # We don't want to keep sending the same email by accident
         if self.was_sended:
-            echo("Email was already sent!  Operation aborted")
-            return
+            raise MailException("Mail was already sent!")
 
+        smtp = smtplib.SMTP(smtp_addr, port)
+        smtp.send_message(self.msg, self.msg["From"], self.msg["To"])
+        smtp.quit()
 
-        try:
-            smtp = smtplib.SMTP(smtp_addr, port)
-            smtp.send_message(self.msg, self.msg["From"], self.msg["To"])
-            smtp.quit()
-            echo("Email sended!")
-            self.was_sended = True
-
-        except Exception as e:
-            echo(str(e))
-
-def confirm_mail(tui, mail):
-
-    text = """
-    Send files: {}
-    TO:         {}
-    FROM:       {}""".format(", ".join(mail.filename_list),
-                             mail.msg["to"],
-                             mail.msg["from"])
-    tui.echo(text)
-
-
-def mail(tui, options):
-
-    attachments = [MailAttachment("text/csv", options.csv_file)]
-
-    mail = Mail(default_subject,
-                options.sender,
-                options.receiver,
-                attachments)
-
-    mail_heads = [
-        ("y",
-         lambda:mail.send(),
-         "yes"),
-        ("n", None, "no")
-    ]
-
-    mail_hydra = Hydra("mail", mail_heads, "Mail Menu",
-                       on_kill=lambda:tui.pop_hydra(),
-                       pre=lambda:confirm_mail(tui, mail),
-                       color=Hydra.teal)
-
-    return mail_hydra
+        self.was_sended = True

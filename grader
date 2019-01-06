@@ -3,6 +3,7 @@
 from src.clone import clone
 from src.grade import grade
 from src.assemble import assemble
+from src.mail import Mail
 
 choices = [
     clone,
