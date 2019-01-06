@@ -65,21 +65,4 @@ class Mail:
 
 def mail(subject: str, sender: str, recipient: str, grades_path: str):
     attachments = [MailAttachment("text/csv", grades_path)]
-    mail = Mail(subject, sender, recipient, attachments)
-
-    print(f"""
-Send file: {grades_path}
-FROM:      {sender}
-TO:        {recipient}
-""")
-
-    while True:
-        answer = input("Are you sure of this operation? [y/n] ").strip().lower()
-
-        if answer[0] == 'y':
-            mail.send()
-            break
-        elif answer[0] == 'n':
-            break
-        else:
-            print("Invalid answer")
+    Mail(subject, sender, recipient, attachments).send()
