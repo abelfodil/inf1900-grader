@@ -4,16 +4,7 @@ from sys import argv
 
 from git import Repo
 
-team_size_to_type = {
-    2: "duos",
-    4: "quatuors"
-}
-
 script_root_directory = path.dirname(path.realpath(argv[0]))
-assignment_type_to_grading_file = {
-    "code": f"{script_root_directory}/samples/grading_file_code.txt",
-    "report": f"{script_root_directory}/samples/grading_file_report.txt"
-}
 
 
 def get_grader_name():
@@ -22,15 +13,6 @@ def get_grader_name():
 
 def get_grader_email():
     return Repo(script_root_directory).config_reader().get_value("user", "email")
-
-
-def get_sample_grading_file():
-    while True:
-        assignment_type = input("Is it a 'code' assignment or a 'report'? ").strip()
-        try:
-            return assignment_type_to_grading_file[assignment_type]
-        except:
-            print("Invalid option.")
 
 
 def get_assignment_deadline():
@@ -70,8 +52,3 @@ def get_grading_directory(ensure_exists: bool = True):
 
 def get_group_number():
     return str(int(input("What is your group (ex: 1)? ")))
-
-
-def get_team_type():
-    team_size = int(input("Are you correcting teams of two (2) or four (4) members? "))
-    return team_size_to_type[team_size]

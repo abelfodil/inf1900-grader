@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-from src.init import tui
-
+from src.models.clone import clone
+from src.models.grade import grade
+from src.models.assemble import assemble
+from src.models.mail import mail
 from src.hook import hooks
 
 if __name__ == "__main__":
