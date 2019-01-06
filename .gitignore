@@ -13,3 +13,6 @@ grading*/
 
 workspace.xml
 vcs.xml
+
+# virtualenv
+env/
