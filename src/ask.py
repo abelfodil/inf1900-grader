@@ -10,10 +10,6 @@ team_size_to_type = {
 }
 
 script_root_directory = path.dirname(path.realpath(argv[0]))
-assignment_type_to_grading_file = {
-    "code": f"{script_root_directory}/samples/grading_file_code.txt",
-    "report": f"{script_root_directory}/samples/grading_file_report.txt"
-}
 
 
 def get_grader_name():
@@ -22,15 +18,6 @@ def get_grader_name():
 
 def get_grader_email():
     return Repo(script_root_directory).config_reader().get_value("user", "email")
-
-
-def get_sample_grading_file():
-    while True:
-        assignment_type = input("Is it a 'code' assignment or a 'report'? ").strip()
-        try:
-            return assignment_type_to_grading_file[assignment_type]
-        except:
-            print("Invalid option.")
 
 
 def get_assignment_deadline():
