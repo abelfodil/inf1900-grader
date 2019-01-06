@@ -1,19 +1,10 @@
 #!/usr/bin/env python3
 
-from src.assemble import assemble
-from src.clone    import clone
-from src.grade    import grade
-from src.hydra    import Hydra
-from src.mail     import mail
-from src.parser   import Parser
-from src.tui      import TUI
+from src.init import tui
 
+from src.hook import hooks
 
 if __name__ == "__main__":
-
-    parser = Parser()
-
-    tui = TUI()
 
     mail_hydra = mail(tui, parser.get_options())
 
@@ -32,11 +23,13 @@ if __name__ == "__main__":
         ),
         ('g', None, 'Grade'),
         ('a', None, 'Assemble'),
+
         (
             'm',
             lambda:(tui.push_hydra(menu_hydra), tui.set_hydra(mail_hydra)),
-            "mail"
+            "Mail"
         ),
+
         ('q', TUI.quit, "quit")
     ]
 

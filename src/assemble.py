@@ -18,12 +18,13 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
     return str(float(grade.replace("Total: ", "").replace("/20", "").strip())).replace(".", ",")
 
 
-def write_grades_file(grading_directory: str, grades: dict):
+def write_grades_file(grading_directory: str, grades: dict, assignment_name: str):
     student_list = read_student_list(grading_directory)
 
     with open(f"{grading_directory}/grades.csv", 'w', newline='') as csvfile:
         csv_writer = writer(csvfile)
 
+        csv_writer.writerow(["Travail:", assignment_name])
         csv_writer.writerow(["Nom", "Prénom", "Équipe", "Note"])
 
         for student_info in student_list:
@@ -58,4 +59,4 @@ def assemble(options, args):
         commit_and_merge(grading_directory, team, assignment_name)
         grades[team] = read_grade(grading_directory, team, assignment_name)
 
-    write_grades_file(grading_directory, grades)
+    write_grades_file(grading_directory, grades, assignment_name)

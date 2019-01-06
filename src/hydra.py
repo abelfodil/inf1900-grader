@@ -6,13 +6,14 @@
 
 class Head:
 
-    def __init__(self, hydra, letter, func, hint="", exit_=None):
+    def __init__(self, hydra, letter, func, hint="", exit_=None, params={}):
 
         self.hydra        = hydra
         self.exit_        = hydra.exit_
         self.func         = func
         self.hint         = hint
         self.letter       = letter
+        self.params       = params
 
         if exit_ == Hydra.nil or exit_ == Hydra.t:
             self.exit_ = exit_
@@ -26,7 +27,7 @@ class Head:
     def __call__(self):
 
         if self.func is not None:
-            self.func()
+            self.func(**self.params)
 
         if self.exit_ == Hydra.t:
             try:
@@ -53,8 +54,8 @@ class Hydra:
     run      = 2
 
     def __init__(self, name, heads, info="",
-                 foreign_keys=False, exit_=False,
-                 color=None, **kwargs):
+                 color=None, foreign_keys=False, exit_=False,
+                 **kwargs):
 
         for key in kwargs:
             self.__dict__[key] = kwargs[key]
@@ -111,6 +112,7 @@ class Hydra:
             func   = head[1]
             hint   = ""
             exit_  = None
+            params = {}
 
             try:
                 hint = head[2]
@@ -127,7 +129,14 @@ class Hydra:
             except:
                 pass
 
-            self.heads[letter] = Head(self, letter, func, hint, exit_)
+            try:
+                params = head[4]
+                if not isinstance(params, dict):
+                    params = {}
+            except:
+                pass
+
+            self.heads[letter] = Head(self, letter, func, hint, exit_, params)
 
 # For debugging
 if __name__ == "__main__":

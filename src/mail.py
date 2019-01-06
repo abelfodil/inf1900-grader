@@ -3,64 +3,103 @@
 import smtplib
 
 from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
+from email.mime.base      import MIMEBase
 
-from src.hydra import Hydra
+from src.ask import get_grading_directory
+from src.ask import get_grader_email
+
+default_subject  = "[DO NOT REPLY] inf1900-grader"
+
+# You can spam that one
+default_receiver = "olivier-dion@hotmail.com"
+
+class MailException(Exception):
+
+    def __init__(self, msg):
+        super().__init__(msg)
+
+class MailAttachment:
+
+    def __init__(self, type_, filename):
+
+        self.filename = filename
+        self.main_type, self.sub_type = type_.split("/")
+
+    def to_MIME(self):
+
+        with open(self.filename, "rb") as f:
+            base = MIMEBase(self.main_type,
+                            self.sub_type)
+            base.set_payload(f.read())
+            base.add_header("Content-Disposition",
+                            "attachment",
+                            filename=self.filename)
+
+            return base
 
 class Mail:
 
-    # file_ The CSV file to read from
-    #
-    # from_ Sender of email
-    #
-    # to_   Receiver of email
-    def __init__(self, file_, from_, to_):
+    def __init__(self, subject, sender, receiver, attachments=[]):
 
         msg = MIMEMultipart()
 
-        msg["Subject"] = "[DO NOT REPLY] inf1900-grader"
-        msg["From"]    = from_
-        msg["To"]      = to_
+        msg["Subject"] = subject
+        msg["From"]    = sender
+        msg["To"]      = receiver
 
-        # Read file and create MIME type for csv type
-        with open(file_, "rb") as f:
-            csv = MIMEBase("text", "csv")
-            csv.set_payload(f.read())
-            csv.add_header("Content-Disposition", "attachment", filename=file_)
-            msg.attach(csv)
+        self.filename_list  = []
+
+        for attachment in attachments:
+
+            self.filename_list.append(attachment.filename)
+            msg.attach(attachment.to_MIME())
 
         self.msg = msg
+        self.was_sent = False
 
-    # Connect to smtp.polymtl.ca and send email
-    def send(self):
-        smtp = smtplib.SMTP("smtp.polymtl.ca", port=587)
+    def send(self, smtp_addr="smtp.polymtl.ca", port=587):
+
+        if self.was_sent:
+            raise MailException("Mail was already sent!")
+
+        smtp = smtplib.SMTP(smtp_addr, port)
         smtp.send_message(self.msg, self.msg["From"], self.msg["To"])
         smtp.quit()
 
-
-def confirm_mail(tui, options):
-
-    text = """
-    Send file: {}
-    TO:        {}
-    FROM:      {}""".format(options.csv_file,
-                            options.receiver,
-                            options.sender)
-    tui.echo(text)
+        self.was_sent = True
 
 
-def mail(tui, options):
+def mail():
 
-    mail_heads = [
-        ("y",
-         lambda:Mail(options.csv_file, options.sender, options.receiver).send(),
-         "yes"),
-        ("n", None, "no")
-    ]
+    receiver = default_receiver
+    sender   = f"{get_grader_email()}"
+    filename = f"{get_grading_directory(True)}/grades.csv"
 
-    mail_hydra = Hydra("mail", mail_heads, "Mail Menu",
-                       on_kill=lambda:tui.pop_hydra(),
-                       pre=lambda: confirm_mail(tui, options),
-                       color=Hydra.teal)
+    attachments = [MailAttachment("text/csv",
+                                  filename)]
 
-    return mail_hydra
+    mail = Mail(default_subject,
+                sender,
+                receiver,
+                attachments)
+
+    prompt = f"""
+Send file: {filename}
+FROM:      {sender}
+TO:        {receiver}
+"""
+
+    while 1:
+        print(prompt)
+
+        answer = input("Are you sure of this operation? [y/n] ").strip().lower()
+
+        if answer[0] == 'y':
+            mail.send()
+            break
+
+        elif answer[0] == 'n':
+            break
+
+        else:
+            print("Invalid answer")

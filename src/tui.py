@@ -6,8 +6,52 @@
 
 import urwid
 
-from src.hydra import Hydra
-from src.mail import mail
+from hydra import Hydra
+
+# +------------------------------+
+# | Echo screen...               |
+# |                              |
+# |                              |
+# |                              |
+# |                              |
+# |                              |
+# |                              |
+# |==============================|
+# |         Hydra info           |
+# |                              |
+# |  [h], [e], [a], [d], [s]     |
+# |------------------------------|
+# | > mini buffer                |
+# +------------------------------+
+
+# +=====================================================+
+# |+-: root (box) -------------------------------------+|
+# ||+-: header (flow) --------------------------------+||
+# |||                                                 |||
+# ||+-------------------------------------------------+||
+# ||+-: body (box) -----------------------------------+||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# |||                                                 |||
+# ||+-------------------------------------------------+||
+# ||+-: mini buff (flow) -----------------------------+||
+# |||                                                 | |
+# ||+-------------------------------------------------+||
+# |+---------------------------------------------------+|
+# +=====================================================+
+
+
+class WidgetException(Exception):
+
+    def __init__(msg, *kargs, **kwargs):
+        super().__init__(msg, *kargs, **kwargs)
 
 class TUI:
 
@@ -16,127 +60,80 @@ class TUI:
         ("red_head", "dark red", "")
     ]
 
-    modal_mode = 0
-    edit_mode  = 1
-    metaX_mode = 2
 
-    echo_index        = 0
-    hydra_index       = 1
-    mini_buffer_index = 3
+    def __init__(self, body, header=None, footer=None):
 
-    def __init__(self):
+        self.root      = urwid.Frame(body,
+                                     header,
+                                     footer)
 
-        self.hydras      = {}                # Collection of hydras
-        self.hydra       = None              # Current hydra
-        self.mode        = TUI.modal_mode    # Current mode
-        self.stack       = []                # Stack of hydra
-        self.commands    = {}                # Global commands
+        self.loop = urwid.MainLoop(self.root, TUI.palette,
+                                   unhandled_input=self.unhandled_input)
 
-        # Up
-        self.echo_zone   = urwid.Text("")
+        self.globals_kbd = {}
 
-        # Down
-        self.mini_buff   = MiniBuffer(self)
-        self.pile        = urwid.Pile([urwid.Divider("▁"),
-                                       urwid.Text(""),
-                                       urwid.Divider("─"),
-                                       self.mini_buff], self.mini_buff)
-
-        self.fill_up     = urwid.Filler(self.echo_zone, "top")
-        self.fill_down   = urwid.Filler(self.pile, "bottom")
-
-        pile             = urwid.Pile([self.fill_up, self.fill_down],
-                                      self.fill_down)
-
-        self.loop        = urwid.MainLoop(pile, TUI.palette,
-                                          unhandled_input=self.key_pressed,
-                                          handle_mouse=False)
-
-    def select_mode(self, mode):
-
-        self.mode = mode
-
-        if mode == TUI.modal_mode:
-            self.flush_mini_buffer()
-        elif mode == TUI.edit_mode:
-            self.activate_mini_buffer("> ")
-        elif mode == TUI.metaX_mode:
-            self.activate_mini_buffer("M-x: ")
-
-    def echo(self, *args):
-        self.echo_zone.set_text(args[0])
-
-    def key_pressed(self, key):
-
-        if key == "meta x":
-            self.select_mode(TUI.metaX_mode)
-
-        elif key == "esc":
-            self.select_mode(TUI.edit_mode)
-
-        else:
-            self.hydra.hydra.on_key(key)
-
-    def activate_mini_buffer(self, prompt=""):
-        self.mini_buff.set_caption(prompt)
-        self.pile.focus_position = TUI.mini_buffer_index
-
-    def flush_mini_buffer(self):
-        self.saved_buff = self.mini_buff.get_edit_text()
-        self.mini_buff.set_caption("")
-        self.mini_buff.set_edit_text("")
-        self.pile.focus_position = TUI.hydra_index
-
-    def add_hydras(self, hydras):
-        for hydra in hydras:
-            self.hydras[hydra.name] = hydra
-
-    def push_hydra(self, hydra):
-        self.stack.append(hydra)
-
-    def pop_hydra(self):
-        self.set_hydra(self.stack.pop())
-
-    def input(self, prompt):
-        self.echo(prompt)
-        self.select_mode(TUI.edit_mode)
-
-
-    def set_hydra(self, hydra):
-        if hydra.name in self.hydras:
-
-            try:
-                self.hydra.hydra.post()
-            except Exception as e:
-                pass
-
-            try:
-                hydra.pre()
-            except Exception as e:
-                pass
-
-            self.hydra = HydraBox(hydra)
-            self.pile.contents[TUI.hydra_index] = (self.hydra.text, ('pack', None))
-            self.flush_mini_buffer()
-
-    def new_global_command(self, name, action):
-        self.commands[name] = action
-
-    # Launch event/draw loop
     def __call__(self):
         self.loop.run()
 
-    # Force to quit
+    def focus_header(self):
+        self.root.focus_position = "header"
+
+    def focus_body(self):
+        self.root.focus_position = "body"
+
+    def focus_footer(self):
+        self.root.focus_position = "footer"
+
+    def header(self, flow_widget=None):
+
+        if flow_widget is not None:
+            if "flow" not in flow_widget.sizing():
+                raise WidgetException("Header must be of sizing flow")
+
+            self.root.contents["header"] = flow_widget
+
+        return self.root.contents["header"]
+
+    def body(self, box_widget=None):
+
+        if box_widget is not None:
+            if "box" not in flow_widget.sizing():
+                raise WidgetException("Body must be of sizing box")
+
+            self.root.contents["body"] = flow_widget
+
+        return self.root.contents["body"]
+
+    def footer(self, flow_widget=None):
+
+        if flow_widget is not None:
+            if "flow" not in flow_widget.sizing():
+                raise WidgetException("Header must be of sizing flow")
+
+            self.root.contents["footer"] = flow_widget
+
+        return self.root.contents["footer"]
+
+    def unhandled_input(self, key):
+
+        if key in self.globals_kbd:
+            self.globals_kbd[key]()
+
+    def bind_global(self, key, callback):
+        self.globals_kbd[key] = callback
+
     @staticmethod
     def quit():
         raise urwid.ExitMainLoop()
 
-
-class HydraBox:
+class HydraBox(urwid.Edit):
 
     def __init__(self, hydra, *kargs, **kwargs):
 
+        super().__init__(*kargs, **kwargs)
+
         self.hydra = hydra
+        self.local_kbd = {}
 
         markups = []
 
@@ -162,54 +159,31 @@ class HydraBox:
 
         markups.pop()
 
-        self.text = urwid.Text(markups, align="center")
+        self.set_caption(markups)
 
-class MiniBuffer(urwid.Edit):
+    def key_pressed(self, key):
+        pass
 
-    def __init__(self, tui, *kargs, **kwargs):
-        super().__init__(*kwargs, **kwargs)
-        self.tui = tui
 
-    def keypress(self, size, key):
-
-        if key == "esc" and self.tui.mode != TUI.edit_mode:
-            self.tui.select_mode(TUI.modal_mode)
-
-        elif key == "enter":
-
-            if self.tui.mode == TUI.metaX_mode:
-                text = self.get_edit_text()
-
-                if text in self.tui.commands:
-                    self.tui.commands[text]()
-
-            elif self.tui.mode == TUI.edit_mode:
-                self.tui.flush_mini_buffer()
-
-        else:
-            return super().keypress(size, key)
+    def post(self):
+        pass
 
 
 
 if __name__ == "__main__":
 
-    tui = TUI()
-
-    mail_hydra = mail(tui, None)
-
-    menu_hydra = Hydra("menu", [], "My info.",
-                       color=Hydra.amaranth)
     heads = [
-        ('g', None),
-        ('m', lambda:(tui.push_hydra(menu_hydra), tui.set_hydra(mail_hydra)), "mail", True),
-        ('q', TUI.quit, "quit", Hydra.t)
+        ('g', None, "", False),
+        ('H', None, "Hint"),
+        ('q', None, "quit")
     ]
 
-    menu_hydra.add_heads(heads)
+    hydra = Hydra("Test", heads, "infos", Hydra.blue)
 
-    hydras = [menu_hydra, mail_hydra]
-    tui.add_hydras(hydras)
 
-    tui.set_hydra(menu_hydra)
+    tui = TUI(urwid.LineBox(urwid.SolidFill("#")),
+              footer=HydraBox(hydra))
+
+    tui.bind_global('q', TUI.quit)
 
     tui()

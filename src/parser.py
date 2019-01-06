@@ -1,23 +1,10 @@
+# Authors: Olivier Dion - 2019
 
 from optparse import OptionParser
 
-from git import Repo
-from os import path
-from sys import argv
 
 # Email a jerome
 DEFAULT_RECEIVER = "olivier.dion@polymtl.ca"
-
-def default_sender():
-
-    repo = Repo(path.dirname(path.realpath(argv[0])))
-
-    # Try to fetch from git configuration
-    try:
-        return repo.config_reader().get_value("user", "email")
-    except:
-        return ""
-
 
 class Parser:
 
@@ -27,7 +14,10 @@ class Parser:
 
         parser = OptionParser(usage=usage)
 
-        # File to send option
+
+        # Those options are useless, but it's good idea to keep them
+        # as examples instead of reading the documentation again
+
         parser.add_option("-g", "--grading",
                           action="store", dest="csv_file",
                           type="string", default="grading_dir/grades.csv",
@@ -35,12 +25,12 @@ class Parser:
 
         parser.add_option("-f", "--from",
                           action="store", dest="sender",
-                          type="string", default=default_sender(),
+                          type="string", default="sender@polymtl.ca",
                           metavar="EMAIL", help="EMAIL of the sender")
 
         parser.add_option("-t", "--to",
                           action="store", dest="receiver",
-                          type="string", default=DEFAULT_RECEIVER,
+                          type="string", default="receiver@polymtl.ca",
                           metavar="EMAIL", help="EMAIL of the receiver")
 
         self.vargs = parser.parse_args()
@@ -49,4 +39,4 @@ class Parser:
         return self.vargs[0]
 
     def get_args(self):
-        return self.args[1]
+        return self.vargs[1]
