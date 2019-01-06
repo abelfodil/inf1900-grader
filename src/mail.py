@@ -52,18 +52,18 @@ class Mail:
             msg.attach(attachment.to_MIME())
 
         self.msg = msg
-        self.was_sent = False
+        self.sent = False
 
     def send(self, smtp_addr="smtp.polymtl.ca", port=587):
 
-        if self.was_sent:
+        if self.sent:
             raise MailException("Mail was already sent!")
 
         smtp = smtplib.SMTP(smtp_addr, port)
         smtp.send_message(self.msg, self.msg["From"], self.msg["To"])
         smtp.quit()
 
-        self.was_sent = True
+        self.sent = True
 
 
 def mail():
