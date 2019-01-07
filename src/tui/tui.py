@@ -6,7 +6,8 @@
 
 import urwid
 
-from hydra import Hydra
+from hydra   import Hydra
+from widgets import TreeWidget, HydraWidget
 
 # +------------------------------+
 # | Echo screen...               |
@@ -48,7 +49,7 @@ from hydra import Hydra
 # +=====================================================+
 
 
-class WidgetException(Exception):
+class TUIException(Exception):
 
     def __init__(msg, *kargs, **kwargs):
         super().__init__(msg, *kargs, **kwargs)
@@ -88,7 +89,7 @@ class TUI:
 
         if flow_widget is not None:
             if "flow" not in flow_widget.sizing():
-                raise WidgetException("Header must be of sizing flow")
+                raise TUIException("Header must be of sizing flow")
 
             self.root.contents["header"] = flow_widget
 
@@ -98,7 +99,7 @@ class TUI:
 
         if box_widget is not None:
             if "box" not in flow_widget.sizing():
-                raise WidgetException("Body must be of sizing box")
+                raise TUIException("Body must be of sizing box")
 
             self.root.contents["body"] = flow_widget
 
@@ -108,7 +109,7 @@ class TUI:
 
         if flow_widget is not None:
             if "flow" not in flow_widget.sizing():
-                raise WidgetException("Header must be of sizing flow")
+                raise TUIException("Header must be of sizing flow")
 
             self.root.contents["footer"] = flow_widget
 
@@ -126,64 +127,22 @@ class TUI:
     def quit():
         raise urwid.ExitMainLoop()
 
-class HydraBox(urwid.Edit):
-
-    def __init__(self, hydra, *kargs, **kwargs):
-
-        super().__init__(*kargs, **kwargs)
-
-        self.hydra = hydra
-        self.local_kbd = {}
-
-        markups = []
-
-        markups.append(("", "{}\n".format(hydra.info)))
-
-        for letter, head in self.hydra.heads.items():
-
-            tmp_letter = None
-
-            if head.exit_ == Hydra.t:
-                tmp_letter = ("blue_head", head.letter)
-            else:
-                tmp_letter = ("red_head", head.letter)
-
-            if head.hint != "":
-                markups.append(("", "["))
-                markups.append(tmp_letter)
-                markups.append(("", "]: {}".format(head.hint)))
-            else:
-                markups.append(tmp_letter)
-
-            markups.append(("", ", "))
-
-        markups.pop()
-
-        self.set_caption(markups)
-
-    def key_pressed(self, key):
-        pass
-
-
-    def post(self):
-        pass
-
-
 
 if __name__ == "__main__":
+
+    from urwid import LineBox, Filler
 
     heads = [
         ('g', None, "", False),
         ('H', None, "Hint"),
-        ('q', None, "quit")
+        ('q', TUI.quit, "quit")
     ]
 
-    hydra = Hydra("Test", heads, "infos", Hydra.blue)
+    menu_hydra = Hydra("Test", heads, "infos", Hydra.blue)
 
+    hydra_w = HydraWidget(menu_hydra, align="center")
 
-    tui = TUI(urwid.LineBox(urwid.SolidFill("#")),
-              footer=HydraBox(hydra))
-
-    tui.bind_global('q', TUI.quit)
+    tui = TUI(TreeWidget(Filler(LineBox(hydra_w),  valign="bottom")),
+              footer=None)
 
     tui()

@@ -33,7 +33,7 @@ if __name__ == "__main__":
         ),
 
         ('q', TUI.quit, "quit")
-    ]
+    ]sa
 
     # Needed! Or else GC will bite us
     tui.add_hydras([menu_hydra,
