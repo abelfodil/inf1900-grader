@@ -1,7 +1,7 @@
 # Prérequis
 - `$ git config --global credential.helper store`
 - `$ git config --global user.name "Votre Nom"`
-- `$ git config --global user.email votre@email.com`
+- `$ git config --global user.email prenom.nom@polymtl.ca`
 - `$ pip install --user -r requirements.txt`
 - [Outils AVR](http://www.groupes.polymtl.ca/inf1900/fichiers/)
 
@@ -18,8 +18,10 @@
   attribuer les notes manuellement, mais la majorité du travail
   répétitif est déjà automatisée.
 
-- `assemble` fera un commit et merge sur chaque repo, puis générera un
+- `assemble` créera un commit et merge sur chaque repo, puis générera un
   fichier de notes `grades.csv`.
+  
+- `mail` enverra un email à Jérôme et joindra le fichier `grades.csv`.
 
 # Notes
 - Certaines informations sont redemandées entre plusieurs étapes afin
