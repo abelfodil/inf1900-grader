@@ -2,7 +2,7 @@
 - `$ git config --global credential.helper store`
 - `$ git config --global user.name "Votre Nom"`
 - `$ git config --global user.email prenom.nom@polymtl.ca`
-- `$ pip install --user -r requirements.txt`
+- `$ pip3 install --user -r requirements.txt`
 - [Outils AVR](http://www.groupes.polymtl.ca/inf1900/fichiers/)
 
 # Comment ça marche
