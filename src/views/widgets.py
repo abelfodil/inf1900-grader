@@ -30,12 +30,11 @@ class TreeWidget(WidgetPlaceholder):
 
             for (widget, options) in container.contents:
 
-                container.contents.remove((widget, options))
-
-                return (widget, options)
 
                 if widget is node:
-                     return (container, i)
+                    container.contents.remove((widget, options))
+                    return (widget, options)
+
 
                 if (isinstance(widget, WidgetContainerMixin) or
                     isinstance(widget, TreeWidget)):
@@ -139,9 +138,9 @@ class Controller:
     def __init__(self):
         self.signals = {}
 
-    def emit(self, signal, *kargs, **kwargs):
+    def emit(self, signal, **kwargs):
         if signal in self.signals:
-            self.signals[signal](*kwargs, **kwargs)
+            self.signals[signal](**kwargs)
 
     def connect(self, signal, slot):
         self.signals[signal] = slot
@@ -188,7 +187,7 @@ class MiniBuff(Edit, Controller):
 
         self.set_edit_text("")
 
-        self.emit("on_flush", self.get_last_text())
+        self.emit("on_flush", string=self.get_last_text())
 
     def previous_history(self):
         self.history.data = self.get_edit_text()
@@ -212,17 +211,25 @@ class MiniBuff(Edit, Controller):
 
 if __name__ == "__main__":
 
-    from urwid import MainLoop, Filler, SolidFill, ExitMainLoop
+    from urwid import MainLoop, Filler, SolidFill, ExitMainLoop, BoxAdapter
 
-    def check_buff(*kargs):
-        print(kargs)
-        if "quit" in kargs:
-            raise ExitMainLoop()
+    def quit():
+        raise ExitMainLoop()
 
-    mb = MiniBuff()
 
-    mb.connect("on_flush", check_buff)
+    w = BoxAdapter(SolidFill("#"), 6)
+    t = TreeWidget(w)
+    t.split_horizontally(BoxAdapter(SolidFill("@"), 7))
 
-    l = MainLoop(Filler(mb))
+    heads = [
+        ('g', None),
+        ('H', lambda: t.remove_widget(w), "Hint"),
+        ('q', quit, "quit")
+    ]
+    hydra = Hydra("Hydra", heads, "Infos!", color=Hydra.red)
+
+    t.split_vertically(HydraWidget(hydra))
+
+    l = MainLoop(Filler(t))
 
     l.run()
