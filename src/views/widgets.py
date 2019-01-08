@@ -133,13 +133,27 @@ class Dlist:
         self._next = self
         self.prev = self
 
-class MiniBuff(Edit):
+class Controller:
+
+    def __init__(self):
+        self.signals = {}
+
+    def emit(self, signal, *kargs, **kwargs):
+        if signal in self.signals:
+            self.signals[signal]()
+
+    def connect(self, signal, slot, *kargs, **kwargs):
+        self.signals[signal] = lambda: slot(*kargs, **kwargs)
+
+
+class MiniBuff(Edit, Controller):
 
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
 
         self.history = Dlist("")
+        self.current = self.history
 
         self.kbd = {
             "enter": self.flush,
@@ -147,6 +161,7 @@ class MiniBuff(Edit):
             "ctrl n": self.next_history,
             "ctrl r": self.reverse_i_search
         }
+
 
     def keypress(self, size, key):
 
@@ -161,26 +176,28 @@ class MiniBuff(Edit):
 
         txt = self.get_edit_text()
 
-        if txt != self.history.prev.data:
-            self.history.data = txt
-            self.history.add(Dlist(""))
-            self.history = self.history._next
+        if txt != self.current.prev.data:
+            self.current.data = txt
+            self.current.add(Dlist(""))
+            self.current = self.current._next
+        else:
+            self.current.data = ""
+
+        self.history = self.current
 
         self.set_edit_text("")
 
-    def previous_history(self):
+        self.emit("on_flush")
 
-        if self.history.prev != None:
-            self.history.data = self.get_edit_text()
-            self.history = self.history.prev
-            self.update_text(self.history.data)
+    def previous_history(self):
+        self.history.data = self.get_edit_text()
+        self.history = self.history.prev
+        self.update_text(self.history.data)
 
     def next_history(self):
-
-        if self.history._next != None:
-            self.history.data = self.get_edit_text()
-            self.history = self.history._next
-            self.update_text(self.history.data)
+        self.history.data = self.get_edit_text()
+        self.history = self.history._next
+        self.update_text(self.history.data)
 
     def reverse_i_search(self):
         pass
@@ -188,6 +205,9 @@ class MiniBuff(Edit):
     def update_text(self, text):
         self.set_edit_text(text)
         self.set_edit_pos(len(text))
+
+    def get_last_text(self):
+        return self.current.prev.data
 
 if __name__ == "__main__":
 
@@ -198,5 +218,7 @@ if __name__ == "__main__":
     f = Filler(m)
 
     l = MainLoop(f)
+
+    m.connect("on_flush", lambda: with open("out", "w") as f: f.write(f"Buffer {m.get_last_text()}"))
 
     l.run()
