@@ -30,17 +30,16 @@ class TreeWidget(WidgetPlaceholder):
 
             for (widget, options) in container.contents:
 
+                container.contents.remove((widget, options))
+
+                return (widget, options)
+
                 if widget is node:
-                    container.contents.remove((widget, options))
-                    return
+                     return (container, i)
 
                 if (isinstance(widget, WidgetContainerMixin) or
                     isinstance(widget, TreeWidget)):
                     queue.appendleft(widget)
-
-
-
-
 
 from urwid import Text
 
@@ -65,6 +64,8 @@ class HydraWidget(Text):
 
         markup = []
         kbd    = {}
+
+        # To refractor if better idea on how to make that
 
         markup.append(("", f"{self.hydra.info}\n"))
 
@@ -140,10 +141,10 @@ class Controller:
 
     def emit(self, signal, *kargs, **kwargs):
         if signal in self.signals:
-            self.signals[signal]()
+            self.signals[signal](*kwargs, **kwargs)
 
-    def connect(self, signal, slot, *kargs, **kwargs):
-        self.signals[signal] = lambda: slot(*kargs, **kwargs)
+    def connect(self, signal, slot):
+        self.signals[signal] = slot
 
 
 class MiniBuff(Edit, Controller):
@@ -156,7 +157,7 @@ class MiniBuff(Edit, Controller):
         self.current = self.history
 
         self.kbd = {
-            "enter": self.flush,
+            "enter":  self.flush,
             "ctrl p": self.previous_history,
             "ctrl n": self.next_history,
             "ctrl r": self.reverse_i_search
@@ -187,7 +188,7 @@ class MiniBuff(Edit, Controller):
 
         self.set_edit_text("")
 
-        self.emit("on_flush")
+        self.emit("on_flush", self.get_last_text())
 
     def previous_history(self):
         self.history.data = self.get_edit_text()
@@ -211,14 +212,17 @@ class MiniBuff(Edit, Controller):
 
 if __name__ == "__main__":
 
-    from urwid import MainLoop, Filler
+    from urwid import MainLoop, Filler, SolidFill, ExitMainLoop
 
-    m = MiniBuff()
+    def check_buff(*kargs):
+        print(kargs)
+        if "quit" in kargs:
+            raise ExitMainLoop()
 
-    f = Filler(m)
+    mb = MiniBuff()
 
-    l = MainLoop(f)
+    mb.connect("on_flush", check_buff)
 
-    m.connect("on_flush", lambda: with open("out", "w") as f: f.write(f"Buffer {m.get_last_text()}"))
+    l = MainLoop(Filler(mb))
 
     l.run()
