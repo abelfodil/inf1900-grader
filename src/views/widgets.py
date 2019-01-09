@@ -1,14 +1,18 @@
 # Olivier Dion - 2019
 
-from urwid import Columns, Pile, WidgetPlaceholder, WidgetContainerMixin
+from urwid import (Columns,
+                   Pile,
+                   WidgetContainerMixin,
+                   WidgetPlaceholder)
 
 from collections import deque
 
 class WidgetException(Exception):
 
-    def __init__(msg, *kargs, **kwargs):
+    def __init__(self, msg, *kargs, **kwargs):
         super().__init__(msg, *kargs, **kwargs)
 
+# inherit from WidgetContainerMixer instead??
 class TreeWidget(WidgetPlaceholder):
 
     def __init__(self, widget, *args, **kwargs):
@@ -28,13 +32,11 @@ class TreeWidget(WidgetPlaceholder):
 
             container = queue.pop()
 
-            for (widget, options) in container.contents:
-
+            for widget, options in container.contents.items():
 
                 if widget is node:
                     container.contents.remove((widget, options))
-                    return (widget, options)
-
+                    return widget, options
 
                 if (isinstance(widget, WidgetContainerMixin) or
                     isinstance(widget, TreeWidget)):
@@ -42,22 +44,26 @@ class TreeWidget(WidgetPlaceholder):
 
 from urwid import Text
 
-from hydra import Hydra
+from src.views.hydra import Hydra
 
 class HydraWidget(Text):
 
-    def __init__(self, hydra, *kargs, **kwargs):
+    def __init__(self, hydra=None, *kargs, **kwargs):
+
+        super().__init__("", *kargs, **kwargs)
 
         self.hydra = hydra
 
-        (text, kbd) = self.parse_hydra()
+        if hydra is not None:
+            self.parse_hydra()
 
-        self.kbd = kbd
-
-        super().__init__(text, *kargs, **kwargs)
-
+        # Glitch
         self._selectable = True
 
+
+    def set_hydra(self):
+        self.hydra = hydra
+        self.parse_hydra()
 
     def parse_hydra(self):
 
@@ -72,13 +78,10 @@ class HydraWidget(Text):
 
             kbd[letter] = head
 
-            tmp_letter = None
-
             if head.exit_ == Hydra.t:
                 tmp_letter = ("blue_head", head.letter)
             else:
                 tmp_letter = ("red_head", head.letter)
-
             if head.hint != "":
                 markup.append(("", "["))
                 markup.append(tmp_letter)
@@ -90,7 +93,8 @@ class HydraWidget(Text):
 
         markup.pop()
 
-        return (markup, kbd)
+        self.kbd = kbd
+        self.set_text(markup if len(markup) != 0 else "")
 
     def keypress(self, size, key):
 
@@ -99,6 +103,11 @@ class HydraWidget(Text):
             return None
 
         return key
+
+    def add_heads(self, heads):
+        if self.hydra is not None:
+            self.hydra.add_heads(heads)
+            self.parse_hydra()
 
 
 from urwid import Edit
@@ -109,42 +118,45 @@ class Dlist:
     def __init__(self, data=None):
 
         self.data = data
-        self._next = self
+        self.next = self
         self.prev = self
 
     @staticmethod
-    def __add(new, prev, _next):
-        _next.prev = new
-        new._next = _next
+    def __add(new, prev, next):
+        next.prev = new
+        new.next = next
         new.prev = prev
-        prev._next = new
+        prev.next = new
 
     def add(self, new):
-        Dlist.__add(new, self, self._next)
+        Dlist.__add(new, self, self.next)
 
     def add_tail(self, new):
         Dlist.__add(new, self.prev, self)
 
     def remove(self):
 
-        self.prev.next_ = self._next
-        self._next.prev_ = self.prev
+        self.prev.next_ = self.next
+        self.next.prev_ = self.prev
 
-        self._next = self
+        self.next = self
         self.prev = self
+
+from urwid import connect_signal, emit_signal, disconnect_signal, register_signal
 
 class Controller:
 
     def __init__(self):
         self.signals = {}
 
-    def emit(self, signal, **kwargs):
-        if signal in self.signals:
-            self.signals[signal](**kwargs)
+    def emit(self, signal, *args):
+        emit_signal(self, signal, *args)
 
-    def connect(self, signal, slot):
-        self.signals[signal] = slot
+    def connect(self, signal, slot, user_args=None, weak_args=None):
+        return connect_signal(self, signal, slot, weak_args=weak_args, user_args=user_args)
 
+    def disconnect(self, signal, key):
+        return disconect_signal(self, signal, key)
 
 class MiniBuff(Edit, Controller):
 
@@ -162,13 +174,10 @@ class MiniBuff(Edit, Controller):
             "ctrl r": self.reverse_i_search
         }
 
-
     def keypress(self, size, key):
 
         if key in self.kbd:
             self.kbd[key]()
-        else:
-            print(key)
 
         super().keypress(size, key)
 
@@ -179,7 +188,7 @@ class MiniBuff(Edit, Controller):
         if txt != self.current.prev.data:
             self.current.data = txt
             self.current.add(Dlist(""))
-            self.current = self.current._next
+            self.current = self.current.next
         else:
             self.current.data = ""
 
@@ -187,7 +196,7 @@ class MiniBuff(Edit, Controller):
 
         self.set_edit_text("")
 
-        self.emit("on_flush", string=self.get_last_text())
+        self.emit("on_flush", self.get_last_text())
 
     def previous_history(self):
         self.history.data = self.get_edit_text()
@@ -196,7 +205,7 @@ class MiniBuff(Edit, Controller):
 
     def next_history(self):
         self.history.data = self.get_edit_text()
-        self.history = self.history._next
+        self.history = self.history.next
         self.update_text(self.history.data)
 
     def reverse_i_search(self):
@@ -209,6 +218,8 @@ class MiniBuff(Edit, Controller):
     def get_last_text(self):
         return self.current.prev.data
 
+register_signal(MiniBuff, ["on_flush"])
+
 if __name__ == "__main__":
 
     from urwid import MainLoop, Filler, SolidFill, ExitMainLoop, BoxAdapter
@@ -216,20 +227,10 @@ if __name__ == "__main__":
     def quit():
         raise ExitMainLoop()
 
+    mb = MiniBuff()
 
-    w = BoxAdapter(SolidFill("#"), 6)
-    t = TreeWidget(w)
-    t.split_horizontally(BoxAdapter(SolidFill("@"), 7))
+    key_1 = mb.connect("on_flush", quit, [(1,2)])
 
-    heads = [
-        ('g', None),
-        ('H', lambda: t.remove_widget(w), "Hint"),
-        ('q', quit, "quit")
-    ]
-    hydra = Hydra("Hydra", heads, "Infos!", color=Hydra.red)
-
-    t.split_vertically(HydraWidget(hydra))
-
-    l = MainLoop(Filler(t))
+    l = MainLoop(Filler(mb))
 
     l.run()

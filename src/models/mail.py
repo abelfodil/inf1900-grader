@@ -5,11 +5,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
+
 from os.path import isfile
 
 default_receiver = "jerome.collin@polymtl.ca"
-default_subject = "[NO-REPLY] inf1900-grader"
-default_message = "Correction d'un travail terminée."
+default_subject  = "[NO-REPLY] inf1900-grader"
+default_message  = "Correction d'un travail terminée."
 
 
 class MailException(Exception):
@@ -64,3 +65,26 @@ class Mail:
 def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
     attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
     Mail(sender, recipient, subject, message, attachments).send()
+
+
+
+
+if __name__ == "__main__":
+
+    from sys import argv
+
+    subject   = "test-mail"
+    sender    = argv[1]
+    recipient = argv[2]
+
+    while True:
+
+        answer = input(f"Do you want to send {subject} to {recipient} from {sender}? [y/n] ").strip().lower()
+
+        if answer == 'y':
+            Mail(sender, recipient, subject, "This is a test message.", []).send()
+            break;
+        elif answer == 'n':
+            break;
+        else:
+            print("Invalid answer")

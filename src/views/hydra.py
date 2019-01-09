@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-class Head:
+class HydraHead:
 
     def __init__(self, hydra, letter, func, hint="", exit_=None, params={}):
 
@@ -136,7 +136,7 @@ class Hydra:
             except:
                 pass
 
-            self.heads[letter] = Head(self, letter, func, hint, exit_, params)
+            self.heads[letter] = HydraHead(self, letter, func, hint, exit_, params)
 
 # For debugging
 if __name__ == "__main__":
@@ -148,5 +148,4 @@ if __name__ == "__main__":
     ]
 
     hydra = Hydra(heads, "Infos!", color=Hydra.blue)
-
     print(str(hydra))

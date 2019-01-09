@@ -4,27 +4,6 @@
 # Olivier Dion - 2019 #
 #######################
 
-import urwid
-
-from hydra   import Hydra
-from widgets import TreeWidget, HydraWidget
-
-# +------------------------------+
-# | Echo screen...               |
-# |                              |
-# |                              |
-# |                              |
-# |                              |
-# |                              |
-# |                              |
-# |==============================|
-# |         Hydra info           |
-# |                              |
-# |  [h], [e], [a], [d], [s]     |
-# |------------------------------|
-# | > mini buffer                |
-# +------------------------------+
-
 # +=====================================================+
 # |+-: root (box) -------------------------------------+|
 # ||+-: header (flow) --------------------------------+||
@@ -54,6 +33,8 @@ class TUIException(Exception):
     def __init__(msg, *kargs, **kwargs):
         super().__init__(msg, *kargs, **kwargs)
 
+from urwid import Frame, MainLoop, ExitMainLoop
+
 class TUI:
 
     palette = [
@@ -64,12 +45,12 @@ class TUI:
 
     def __init__(self, body, header=None, footer=None):
 
-        self.root      = urwid.Frame(body,
-                                     header,
-                                     footer)
+        self.root = Frame(body,
+                          header,
+                          footer)
 
-        self.loop = urwid.MainLoop(self.root, TUI.palette,
-                                   unhandled_input=self.unhandled_input)
+        self.loop = MainLoop(self.root, TUI.palette,
+                             unhandled_input=self.unhandled_input)
 
         self.globals_kbd = {}
 
@@ -98,10 +79,10 @@ class TUI:
     def body(self, box_widget=None):
 
         if box_widget is not None:
-            if "box" not in flow_widget.sizing():
+            if "box" not in box_widget.sizing():
                 raise TUIException("Body must be of sizing box")
 
-            self.root.contents["body"] = flow_widget
+            self.root.contents["body"] = (box_widget, self.root.options())
 
         return self.root.contents["body"]
 
@@ -125,7 +106,7 @@ class TUI:
 
     @staticmethod
     def quit():
-        raise urwid.ExitMainLoop()
+        raise ExitMainLoop()
 
 
 if __name__ == "__main__":
