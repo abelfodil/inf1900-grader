@@ -39,7 +39,8 @@ class TUI:
 
     palette = [
         ("blue_head", "dark blue", ""),
-        ("red_head", "dark red", "")
+        ("red_head", "dark red", ""),
+        ("header", "bold, underline", "")
     ]
 
 
@@ -97,7 +98,6 @@ class TUI:
         return self.root.contents["footer"]
 
     def unhandled_input(self, key):
-
         if key in self.globals_kbd:
             self.globals_kbd[key]()
 

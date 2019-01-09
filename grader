@@ -5,20 +5,27 @@ from src.views.main    import MainView
 from src.views.tui     import TUI
 from src.views.widgets import MiniBuff
 
-from urwid import WidgetDisable
+from urwid import WidgetDisable, Filler
 
 if __name__ == "__main__":
 
-    mini_buff = MiniBuff()
-
     main_view = MainView()
+    tui       = TUI(Filler(main_view, valign="bottom"))
 
-    tui = TUI(main_view.root, footer=WidgetDisable(mini_buff))
+    main_view.connect("on_swap", lambda *x: tui.body(x[0]))
 
-    main_view.swap_view = tui.body
+    # Add your views here
+    main_view.add_views(
+        [
+            ("m", MailView(), "Mail"),
+        ]
+    )
 
-    # add your view with binding
-    main_view.add_view("m", MailView())
+    main_view.add_actions(
+        [
+            ("q", TUI.quit, "Quit"),
+        ]
+    )
 
-    # end of time
+    # End of time
     tui()

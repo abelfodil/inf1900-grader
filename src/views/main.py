@@ -1,29 +1,43 @@
-from src.views.widgets import HydraWidget
+from src.views.widgets import View, Controller, HydraWidget, Signal
+from src.views.hydra   import Hydra
 
-from src.views.hydra import HydraHead, Hydra
+from urwid import Text
 
-from urwid import Filler
-
-class MainView:
+@Signal("on_swap")
+class MainView(View, HydraWidget, Controller):
 
     def __init__(self):
 
-        self.hydra = HydraWidget(Hydra("main_hydra", [], color=Hydra.blue))
-        self.root = Filler(self.hydra, valign="bottom")
+        hydra = Hydra("MainView", [],
+                      info="Welcome to INF1900 interactive grading tool!",
+                      color=Hydra.blue)
 
-        self.views = {}
+        super().__init__(hydra=hydra, align="center")
 
-        self.stack_views = []
+    def add_views(self, views):
 
-    def add_view(self, bind, view):
-        if bind in self.views:
-            self.remove_view(bind)
+        if not isinstance(views, list):
+            views = [views]
 
-        self.views[bind] = view
+        heads = []
 
-        heads = [(bind, lambda: self.swap_view(view.root), view.hint)]
+        for view in views:
+            heads.append((view[0], lambda: self.swap_view(view[1]), view[2]))
 
-        self.hydra.add_heads(heads)
+        self.add_heads(heads)
 
-    def remove_view(self, bind):
-        del self.views[bind]
+    def add_actions(self, actions):
+
+        if not isinstance(actions, list):
+            actions = [actions]
+
+        heads = []
+
+        for action in actions:
+            heads.append((action[0], action[1], action[2]))
+
+        self.add_heads(heads)
+
+    def swap_view(self, view):
+        View.push_view(self)
+        self.emit("on_swap", view.root)

@@ -3,7 +3,8 @@
 from urwid import (Columns,
                    Pile,
                    WidgetContainerMixin,
-                   WidgetPlaceholder)
+                   WidgetDecoration,
+                   WidgetWrap)
 
 from collections import deque
 
@@ -13,20 +14,34 @@ class WidgetException(Exception):
         super().__init__(msg, *kargs, **kwargs)
 
 # inherit from WidgetContainerMixer instead??
-class TreeWidget(WidgetPlaceholder):
+class TreeWidget(WidgetWrap):
 
     def __init__(self, widget, *args, **kwargs):
         super().__init__(widget, *args, **kwargs)
 
+        self.kbd     = {}
+        self.aliases = {}
+
     def split_horizontally(self, widget):
-        self.original_widget = TreeWidget(Columns([self.original_widget, widget])).original_widget
+        self._w = Columns([self._w, widget])
 
     def split_vertically(self, widget):
-        self.original_widget = TreeWidget(Pile([self.original_widget, widget])).original_widget
+        self._w = Pile([self._w, widget])
+
+    def bind(self, key, callback):
+        self.kbd[key] = callback
+
+    def set_aliases(self, aliases):
+
+        if not isinstance(aliases, list):
+            aliases = [aliases]
+
+        for alias, target in aliases:
+            self.aliases[alias] = target
 
     def remove_widget(self, node):
 
-        queue = deque([self.original_widget])
+        queue = deque([self._w])
 
         while len(queue) != 0:
 
@@ -42,7 +57,66 @@ class TreeWidget(WidgetPlaceholder):
                     isinstance(widget, TreeWidget)):
                     queue.appendleft(widget)
 
-from urwid import Text
+    def keypress(self, size, key):
+
+        if key in self.aliases:
+            key = self.aliases[key]
+
+        if key in self.kbd:
+            self.kbd[key](size, key)
+            return None
+
+        super().keypress(size, key)
+
+    def focus_next_node(self, *kargs, **kwargs):
+        self.focus_node(1)
+
+    def focus_prev_node(self, *kargs, **kwargs):
+        self.focus_node(-1)
+
+    # Best way I found to fetch surrounding node
+    def focus_node(self, direction):
+
+        focus_path = self._w.get_focus_path()
+
+        while len(focus_path):
+
+            focus_path.append(focus_path.pop() + direction)
+
+            try:
+                self._w.set_focus_path(focus_path)
+                return
+            except IndexError:
+                focus_path.pop()
+
+    # for debugging
+    def print_node(self, node, out):
+
+        queue = [(node, 0)]
+
+        f = open(out, "w")
+
+        while len(queue):
+
+            (w, lvl) = queue.pop()
+
+            if isinstance(w, TreeWidget):
+                queue.append((w._w, lvl + 1))
+            elif isinstance(w, WidgetContainerMixin):
+                for c in w.contents:
+                    queue.append((c[0], lvl + 1))
+            elif isinstance(w, WidgetDecoration):
+                queue.append((w.original_widget, lvl + 1))
+
+            indent = " " * lvl
+
+            f.write(f"{indent}{type(w)}\n")
+
+        f.close()
+
+
+
+from urwid import Text, BigText
 
 from src.views.hydra import Hydra
 
@@ -59,7 +133,6 @@ class HydraWidget(Text):
 
         # Glitch
         self._selectable = True
-
 
     def set_hydra(self):
         self.hydra = hydra
@@ -99,7 +172,7 @@ class HydraWidget(Text):
     def keypress(self, size, key):
 
         if key in self.kbd:
-            t = self.kbd[key]()
+            self.kbd[key]()
             return None
 
         return key
@@ -144,6 +217,20 @@ class Dlist:
 
 from urwid import connect_signal, emit_signal, disconnect_signal, register_signal
 
+# mega glitch
+class Signal:
+
+    def __init__(self, *args, **kwargs):
+        self.signals = args
+
+    def __call__(self, *args):
+
+        cls = args[0]
+
+        cls.register(self.signals)
+
+        return cls
+
 class Controller:
 
     def __init__(self):
@@ -154,10 +241,14 @@ class Controller:
 
     def connect(self, signal, slot, user_args=None, weak_args=None):
         return connect_signal(self, signal, slot, weak_args=weak_args, user_args=user_args)
-
     def disconnect(self, signal, key):
         return disconect_signal(self, signal, key)
 
+    @classmethod
+    def register(cls, signals):
+        register_signal(cls, signals)
+
+@Signal("on_flush")
 class MiniBuff(Edit, Controller):
 
     def __init__(self, *args, **kwargs):
@@ -218,7 +309,20 @@ class MiniBuff(Edit, Controller):
     def get_last_text(self):
         return self.current.prev.data
 
-register_signal(MiniBuff, ["on_flush"])
+MiniBuff.register(["on_flush"])
+
+class View:
+
+    stack = []
+
+    @staticmethod
+    def push_view(view):
+        View.stack.append(view)
+
+    @staticmethod
+    def pop_view():
+        return View.stack.pop()
+
 
 if __name__ == "__main__":
 
