@@ -10,12 +10,16 @@ from urwid import (
     Columns,
     Edit,
     Filler,
+    Frame,
     LineBox,
     ListBox,
     Pile,
+    ProgressBar,
     WidgetContainerMixin,
     WidgetDecoration
 )
+
+from time import sleep
 
 class MailView:
 
@@ -64,7 +68,10 @@ class MailView:
             ]
         )
 
-        self.root     = Filler(tree)
+        bar = ProgressBar("default", "confirm_button", current=50)
+
+        self.root     = Pile([Filler(tree), Filler(bar)])
+        self.bar      = bar
         self.subject  = subject
         self.sender   = sender
         self.receiver = receiver
@@ -81,9 +88,16 @@ class MailView:
         receiver = MailView.tfd(self.receiver)
         message  = MailView.tfd(self.message)
 
-        mail(sender, receiver, subject, message)
+        self.bar.set_completion(100)
 
-        TUI.quit()
+#        mail(sender, receiver, subject, message)
+
+
+
+
+
+
+
 
 
     def abort(self, button):

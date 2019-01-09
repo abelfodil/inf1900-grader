@@ -47,7 +47,6 @@ class TUI:
         ("abort_button", "light red", "brown")
     ]
 
-
     def __init__(self, body, header=None, footer=None):
 
         self.root = Frame(body,

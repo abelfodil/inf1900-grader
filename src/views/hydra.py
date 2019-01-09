@@ -138,6 +138,72 @@ class Hydra:
 
             self.heads[letter] = HydraHead(self, letter, func, hint, exit_, params)
 
+
+from urwid import Text
+
+class HydraWidget(Text):
+
+    def __init__(self, hydra=None, *kargs, **kwargs):
+
+        super().__init__("", *kargs, **kwargs)
+
+        self.hydra = hydra
+
+        if hydra is not None:
+            self.parse_hydra()
+
+        # Glitch
+        self._selectable = True
+
+    def set_hydra(self):
+        self.hydra = hydra
+        self.parse_hydra()
+
+    def parse_hydra(self):
+
+        markup = []
+        kbd    = {}
+
+        # To refractor if better idea on how to make that
+
+        markup.append(("", f"{self.hydra.info}\n"))
+
+        for letter, head in self.hydra.heads.items():
+
+            kbd[letter] = head
+
+            if head.exit_ == Hydra.t:
+                tmp_letter = ("blue_head", head.letter)
+            else:
+                tmp_letter = ("red_head", head.letter)
+            if head.hint != "":
+                markup.append(("", "["))
+                markup.append(tmp_letter)
+                markup.append(("", f"]: {head.hint}"))
+            else:
+                markup.append(tmp_letter)
+
+            markup.append(("", ", "))
+
+        markup.pop()
+
+        self.kbd = kbd
+        self.set_text(markup if len(markup) != 0 else "")
+
+    def keypress(self, size, key):
+
+        if key in self.kbd:
+            self.kbd[key]()
+            return None
+
+        return key
+
+    def add_heads(self, heads):
+        if self.hydra is not None:
+            self.hydra.add_heads(heads)
+            self.parse_hydra()
+
+
 # For debugging
 if __name__ == "__main__":
 
