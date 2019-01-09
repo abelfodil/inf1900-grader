@@ -8,6 +8,8 @@ from email.mime.text import MIMEText
 
 from os.path import isfile
 
+debug_receiver   = "olivier-dion@hotmail.com"
+
 default_receiver = "jerome.collin@polymtl.ca"
 default_subject  = "[NO-REPLY] inf1900-grader"
 default_message  = "Correction d'un travail terminée."
@@ -62,8 +64,13 @@ class Mail:
         self.sent = True
 
 
-def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
-    attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
+def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str = None):
+
+    if grades_path is not None:
+        attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
+    else:
+        attachments = []
+
     Mail(sender, recipient, subject, message, attachments).send()
 
 

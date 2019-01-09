@@ -40,7 +40,11 @@ class TUI:
     palette = [
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
-        ("header", "bold, underline", "")
+        ("header", "bold, underline", ""),
+        ("normal_box", "default", "default"),
+        ("selected_box", "black", "light gray"),
+        ("confirm_button", "light cyan", "dark green"),
+        ("abort_button", "light red", "brown")
     ]
 
 

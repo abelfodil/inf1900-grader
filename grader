@@ -3,7 +3,6 @@
 from src.views.mail    import MailView
 from src.views.main    import MainView
 from src.views.tui     import TUI
-from src.views.widgets import MiniBuff
 
 from urwid import WidgetDisable, Filler
 

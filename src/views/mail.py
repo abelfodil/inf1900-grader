@@ -1,14 +1,12 @@
-if __name__ == "__main__":
-    import sys
-    import os
-    sys.path.append(os.path.abspath("."))
+# Olivier Dion - 2019
 
-from src.models.mail import *
+from src.models.mail   import *
+from src.views.widgets import TreeWidget, Buffer, Button
 
-from src.views.widgets import TreeWidget
+from src.views.tui     import TUI
 
 from urwid import (
-    Button,
+    AttrMap,
     Columns,
     Edit,
     Filler,
@@ -23,21 +21,30 @@ class MailView:
 
     def __init__(self):
 
-        subject  = LineBox(Edit(("header", "Subject\n\n"), f"{default_subject}"))
+        subject  = LineBox(Buffer(("header", "Subject\n\n"), f"{default_subject}"))
 
-        sender   = LineBox(Edit(("header", "Sender\n\n"), ""))
-        receiver = LineBox(Edit(("header", "Receiver\n\n"), f"{default_receiver}"))
+        sender   = LineBox(Buffer(("header", "Sender\n\n"), ""))
+        receiver = LineBox(Buffer(("header", "Receiver\n\n"), f"{debug_receiver}"))
 
         infos    = Columns([sender, receiver])
 
-        message  = LineBox(Edit(("header" ,"Message\n\n"), "", multiline=True))
+        message  = LineBox(Buffer(("header" ,"Message\n\n"), "", multiline=True))
 
-        confirm = LineBox(Button("Confirm"))
-        abort   = LineBox(Button("Abort"))
+        confirm  = LineBox(AttrMap(Button("Confirm",
+                                          on_press=self.confirm,
+                                          align="center"),
+                                   "default",
+                                   "confirm_button"))
+
+        abort    = LineBox(AttrMap(Button("Abort",
+                                          on_press=self.abort,
+                                          align="center"),
+                                   "default",
+                                   "abort_button"))
 
         buttons  = Columns([confirm, abort])
 
-        tree = TreeWidget(subject)
+        tree     = TreeWidget(subject)
 
         tree.split_vertically(infos)
         tree.split_vertically(message)
@@ -49,7 +56,7 @@ class MailView:
         tree.set_aliases(
             [
                 ("ctrl p",    "up"),
-                ("shift tab", "up")
+                ("shift tab", "up"),
                 ("ctrl n",    "down"),
                 ("tab",       "down"),
                 ("ctrl f",    "right"),
@@ -57,20 +64,27 @@ class MailView:
             ]
         )
 
-        self.root = Filler(tree)
-
+        self.root     = Filler(tree)
         self.subject  = subject
         self.sender   = sender
         self.receiver = receiver
         self.message  = message
 
+    # Text from decorator, cuz im lazy
+    @staticmethod
+    def tfd(d):
+        return d.base_widget.get_edit_text()
+
+    def confirm(self, button):
+        subject  = MailView.tfd(self.subject)
+        sender   = MailView.tfd(self.sender)
+        receiver = MailView.tfd(self.receiver)
+        message  = MailView.tfd(self.message)
+
+        mail(sender, receiver, subject, message)
+
+        TUI.quit()
 
 
-
-if __name__ == "__main__":
-
-    from urwid import MainLoop, ExitMainLoop, Filler
-
-    l = MainLoop(Filler(MailView().root))
-
-    l.run()
+    def abort(self, button):
+        TUI.quit()

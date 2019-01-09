@@ -23,10 +23,16 @@ class TreeWidget(WidgetWrap):
         self.aliases = {}
 
     def split_horizontally(self, widget):
-        self._w = Columns([self._w, widget])
+        if isinstance(self._w, Columns):
+            self._w.contents.append((widget, self._w.options()))
+        else:
+            self._w = Columns([self._w, widget])
 
     def split_vertically(self, widget):
-        self._w = Pile([self._w, widget])
+        if isinstance(self._w, Pile):
+            self._w.contents.append((widget, self._w.options()))
+        else:
+            self._w = Pile([self._w, widget])
 
     def bind(self, key, callback):
         self.kbd[key] = callback
@@ -240,7 +246,8 @@ class Controller:
         emit_signal(self, signal, *args)
 
     def connect(self, signal, slot, user_args=None, weak_args=None):
-        return connect_signal(self, signal, slot, weak_args=weak_args, user_args=user_args)
+        return connect_signal(self, signal, slot,
+                              weak_args=weak_args, user_args=user_args)
     def disconnect(self, signal, key):
         return disconect_signal(self, signal, key)
 
@@ -249,7 +256,25 @@ class Controller:
         register_signal(cls, signals)
 
 @Signal("on_flush")
-class MiniBuff(Edit, Controller):
+class Buffer(Edit, Controller):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.kbd = {}
+
+    def keypress(self, size, key):
+
+        if key in self.kbd:
+            self.kbd[key]()
+            return None
+
+        super().keypress(size, key)
+
+
+
+@Signal("on_flush")
+class MiniBuffer(Buffer):
 
     def __init__(self, *args, **kwargs):
 
@@ -265,12 +290,6 @@ class MiniBuff(Edit, Controller):
             "ctrl r": self.reverse_i_search
         }
 
-    def keypress(self, size, key):
-
-        if key in self.kbd:
-            self.kbd[key]()
-
-        super().keypress(size, key)
 
     def flush(self):
 
@@ -309,32 +328,24 @@ class MiniBuff(Edit, Controller):
     def get_last_text(self):
         return self.current.prev.data
 
-MiniBuff.register(["on_flush"])
+@Signal("on_press")
+class Button(Text, Controller):
 
-class View:
+    def __init__(self, markup, on_press=None, *kargs, **kwargs):
 
-    stack = []
+        super().__init__(f"[{markup}]", *kargs, **kwargs)
 
-    @staticmethod
-    def push_view(view):
-        View.stack.append(view)
+        # Glitch
+        self._selectable = True
 
-    @staticmethod
-    def pop_view():
-        return View.stack.pop()
+        if on_press is not None:
+            self.connect("on_press", on_press)
 
 
-if __name__ == "__main__":
+    def keypress(self, size, key):
 
-    from urwid import MainLoop, Filler, SolidFill, ExitMainLoop, BoxAdapter
+        if key == "enter":
+            self.emit("on_press", self)
+            return None
 
-    def quit():
-        raise ExitMainLoop()
-
-    mb = MiniBuff()
-
-    key_1 = mb.connect("on_flush", quit, [(1,2)])
-
-    l = MainLoop(Filler(mb))
-
-    l.run()
+        super().keypress(size, key)

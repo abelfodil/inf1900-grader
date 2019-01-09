@@ -1,10 +1,10 @@
-from src.views.widgets import View, Controller, HydraWidget, Signal
+# Olivier Dion - 2019
+
+from src.views.widgets import HydraWidget, Signal, Controller
 from src.views.hydra   import Hydra
 
-from urwid import Text
-
 @Signal("on_swap")
-class MainView(View, HydraWidget, Controller):
+class MainView(HydraWidget, Controller):
 
     def __init__(self):
 
@@ -39,5 +39,4 @@ class MainView(View, HydraWidget, Controller):
         self.add_heads(heads)
 
     def swap_view(self, view):
-        View.push_view(self)
         self.emit("on_swap", view.root)
