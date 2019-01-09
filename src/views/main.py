@@ -3,6 +3,8 @@
 from src.views.widgets import HydraWidget, Signal, Controller
 from src.views.hydra   import Hydra
 
+from urwid import Filler
+
 @Signal("on_swap")
 class MainView(HydraWidget, Controller):
 
@@ -13,6 +15,8 @@ class MainView(HydraWidget, Controller):
                       color=Hydra.blue)
 
         super().__init__(hydra=hydra, align="center")
+
+        self.body = Filler(self, valign="bottom")
 
     def add_views(self, views):
 
@@ -40,3 +44,6 @@ class MainView(HydraWidget, Controller):
 
     def swap_view(self, view):
         self.emit("on_swap", view.root)
+
+    def restore(self, *kargs):
+        self.emit("on_swap", self.body)

@@ -6,25 +6,35 @@ from src.views.tui     import TUI
 
 from urwid import WidgetDisable, Filler
 
+def foo():
+    print("hello")
+
 if __name__ == "__main__":
 
     main_view = MainView()
-    tui       = TUI(Filler(main_view, valign="bottom"))
+    tui       = TUI(main_view.body)
 
     main_view.connect("on_swap", lambda *x: tui.body(x[0]))
+
+    # Declare your views here
+    mail_view = MailView()
 
     # Add your views here
     main_view.add_views(
         [
-            ("m", MailView(), "Mail"),
+            ("m", mail_view, "Mail"),
         ]
     )
 
+    # Add actions not related to views here
     main_view.add_actions(
         [
             ("q", TUI.quit, "Quit"),
         ]
     )
+
+    # Bind your views to the TUI or the main view here
+    mail_view.connect("on_quit", main_view.restore)
 
     # End of time
     tui()

@@ -7,9 +7,6 @@ from urwid import (
 
 class Controller:
 
-    def __init__(self):
-        self.signals = {}
-
     def emit(self, signal, *args):
         emit_signal(self, signal, *args)
 

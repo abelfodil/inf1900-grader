@@ -1,29 +1,31 @@
 # Olivier Dion - 2019
 
 from src.models.mail   import *
-from src.views.widgets import TreeWidget, Buffer, Button
+from src.views.widgets import (
+    Buffer,
+    Button,
+    Controller,
+    Signal,
+    TreeWidget,
+)
 
 from src.views.tui     import TUI
 
 from urwid import (
     AttrMap,
     Columns,
-    Edit,
     Filler,
-    Frame,
     LineBox,
-    ListBox,
     Pile,
     ProgressBar,
-    WidgetContainerMixin,
-    WidgetDecoration
 )
 
-from time import sleep
-
-class MailView:
+@Signal("on_quit")
+class MailView(Controller):
 
     def __init__(self):
+
+        super().__init__()
 
         subject  = LineBox(Buffer(("header", "Subject\n\n"), f"{default_subject}"))
 
@@ -92,13 +94,5 @@ class MailView:
 
 #        mail(sender, receiver, subject, message)
 
-
-
-
-
-
-
-
-
     def abort(self, button):
-        TUI.quit()
+        self.emit("on_quit", button)
