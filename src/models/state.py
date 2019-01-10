@@ -11,14 +11,14 @@ state_file_path = f"{script_root_directory}/state.json"
 class ApplicationState:
     def __init__(self):
         loaded_state = self.__load_state()
-        self.internal = loaded_state if loaded_state else self.__default_state()
+        self.__dict__ = loaded_state if loaded_state else self.__default_state()
 
     def __save_state(self):
         with open(state_file_path, 'w') as f:
-            dump(self.internal, f)
+            dump(self.__dict__, f)
 
     def override_state(self, **kwargs):
-        self.internal = {**self.internal, **kwargs}
+        self.__dict__ = {**self.__dict__, **kwargs}
         self.__save_state()
 
     @staticmethod
