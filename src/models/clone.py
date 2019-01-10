@@ -1,10 +1,10 @@
+from enum import Enum
 from json import dump, load
 from os import mkdir, path
 from urllib import request
-from enum import Enum
 
-from git import Repo
 from bs4 import BeautifulSoup
+from git import Repo
 
 from src.models.validate import ensure_grading_directory_available
 

@@ -7,7 +7,7 @@
 from urwid import Filler
 
 from src.views.base.buffer import Controller, Signal
-from src.views.base.hydra  import Hydra, HydraWidget
+from src.views.base.hydra import Hydra, HydraWidget
 
 
 @Signal("on_swap")

@@ -9,7 +9,7 @@ from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar, WidgetPl
 from src.models.state import state
 from src.views.base.buffer import Buffer, Controller, Signal
 from src.views.base.button import Button
-from src.views.base.tree   import TreeWidget
+from src.views.base.tree import TreeWidget
 
 
 def get_edit_text(self):

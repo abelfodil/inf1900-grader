@@ -1,12 +1,12 @@
-from os import listdir
-from os.path import dirname, realpath, join, isdir
-from subprocess import run, PIPE, STDOUT
-from sys import argv
 from enum import Enum
+from os import listdir
+from os.path import dirname, isdir, join, realpath
+from subprocess import PIPE, STDOUT, run
+from sys import argv
 
 from git import Repo
 
-from src.models.validate import ensure_grading_directory_exists, validate_datetime, ensure_not_empty
+from src.models.validate import ensure_grading_directory_exists, ensure_not_empty, validate_datetime
 
 script_root_directory = dirname(realpath(argv[0]))
 bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"

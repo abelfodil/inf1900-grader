@@ -4,9 +4,9 @@
 # Olivier Dion - 2019 #
 #######################
 
-import sys
 import os
 import signal
+import sys
 
 from urwid import ExitMainLoop, Frame, MainLoop
 

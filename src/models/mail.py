@@ -5,8 +5,8 @@
 #######################
 
 import smtplib
-from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from src.models.validate import validate_email_address, validate_grades_path
