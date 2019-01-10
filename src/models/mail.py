@@ -65,11 +65,6 @@ class Mail:
         self.sent = True
 
 
-def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str = None):
-
-    if grades_path is not None:
-        attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
-    else:
-        attachments = []
-
+def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
+    attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
     Mail(sender, recipient, subject, message, attachments).send()
