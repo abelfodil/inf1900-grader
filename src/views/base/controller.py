@@ -4,12 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import (
-    connect_signal,
-    disconnect_signal,
-    emit_signal,
-    register_signal,
-    )
+from urwid import connect_signal, disconnect_signal, emit_signal, register_signal
 
 
 class Controller:
@@ -22,7 +17,7 @@ class Controller:
                               weak_args=weak_args, user_args=user_args)
 
     def disconnect(self, signal, key):
-        return disconect_signal(self, signal, key)
+        return disconnect_signal(self, signal, key)
 
     @classmethod
     def register(cls, signals):

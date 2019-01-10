@@ -6,12 +6,7 @@
 
 from collections import deque
 
-from urwid import \
-Columns, \
-Pile, \
-WidgetContainerMixin, \
-WidgetWrap,\
-WidgetDecoration
+from urwid import Columns, Pile, WidgetContainerMixin, WidgetWrap, WidgetDecoration
 
 
 # inherit from WidgetContainerMixer instead??

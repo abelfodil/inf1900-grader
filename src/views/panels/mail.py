@@ -4,14 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import \
-    AttrMap, \
-    Columns, \
-    Filler, \
-    LineBox, \
-    Pile, \
-    ProgressBar, \
-    WidgetPlaceholder
+from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar, WidgetPlaceholder
 
 from src.models.mail import *
 from src.views.base.buffer import Buffer, Controller, Signal
