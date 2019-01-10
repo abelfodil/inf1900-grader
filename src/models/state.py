@@ -1,10 +1,11 @@
-from json import load, dump
-from os.path import dirname, realpath, isfile
+from json import dump, load
+from os.path import dirname, realpath
 from sys import argv
 from time import localtime, strftime
 
 from git import Repo
 
+from src.models.clone import TeamType
 from src.models.validate import time_format
 
 script_root_directory = dirname(realpath(argv[0]))
@@ -28,22 +29,27 @@ class ApplicationState:
     def __default_state():
         repo = Repo(script_root_directory)
         return {
-            "grader_name" : repo.config_reader().get_value("user", "name"),
-            "grader_email": repo.config_reader().get_value("user", "email"),
+            "grader_name"      : repo.config_reader().get_value("user", "name"),
+            "grader_email"     : repo.config_reader().get_value("user", "email"),
             # "receiver"    : "jerome.collin@polymtl.ca",
-            "receiver"    : "test@test.com",  # TODO: remove this
-            "subject"     : "[NO-REPLY] inf1900-grader",
-            "message"     : "Correction d'un travail terminée.",
-            "deadline"    : strftime(time_format, localtime())
+            "receiver"         : "test@test.com",  # TODO: remove this
+            "subject"          : "[NO-REPLY] inf1900-grader",
+            "message"          : "Correction d'un travail terminée.",
+            "deadline"         : strftime(time_format, localtime()),
+            "assignment_sname" : "tp6",
+            "assignment_lname" : "Capteurs et conversion analogique/numérique",
+            "group_number"     : 1,
+            "team_type"        : TeamType.DUOS,
+            "grading_directory": "correction_tp6"
         }
 
     @staticmethod
     def __load_state():
-        if not isfile(state_file_path):
+        try:
+            with open(state_file_path, 'r') as f:
+                return load(f.read())
+        except:
             return {}
-
-        with open(state_file_path, 'r') as f:
-            return load(f.read())
 
 
 state = ApplicationState()
