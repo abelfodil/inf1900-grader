@@ -1,8 +1,11 @@
 from json import load, dump
 from os.path import dirname, realpath, isfile
 from sys import argv
+from time import localtime, strftime
 
 from git import Repo
+
+from src.models.validate import time_format
 
 script_root_directory = dirname(realpath(argv[0]))
 state_file_path = f"{script_root_directory}/state.json"
@@ -31,6 +34,7 @@ class ApplicationState:
             "receiver"    : "test@test.com",  # TODO: remove this
             "subject"     : "[NO-REPLY] inf1900-grader",
             "message"     : "Correction d'un travail terminée.",
+            "deadline"    : strftime(time_format, localtime())
         }
 
     @staticmethod

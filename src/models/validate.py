@@ -3,6 +3,8 @@ from time import strptime
 
 from validate_email import validate_email
 
+time_format = "%Y-%m-%d %H:%M"
+
 
 class InvalidInput(Exception):
     pass
@@ -30,7 +32,7 @@ def ensure_not_empty(field, field_name: str):
 
 def validate_datetime(datetime: str):
     try:
-        strptime(datetime, "%Y-%m-%d %H:%M")
+        strptime(datetime, time_format)
     except ValueError:
         raise InvalidInput("Incorrect datetime format.")
 
