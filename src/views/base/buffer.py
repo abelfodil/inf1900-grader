@@ -24,7 +24,7 @@ class Buffer(Edit, Controller):
             self.keybind[key]()
             return None
 
-        return key
+        return super().keypress(size, key)
 
 
 @Signal("on_flush")

@@ -68,7 +68,7 @@ class TreeWidget(WidgetWrap):
             self.keybind[key](size, key)
             return None
 
-        return key
+        return super().keypress(size, key)
 
     def focus_next_node(self, *kargs, **kwargs):
         self.focus_node(1)
