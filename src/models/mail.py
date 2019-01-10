@@ -9,7 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
-from src.models.validate import validate_email, validate_grades_path
+from src.models.validate import validate_email_address, validate_grades_path
 
 debug_receiver   = "olivier-dion@hotmail.com"
 default_receiver = "jerome.collin@polymtl.ca"
@@ -67,8 +67,8 @@ class Mail:
 
 
 def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
-    validate_email(sender)
-    validate_email(recipient)
+    validate_email_address(sender)
+    validate_email_address(recipient)
     validate_grades_path(grades_path)
 
     attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
