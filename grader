@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
 
-from src.views.mail    import MailView
-from src.views.main    import MainView
-from src.views.tui     import TUI
-
-from urwid import \
-Filler, \
-WidgetDisable
+from src.views.panels.mail import MailPanel
+from src.views.panels.main import MainPanel
+from src.views.tui         import TUI
 
 if __name__ == "__main__":
 
-    main_view = MainView()
+    main_view = MainPanel()
     tui       = TUI(main_view.body)
 
     main_view.connect("on_swap", lambda *x: tui.body(x[0]))
 
     # Declare your views here
-    mail_view = MailView()
+    mail_view = MailPanel()
 
     # Add your views here
     main_view.add_views(

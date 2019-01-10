@@ -22,11 +22,9 @@ Controller, \
 Signal, \
 TreeWidget
 
-from src.views.tui     import TUI
-
 
 @Signal("on_quit")
-class MailView(Controller):
+class MailPanel(Controller):
 
     def __init__(self):
 
@@ -98,10 +96,10 @@ class MailView(Controller):
         self.root.contents[1][0].original_widget = self.bar
 
     def confirm(self, button):
-        subject  = MailView.tfd(self.subject)
-        sender   = MailView.tfd(self.sender)
-        receiver = MailView.tfd(self.receiver)
-        message  = MailView.tfd(self.message)
+        subject  = MailPanel.tfd(self.subject)
+        sender   = MailPanel.tfd(self.sender)
+        receiver = MailPanel.tfd(self.receiver)
+        message  = MailPanel.tfd(self.message)
 
         self.swap_bar()
 

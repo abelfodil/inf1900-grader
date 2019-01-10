@@ -10,7 +10,7 @@ from src.views.widgets import Controller, HydraWidget, Signal
 from src.views.hydra   import Hydra
 
 @Signal("on_swap")
-class MainView(HydraWidget, Controller):
+class MainPanel(HydraWidget, Controller):
 
     def __init__(self):
 
