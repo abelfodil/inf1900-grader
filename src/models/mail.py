@@ -33,7 +33,8 @@ class MailAttachment:
 
 
 class Mail:
-    def __init__(self, sender: str, receiver: str, subject: str, message: str = "", attachments: list = []):
+    def __init__(self, sender: str, receiver: str, subject: str,
+                 message: str = "", attachments: list = []):
 
         msg = MIMEMultipart()
 

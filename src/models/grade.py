@@ -79,8 +79,8 @@ def generate_grading_file_name(assignment_short_name: str):
 
 
 def grade(grading_directory: str, subdirectories: list, grader_name: str, group_number: int,
-          assignment_type: AssignmentType, deadline: str, assignment_sname: str,
-          assignment_lname: str):
+          assignment_type: AssignmentType, deadline: str,
+          assignment_sname: str, assignment_lname: str):
     ensure_grading_directory_exists(grading_directory)
     validate_datetime(deadline)
     ensure_not_empty(subdirectories, "Subdirectories")
