@@ -6,6 +6,7 @@
 
 from urwid import Edit
 
+from src.util.dlist import Dlist
 from src.views.base.controller import Controller
 from src.views.base.signal import Signal
 
@@ -24,9 +25,6 @@ class Buffer(Edit, Controller):
             return None
 
         return key
-
-
-from src.util.dlist import Dlist
 
 
 @Signal("on_flush")

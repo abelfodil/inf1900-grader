@@ -4,6 +4,9 @@
 # Olivier Dion - 2019 #
 #######################
 
+from urwid import Text
+
+
 class HydraHead:
 
     def __init__(self, hydra, letter, func, hint="", exit_=None, params={}):
@@ -124,7 +127,7 @@ class Hydra:
             try:
                 exit_ = head[3]
 
-                if (exit_ != Hydra.nil and exit_ != Hydra.t):
+                if exit_ != Hydra.nil and exit_ != Hydra.t:
                     exit_ = None
             except:
                 pass
@@ -139,15 +142,14 @@ class Hydra:
             self.heads[letter] = HydraHead(self, letter, func, hint, exit_, params)
 
 
-from urwid import Text
-
 class HydraWidget(Text):
 
     def __init__(self, hydra=None, *kargs, **kwargs):
 
         super().__init__("", *kargs, **kwargs)
 
-        self.hydra = hydra
+        self.keybind = {}
+        self.hydra   = hydra
 
         if hydra is not None:
             self.parse_hydra()

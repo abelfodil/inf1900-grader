@@ -13,8 +13,7 @@ class Controller:
         emit_signal(self, signal, *args)
 
     def connect(self, signal, slot, user_args=None, weak_args=None):
-        return connect_signal(self, signal, slot,
-                              weak_args=weak_args, user_args=user_args)
+        return connect_signal(self, signal, slot, weak_args=weak_args, user_args=user_args)
 
     def disconnect(self, signal, key):
         return disconnect_signal(self, signal, key)
