@@ -29,4 +29,4 @@ class Button(Text, Controller):
             self.emit("on_press", self)
             return None
 
-        super().keypress(size, key)
+        return key
