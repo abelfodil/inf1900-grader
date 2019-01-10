@@ -6,6 +6,7 @@ from time import localtime, strftime
 from git import Repo
 
 from src.models.clone import TeamType
+from src.models.grade import AssignmentType
 from src.models.validate import time_format
 
 script_root_directory = dirname(realpath(argv[0]))
@@ -31,16 +32,18 @@ class ApplicationState:
         return {
             "grader_name"      : repo.config_reader().get_value("user", "name"),
             "grader_email"     : repo.config_reader().get_value("user", "email"),
-            # "receiver"    : "jerome.collin@polymtl.ca",
-            "receiver"         : "test@test.com",  # TODO: remove this
-            "subject"          : "[NO-REPLY] inf1900-grader",
+            # "recipient"    : "jerome.collin@polymtl.ca",
+            "recipient"        : "test@test.com",  # TODO: remove this after debugging
+            "subject"          : "[inf1900-grader] TP corrigé",
             "message"          : "Correction d'un travail terminée.",
             "deadline"         : strftime(time_format, localtime()),
             "assignment_sname" : "tp6",
             "assignment_lname" : "Capteurs et conversion analogique/numérique",
             "group_number"     : 1,
             "team_type"        : TeamType.DUOS,
-            "grading_directory": "correction_tp6"
+            "grading_directory": "correction_tp6",
+            "assignment_type"  : AssignmentType.CODE,
+            "subdirectories"   : "tp/tp6/pb1 tp/tp6/pb2",
         }
 
     @staticmethod
