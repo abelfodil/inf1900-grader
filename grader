@@ -2,7 +2,7 @@
 
 from src.views.panels.mail import MailPanel
 from src.views.panels.main import MainPanel
-from src.views.tui         import TUI
+from src.views.base.tui    import TUI
 
 if __name__ == "__main__":
 

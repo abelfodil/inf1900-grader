@@ -11,6 +11,7 @@ from urwid import (
     register_signal,
     )
 
+
 class Controller:
 
     def emit(self, signal, *args):
@@ -19,6 +20,7 @@ class Controller:
     def connect(self, signal, slot, user_args=None, weak_args=None):
         return connect_signal(self, signal, slot,
                               weak_args=weak_args, user_args=user_args)
+
     def disconnect(self, signal, key):
         return disconect_signal(self, signal, key)
 

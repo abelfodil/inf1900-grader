@@ -10,8 +10,8 @@ from urwid import \
 Columns, \
 Pile, \
 WidgetContainerMixin, \
-WidgetWrap
-
+WidgetWrap,\
+WidgetDecoration
 
 
 # inherit from WidgetContainerMixer instead??

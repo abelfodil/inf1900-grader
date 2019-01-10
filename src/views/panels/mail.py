@@ -5,22 +5,18 @@
 #######################
 
 from urwid import \
-AttrMap, \
-Columns, \
-Filler, \
-LineBox, \
-Pile, \
-ProgressBar, \
-WidgetPlaceholder
+    AttrMap, \
+    Columns, \
+    Filler, \
+    LineBox, \
+    Pile, \
+    ProgressBar, \
+    WidgetPlaceholder
 
-
-from src.models.mail   import *
-from src.views.widgets import \
-Buffer, \
-Button, \
-Controller, \
-Signal, \
-TreeWidget
+from src.models.mail import *
+from src.views.base.buffer import Buffer, Controller, Signal
+from src.views.base.button import Button
+from src.views.base.tree   import TreeWidget
 
 
 @Signal("on_quit")

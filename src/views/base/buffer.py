@@ -6,8 +6,9 @@
 
 from urwid import Edit
 
-from src.views.controller import Controller
-from src.views.signal     import Signal
+from src.views.base.controller import Controller
+from src.views.base.signal import Signal
+
 
 @Signal("on_flush")
 class Buffer(Edit, Controller):
@@ -18,7 +19,6 @@ class Buffer(Edit, Controller):
         self.kbd = {}
 
     def keypress(self, size, key):
-
         if key in self.kbd:
             self.kbd[key]()
             return None
@@ -27,6 +27,7 @@ class Buffer(Edit, Controller):
 
 
 from src.util.dlist import Dlist
+
 
 @Signal("on_flush")
 class MiniBuffer(Buffer):
@@ -39,12 +40,11 @@ class MiniBuffer(Buffer):
         self.current = self.history
 
         self.kbd = {
-            "enter":  self.flush,
+            "enter" : self.flush,
             "ctrl p": self.previous_history,
             "ctrl n": self.next_history,
             "ctrl r": self.reverse_i_search
         }
-
 
     def flush(self):
 

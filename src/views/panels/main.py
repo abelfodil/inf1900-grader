@@ -6,8 +6,9 @@
 
 from urwid import Filler
 
-from src.views.widgets import Controller, HydraWidget, Signal
-from src.views.hydra   import Hydra
+from src.views.base.buffer import Controller, Signal
+from src.views.base.hydra  import Hydra, HydraWidget
+
 
 @Signal("on_swap")
 class MainPanel(HydraWidget, Controller):

@@ -6,8 +6,9 @@
 
 from urwid import Text
 
-from src.views.controller import Controller
-from src.views.signal     import Signal
+from src.views.base.controller import Controller
+from src.views.base.signal import Signal
+
 
 @Signal("on_press")
 class Button(Text, Controller):
@@ -21,7 +22,6 @@ class Button(Text, Controller):
 
         if callable(on_press):
             self.connect("on_press", on_press)
-
 
     def keypress(self, size, key):
 

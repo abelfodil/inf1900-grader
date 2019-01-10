@@ -196,7 +196,7 @@ class HydraWidget(Text):
             self.kbd[key]()
             return None
 
-        return return key
+        return key
 
     def add_heads(self, heads):
         if self.hydra is not None:

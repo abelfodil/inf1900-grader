@@ -10,6 +10,7 @@ import signal
 
 from urwid import ExitMainLoop, Frame, MainLoop
 
+
 # +=====================================================+
 # |+-: root (box) -------------------------------------+|
 # ||+-: header (flow) --------------------------------+||
@@ -39,8 +40,8 @@ class TUIException(Exception):
     def __init__(msg, *kargs, **kwargs):
         super().__init__(msg, *kargs, **kwargs)
 
-class TUI:
 
+class TUI:
     # TODO: add static method to add palette from view
     palette = [
         ("blue_head", "dark blue", ""),
