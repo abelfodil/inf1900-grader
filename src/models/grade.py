@@ -6,6 +6,8 @@ from enum import Enum
 
 from git import Repo
 
+from src.models.validate import ensure_grading_directory_exists, validate_datetime, ensure_not_empty
+
 script_root_directory = dirname(realpath(argv[0]))
 bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
 
@@ -75,6 +77,13 @@ def generate_grading_file_name(assignment_short_name: str):
 def grade(grading_directory: str, subdirectories: list, grader_name: str, group_number: int,
           assignment_type: AssignmentType, deadline: str, assignment_sname: str,
           assignment_lname: str):
+    ensure_grading_directory_exists(grading_directory)
+    validate_datetime(deadline)
+    ensure_not_empty(subdirectories, "Subdirectories")
+    ensure_not_empty(grader_name, "Grader's name")
+    ensure_not_empty(assignment_sname, "Assignment short name")
+    ensure_not_empty(assignment_lname, "Assignment long name")
+
     partial_grading_text = generate_partial_grading_file_content(grader_name, group_number,
                                                                  assignment_type, assignment_lname)
 

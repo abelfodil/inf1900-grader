@@ -4,6 +4,7 @@ from git import Repo
 
 from src.models.clone import read_student_list
 from src.models.grade import generate_grading_file_name, get_teams_list
+from src.models.validate import ensure_grading_directory_exists, ensure_not_empty
 
 
 def read_grade(grading_directory: str, team: str, assignment_name: str):
@@ -47,6 +48,9 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
 
 
 def assemble(grading_directory: str, assignment_sname: str):
+    ensure_grading_directory_exists(grading_directory)
+    ensure_not_empty(assignment_sname, "Assignment short name")
+
     grades = {}
 
     teams = get_teams_list(grading_directory)

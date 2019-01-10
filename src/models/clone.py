@@ -6,6 +6,8 @@ from enum import Enum
 from git import Repo
 from bs4 import BeautifulSoup
 
+from src.models.validate import ensure_grading_directory_available
+
 
 class TeamType(Enum):
     DUOS = "duos"
@@ -59,6 +61,8 @@ def fetch_student_list(group_number: int, team_type: TeamType):
 
 
 def clone(grading_directory: str, group_number: int, team_type: TeamType):
+    ensure_grading_directory_available(grading_directory)
+
     if path.exists(grading_directory):
         print(f"{grading_directory} already exists. Please delete it or resume grading.")
     else:
