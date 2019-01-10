@@ -161,8 +161,8 @@ class HydraWidget(Text):
 
     def parse_hydra(self):
 
-        markup = []
-        kbd    = {}
+        markup  = []
+        keybind = {}
 
         # To refractor if better idea on how to make that
 
@@ -170,7 +170,7 @@ class HydraWidget(Text):
 
         for letter, head in self.hydra.heads.items():
 
-            kbd[letter] = head
+            keybind[letter] = head
 
             if head.exit_ == Hydra.t:
                 tmp_letter = ("blue_head", head.letter)
@@ -187,13 +187,13 @@ class HydraWidget(Text):
 
         markup.pop()
 
-        self.kbd = kbd
+        self.keybind = keybind
         self.set_text(markup if len(markup) != 0 else "")
 
     def keypress(self, size, key):
 
-        if key in self.kbd:
-            self.kbd[key]()
+        if key in self.keybind:
+            self.keybind[key]()
             return None
 
         return key

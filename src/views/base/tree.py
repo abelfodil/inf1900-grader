@@ -15,8 +15,8 @@ class TreeWidget(WidgetWrap):
     def __init__(self, widget, *args, **kwargs):
         super().__init__(widget, *args, **kwargs)
 
-        self.kbd     = {}
-        self.aliases = {}
+        self.keybind = {}
+        self.aliases  = {}
 
     def split_horizontally(self, widget):
         if isinstance(self._w, Columns):
@@ -31,7 +31,7 @@ class TreeWidget(WidgetWrap):
             self._w = Pile([self._w, widget])
 
     def bind(self, key, callback):
-        self.kbd[key] = callback
+        self.keybind[key] = callback
 
     def set_aliases(self, aliases):
 
@@ -64,8 +64,8 @@ class TreeWidget(WidgetWrap):
         if key in self.aliases:
             key = self.aliases[key]
 
-        if key in self.kbd:
-            self.kbd[key](size, key)
+        if key in self.keybind:
+            self.keybind[key](size, key)
             return None
 
         return key

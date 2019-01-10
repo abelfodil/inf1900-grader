@@ -55,6 +55,8 @@ class TUI:
         ("progress_hight", "default", "dark green"),
     ]
 
+    keybind = {}
+
     def __init__(self, body, header=None, footer=None):
 
         self.root = Frame(body,
@@ -63,8 +65,6 @@ class TUI:
 
         TUI.loop = MainLoop(self.root, TUI.palette,
                             unhandled_input=self.unhandled_input)
-
-        TUI.kbd = {}
 
         TUI.install_signals_handler()
 
@@ -111,11 +111,11 @@ class TUI:
         return self.root.contents["footer"]
 
     def unhandled_input(self, key):
-        if key in TUI.kbd:
-            TUI.kbd[key]()
+        if key in TUI.keybind:
+            TUI.keybind[key]()
 
     def bind_global(self, key, callback):
-        TUI.kbd[key] = callback
+        TUI.keybind[key] = callback
 
     @staticmethod
     def quit(*kargs):

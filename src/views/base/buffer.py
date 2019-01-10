@@ -16,11 +16,11 @@ class Buffer(Edit, Controller):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.kbd = {}
+        self.keybind = {}
 
     def keypress(self, size, key):
-        if key in self.kbd:
-            self.kbd[key]()
+        if key in self.keybind:
+            self.keybind[key]()
             return None
 
         return key
@@ -39,7 +39,7 @@ class MiniBuffer(Buffer):
         self.history = Dlist("")
         self.current = self.history
 
-        self.kbd = {
+        self.keybind = {
             "enter" : self.flush,
             "ctrl p": self.previous_history,
             "ctrl n": self.next_history,
