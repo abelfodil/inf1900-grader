@@ -36,6 +36,10 @@ def generate_partial_grading_file_content(grader_name: str, group_number: int,
     return partial_grading_file_content
 
 
+def bannerize(entry):
+    return f"======================= {entry} ============================="
+
+
 def create_branch(repo_path: str, deadline: str, grading_name: str):
     repo = Repo(repo_path)
     deadline_commit = repo.git.rev_list("-n 1", f'--before="{deadline}"', "master")
@@ -43,23 +47,23 @@ def create_branch(repo_path: str, deadline: str, grading_name: str):
 
 
 def get_commit_info(repo_path: str):
-    header = "\n\n======================= Basé sur le commit suivant ============================="
+    header = f"\n\n{bannerize('Basé sur le commit suivant')}"
     commit_info = Repo(repo_path).git.log("-1")
     return f"{header}\n{commit_info}"
 
 
 def get_useless_files(repo_path: str):
-    header = "\n\n====================== Fichiers Indésirables ==================================="
+    header = f"\n\n{bannerize('Fichiers Indésirables')}"
     useless_file_list = Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}")
     return f"{header}\n{useless_file_list}"
 
 
 def get_make_output(repo_path: str, subdirectories: list):
-    header = "\n\n====================== Output de make pour les problemes ======================="
+    header = f"\n\n{bannerize('Output de make pour les problemes')}"
 
     make_output = ""
     for subdirectory in subdirectories:
-        make_output += f"============== output de make dans {subdirectory} ============================"
+        make_output += f"{bannerize(f'output de make dans {subdirectory}')}"
         result = run(["make", "-C", f"{repo_path}/{subdirectory}"], stdout=PIPE, stderr=STDOUT)
         make_output += "\n" + result.stdout.decode('utf-8') + "\n"
 
