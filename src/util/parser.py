@@ -6,14 +6,13 @@
 
 from optparse import OptionParser
 
+
 class Parser:
 
     def __init__(self):
-
         usage = "usage: %prog [options]"
 
         parser = OptionParser(usage=usage)
-
 
         # Those options are useless, but it's good idea to keep them
         # as examples instead of reading the documentation again

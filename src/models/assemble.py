@@ -1,4 +1,5 @@
 from csv import writer
+
 from git import Repo
 
 from src.models.clone import read_student_list
@@ -43,7 +44,6 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
     repo.git.checkout("master")
     repo.git.merge(grading_branch)
     repo.git.push('origin', master)
-
 
 
 def assemble(grading_directory: str, assignment_sname: str):

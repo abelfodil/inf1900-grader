@@ -5,14 +5,12 @@
 #######################
 
 import smtplib
-from os.path import isfile
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
 
 debug_receiver   = "olivier-dion@hotmail.com"
-
 default_receiver = "jerome.collin@polymtl.ca"
 default_subject  = "[NO-REPLY] inf1900-grader"
 default_message  = "Correction d'un travail terminée."

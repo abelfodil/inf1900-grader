@@ -1,9 +1,10 @@
 from json import dump, load
 from os import mkdir, path
 from urllib import request
-from bs4 import BeautifulSoup
-from git import Repo
 from enum import Enum
+
+from git import Repo
+from bs4 import BeautifulSoup
 
 
 class TeamType(Enum):

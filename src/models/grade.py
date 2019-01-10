@@ -1,10 +1,12 @@
-from os import listdir, path
+from os import listdir
+from os.path import dirname, realpath, join, isdir
 from subprocess import run, PIPE, STDOUT
 from sys import argv
-from git import Repo
 from enum import Enum
 
-script_root_directory = path.dirname(path.realpath(argv[0]))
+from git import Repo
+
+script_root_directory = dirname(realpath(argv[0]))
 bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
 
 
@@ -14,11 +16,13 @@ class AssignmentType(Enum):
 
 
 def get_teams_list(grading_directory: str):
-    return [team for team in listdir(grading_directory) if path.isdir(path.join(grading_directory, team))]
+    return [team for team in listdir(grading_directory) if
+            isdir(join(grading_directory, team))]
 
 
 def generate_partial_grading_file_content(grader_name: str, group_number: int,
-                                          assignment_type: AssignmentType, assignment_long_name: str):
+                                          assignment_type: AssignmentType,
+                                          assignment_long_name: str):
     with open(assignment_type.value, 'r') as f:
         raw_grading_file_content = f.read()
 
@@ -53,7 +57,7 @@ def get_make_output(repo_path: str, subdirectories: list):
 
     make_output = ""
     for subdirectory in subdirectories:
-        make_output += "============== output de make dans " + subdirectory + " ============================"
+        make_output += f"============== output de make dans {subdirectory} ============================"
         result = run(["make", "-C", f"{repo_path}/{subdirectory}"], stdout=PIPE, stderr=STDOUT)
         make_output += "\n" + result.stdout.decode('utf-8') + "\n"
 
@@ -68,12 +72,11 @@ def generate_grading_file_name(assignment_short_name: str):
     return f"{generate_grading_name(assignment_short_name)}.txt"
 
 
-
 def grade(grading_directory: str, subdirectories: list, grader_name: str, group_number: int,
-          assignment_type: AssignmentType, deadline: str, assignment_sname: str, assignment_lname: str):
+          assignment_type: AssignmentType, deadline: str, assignment_sname: str,
+          assignment_lname: str):
     partial_grading_text = generate_partial_grading_file_content(grader_name, group_number,
                                                                  assignment_type, assignment_lname)
-
 
     teams = get_teams_list(grading_directory)
     for team in teams:

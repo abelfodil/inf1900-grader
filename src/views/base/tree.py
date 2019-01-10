@@ -16,7 +16,7 @@ class TreeWidget(WidgetWrap):
         super().__init__(widget, *args, **kwargs)
 
         self.keybind = {}
-        self.aliases  = {}
+        self.aliases = {}
 
     def split_horizontally(self, widget):
         if isinstance(self._w, Columns):
