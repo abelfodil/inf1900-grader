@@ -1,3 +1,11 @@
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
+# From Linux Kernel : linux/include/linux/list.h
+
 class Dlist:
 
     def __init__(self, data=None):

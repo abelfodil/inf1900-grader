@@ -4,10 +4,9 @@ from src.views.mail    import MailView
 from src.views.main    import MainView
 from src.views.tui     import TUI
 
-from urwid import WidgetDisable, Filler
-
-def foo():
-    print("hello")
+from urwid import \
+Filler, \
+WidgetDisable
 
 if __name__ == "__main__":
 
@@ -37,4 +36,7 @@ if __name__ == "__main__":
     mail_view.connect("on_quit", main_view.restore)
 
     # End of time
-    tui()
+    try:
+        tui()
+    finally:
+        tui.loop.screen.stop()

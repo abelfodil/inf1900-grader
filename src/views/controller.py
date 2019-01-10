@@ -1,3 +1,9 @@
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
 from urwid import (
     connect_signal,
     disconnect_signal,

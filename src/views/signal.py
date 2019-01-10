@@ -1,3 +1,9 @@
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
 class Signal:
 
     def __init__(self, *args, **kwargs):

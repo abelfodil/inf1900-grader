@@ -1,24 +1,29 @@
-# Olivier Dion - 2019
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
+from urwid import \
+AttrMap, \
+Columns, \
+Filler, \
+LineBox, \
+Pile, \
+ProgressBar, \
+WidgetPlaceholder
+
 
 from src.models.mail   import *
-from src.views.widgets import (
-    Buffer,
-    Button,
-    Controller,
-    Signal,
-    TreeWidget,
-)
+from src.views.widgets import \
+Buffer, \
+Button, \
+Controller, \
+Signal, \
+TreeWidget
 
 from src.views.tui     import TUI
 
-from urwid import (
-    AttrMap,
-    Columns,
-    Filler,
-    LineBox,
-    Pile,
-    ProgressBar,
-)
 
 @Signal("on_quit")
 class MailView(Controller):
@@ -50,6 +55,10 @@ class MailView(Controller):
 
         buttons  = Columns([confirm, abort])
 
+        bar      = ProgressBar("progress_low",
+                               "progress_hight",
+                               current=10)
+
         tree     = TreeWidget(subject)
 
         tree.split_vertically(infos)
@@ -70,19 +79,23 @@ class MailView(Controller):
             ]
         )
 
-        bar = ProgressBar("default", "confirm_button", current=50)
-
-        self.root     = Pile([Filler(tree), Filler(bar)])
-        self.bar      = bar
+        self.bar       = Filler(bar, valign="bottom")
+        self.hack_pile = Pile([])
         self.subject  = subject
         self.sender   = sender
         self.receiver = receiver
         self.message  = message
 
+        self.root     = Pile([Filler(tree, valign="top"),
+                              WidgetPlaceholder(self.hack_pile)])
+
     # Text from decorator, cuz im lazy
     @staticmethod
     def tfd(d):
         return d.base_widget.get_edit_text()
+
+    def swap_bar(self):
+        self.root.contents[1][0].original_widget = self.bar
 
     def confirm(self, button):
         subject  = MailView.tfd(self.subject)
@@ -90,7 +103,7 @@ class MailView(Controller):
         receiver = MailView.tfd(self.receiver)
         message  = MailView.tfd(self.message)
 
-        self.bar.set_completion(100)
+        self.swap_bar()
 
 #        mail(sender, receiver, subject, message)
 

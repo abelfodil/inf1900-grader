@@ -1,9 +1,13 @@
-# Olivier Dion - 2019
-
-from src.views.widgets import HydraWidget, Signal, Controller
-from src.views.hydra   import Hydra
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
 
 from urwid import Filler
+
+from src.views.widgets import Controller, HydraWidget, Signal
+from src.views.hydra   import Hydra
 
 @Signal("on_swap")
 class MainView(HydraWidget, Controller):

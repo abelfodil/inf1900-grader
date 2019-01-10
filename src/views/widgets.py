@@ -1,4 +1,8 @@
-# Olivier Dion - 2019
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
 
 from src.views.controller import Controller
 from src.views.signal     import Signal

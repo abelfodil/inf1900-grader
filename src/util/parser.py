@@ -1,10 +1,10 @@
-# Authors: Olivier Dion - 2019
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
 
 from optparse import OptionParser
-
-
-# Email a jerome
-DEFAULT_RECEIVER = "olivier.dion@polymtl.ca"
 
 class Parser:
 

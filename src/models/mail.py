@@ -1,12 +1,15 @@
-# Author: Olivier Dion - 2019
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
 
 import smtplib
-
+from os.path import isfile
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
-from os.path import isfile
 
 debug_receiver   = "olivier-dion@hotmail.com"
 
@@ -72,26 +75,3 @@ def mail(sender: str, recipient: str, subject: str, message: str, grades_path: s
         attachments = []
 
     Mail(sender, recipient, subject, message, attachments).send()
-
-
-
-
-if __name__ == "__main__":
-
-    from sys import argv
-
-    subject   = "test-mail"
-    sender    = argv[1]
-    recipient = argv[2]
-
-    while True:
-
-        answer = input(f"Do you want to send {subject} to {recipient} from {sender}? [y/n] ").strip().lower()
-
-        if answer == 'y':
-            Mail(sender, recipient, subject, "This is a test message.", []).send()
-            break;
-        elif answer == 'n':
-            break;
-        else:
-            print("Invalid answer")

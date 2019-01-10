@@ -4,6 +4,12 @@
 # Olivier Dion - 2019 #
 #######################
 
+import sys
+import os
+import signal
+
+from urwid import ExitMainLoop, Frame, MainLoop
+
 # +=====================================================+
 # |+-: root (box) -------------------------------------+|
 # ||+-: header (flow) --------------------------------+||
@@ -33,10 +39,9 @@ class TUIException(Exception):
     def __init__(msg, *kargs, **kwargs):
         super().__init__(msg, *kargs, **kwargs)
 
-from urwid import Frame, MainLoop, ExitMainLoop
-
 class TUI:
 
+    # TODO: add static method to add palette from view
     palette = [
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
@@ -44,7 +49,9 @@ class TUI:
         ("normal_box", "default", "default"),
         ("selected_box", "black", "light gray"),
         ("confirm_button", "light cyan", "dark green"),
-        ("abort_button", "light red", "brown")
+        ("abort_button", "light red", "brown"),
+        ("progress_low", "default", "yellow"),
+        ("progress_hight", "default", "dark green"),
     ]
 
     def __init__(self, body, header=None, footer=None):
@@ -53,13 +60,15 @@ class TUI:
                           header,
                           footer)
 
-        self.loop = MainLoop(self.root, TUI.palette,
-                             unhandled_input=self.unhandled_input)
+        TUI.loop = MainLoop(self.root, TUI.palette,
+                            unhandled_input=self.unhandled_input)
 
-        self.globals_kbd = {}
+        TUI.kbd = {}
+
+        TUI.install_signals_handler()
 
     def __call__(self):
-        self.loop.run()
+        TUI.loop.run()
 
     def focus_header(self):
         self.root.focus_position = "header"
@@ -101,32 +110,41 @@ class TUI:
         return self.root.contents["footer"]
 
     def unhandled_input(self, key):
-        if key in self.globals_kbd:
-            self.globals_kbd[key]()
+        if key in TUI.kbd:
+            TUI.kbd[key]()
 
     def bind_global(self, key, callback):
-        self.globals_kbd[key] = callback
+        TUI.kbd[key] = callback
 
     @staticmethod
-    def quit():
+    def quit(*kargs):
         raise ExitMainLoop()
 
+    @staticmethod
+    def pause(*kargs):
+        print("PAUSE")
+        TUI.loop.stop()
+        os.kill(os.getpid(), signal.SIGSTOP)
+        TUI.loop.start()
+        TUI.loop.draw_screen()
 
-if __name__ == "__main__":
+    @staticmethod
+    def interrupt(*kargs):
+        pass
 
-    from urwid import LineBox, Filler
+    @staticmethod
+    def install_signals_handler():
 
-    heads = [
-        ('g', None, "", False),
-        ('H', None, "Hint"),
-        ('q', TUI.quit, "quit")
-    ]
+        if sys.platform != "win32":
+            signal.signal(signal.SIGQUIT, TUI.quit)
+            signal.signal(signal.SIGTSTP, TUI.pause)
 
-    menu_hydra = Hydra("Test", heads, "infos", Hydra.blue)
+        ###############################################################
+        # TODO Windows:                                               #
+        #                                                             #
+        # sys.platform == win32 Should test for                       #
+        # signal.CTRL_BREAK_EVENT and signal.CTRL_C_EVENT and hook to #
+        # appropriate callback                                        #
+        ###############################################################
 
-    hydra_w = HydraWidget(menu_hydra, align="center")
-
-    tui = TUI(TreeWidget(Filler(LineBox(hydra_w),  valign="bottom")),
-              footer=None)
-
-    tui()
+        signal.signal(signal.SIGINT, TUI.interrupt)

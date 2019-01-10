@@ -196,22 +196,9 @@ class HydraWidget(Text):
             self.kbd[key]()
             return None
 
-        return key
+        return super().keypress(size, key)
 
     def add_heads(self, heads):
         if self.hydra is not None:
             self.hydra.add_heads(heads)
             self.parse_hydra()
-
-
-# For debugging
-if __name__ == "__main__":
-
-    heads = [
-        ('g', None),
-        ('H', None, "Hint"),
-        ('q', None, "quit")
-    ]
-
-    hydra = Hydra(heads, "Infos!", color=Hydra.blue)
-    print(str(hydra))

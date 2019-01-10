@@ -1,8 +1,18 @@
-from urwid import (
-    Columns,
-    Pile,
-    WidgetWrap,
-    )
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
+from collections import deque
+
+from urwid import \
+Columns, \
+Pile, \
+WidgetContainerMixin, \
+WidgetWrap
+
+
 
 # inherit from WidgetContainerMixer instead??
 class TreeWidget(WidgetWrap):

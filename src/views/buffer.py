@@ -1,3 +1,9 @@
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
 from urwid import Edit
 
 from src.views.controller import Controller

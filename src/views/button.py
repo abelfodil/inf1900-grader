@@ -1,3 +1,9 @@
+#######################
+# Authors:            #
+#                     #
+# Olivier Dion - 2019 #
+#######################
+
 from urwid import Text
 
 from src.views.controller import Controller
@@ -13,7 +19,7 @@ class Button(Text, Controller):
         # Glitch
         self._selectable = True
 
-        if on_press is not None:
+        if callable(on_press):
             self.connect("on_press", on_press)
 
 
