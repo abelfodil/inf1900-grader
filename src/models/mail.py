@@ -11,11 +11,6 @@ from email.mime.text import MIMEText
 
 from src.models.validate import validate_email_address, validate_grades_path
 
-debug_receiver   = "olivier-dion@hotmail.com"
-default_receiver = "jerome.collin@polymtl.ca"
-default_subject  = "[NO-REPLY] inf1900-grader"
-default_message  = "Correction d'un travail terminée."
-
 
 class MailException(Exception):
     def __init__(self, msg: str):
