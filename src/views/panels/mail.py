@@ -6,7 +6,7 @@
 
 from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar, WidgetPlaceholder
 
-from src.models.mail import *
+from src.models.state import state
 from src.views.base.buffer import Buffer, Controller, Signal
 from src.views.base.button import Button
 from src.views.base.tree   import TreeWidget
@@ -19,10 +19,10 @@ class MailPanel(Controller):
 
         super().__init__()
 
-        subject  = LineBox(Buffer(("header", "Subject\n\n"), f"{default_subject}"))
+        subject  = LineBox(Buffer(("header", "Subject\n\n"), state.internal['subject']))
 
-        sender   = LineBox(Buffer(("header", "Sender\n\n"), ""))
-        receiver = LineBox(Buffer(("header", "Receiver\n\n"), f"{debug_receiver}"))
+        sender   = LineBox(Buffer(("header", "Sender\n\n"), state.internal["grader_email"]))
+        receiver = LineBox(Buffer(("header", "Receiver\n\n"), state.internal["receiver"]))
 
         infos    = Columns([sender, receiver])
 
