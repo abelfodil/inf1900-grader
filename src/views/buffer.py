@@ -23,7 +23,7 @@ class Buffer(Edit, Controller):
             self.kbd[key]()
             return None
 
-        super().keypress(size, key)
+        return key
 
 
 from src.util.dlist import Dlist
