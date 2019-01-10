@@ -28,7 +28,7 @@ class MailPanel(Controller):
         subject  = LineBox(Buffer(("header", "Subject\n\n"), state.subject))
 
         sender   = LineBox(Buffer(("header", "Sender\n\n"), state.grader_email))
-        receiver = LineBox(Buffer(("header", "Receiver\n\n"), state.receiver))
+        receiver = LineBox(Buffer(("header", "Receiver\n\n"), state.recipient))
 
         infos    = Columns([sender, receiver])
 
