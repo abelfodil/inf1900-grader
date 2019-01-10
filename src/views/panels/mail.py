@@ -12,6 +12,12 @@ from src.views.base.button import Button
 from src.views.base.tree   import TreeWidget
 
 
+def get_edit_text(self):
+    return self.base_widget.get_edit_text()
+
+
+LineBox.get_value = get_edit_text
+
 @Signal("on_quit")
 class MailPanel(Controller):
 
@@ -76,19 +82,14 @@ class MailPanel(Controller):
         self.root     = Pile([Filler(tree, valign="top"),
                               WidgetPlaceholder(self.hack_pile)])
 
-    # Text from decorator, cuz im lazy
-    @staticmethod
-    def tfd(d):
-        return d.base_widget.get_edit_text()
-
     def swap_bar(self):
         self.root.contents[1][0].original_widget = self.bar
 
     def confirm(self, button):
-        subject  = MailPanel.tfd(self.subject)
-        sender   = MailPanel.tfd(self.sender)
-        receiver = MailPanel.tfd(self.receiver)
-        message  = MailPanel.tfd(self.message)
+        subject  = self.subject.get_value()
+        sender   = self.sender.get_value()
+        receiver = self.receiver.get_value()
+        message  = self.message.get_value()
 
         self.swap_bar()
 
