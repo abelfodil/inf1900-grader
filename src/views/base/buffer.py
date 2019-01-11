@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Edit
+from urwid import Edit, IntEdit
 
 from src.util.dlist import Dlist
 from src.views.base.controller import Controller
@@ -12,23 +12,19 @@ from src.views.base.signal import Signal
 
 
 @Signal("on_flush")
-class Buffer(Edit, Controller):
-
+class EditBuffer(Edit, Controller):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.keybind = {}
 
-    def keypress(self, size, key):
-        if key in self.keybind:
-            self.keybind[key]()
-            return None
-
-        return super().keypress(size, key)
+@Signal("on_flush")
+class IntEditBuffer(IntEdit, Controller):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 @Signal("on_flush")
-class MiniBuffer(Buffer):
+class MiniBuffer(EditBuffer):
 
     def __init__(self, *args, **kwargs):
 

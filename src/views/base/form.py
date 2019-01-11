@@ -4,17 +4,13 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Edit, WidgetDecoration
+from urwid import Edit, IntEdit, WidgetDecoration
 
 from src.models.state import state
 
-
-def unwrap_data(wrapped_widget):
-    return wrapped_widget.base_widget.get_data()
-
-
-WidgetDecoration.get_data = unwrap_data
+WidgetDecoration.get_data = lambda wrapped_widget: wrapped_widget.base_widget.get_data()
 Edit.get_data = Edit.get_edit_text
+IntEdit.get_data = IntEdit.value
 
 
 class Form:

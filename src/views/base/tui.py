@@ -47,6 +47,7 @@ class TUI:
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
         ("header", "bold, underline", ""),
+        ("error", "bold, light red", ""),
         ("normal_box", "default", "default"),
         ("selected_box", "black", "light gray"),
         ("confirm_button", "light cyan", "dark green"),

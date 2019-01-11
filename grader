@@ -11,7 +11,9 @@ from src.views.panels.main import MainPanel
 if __name__ == "__main__":
 
     main_view = MainPanel()
-    tui       = TUI(main_view.root, header=Text(""))
+
+    tui = TUI(main_view.body, header=Text(("header", ""), "center"))
+
 
     tui.print = tui.header()[0].set_text
 
