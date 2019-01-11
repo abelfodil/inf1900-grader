@@ -119,8 +119,12 @@ class TUI:
         return self.root.contents["footer"]
 
     def unhandled_input(self, key):
+
         if key in TUI.keybind:
             TUI.keybind[key]()
+            return None
+
+
 
     def bind_global(self, key, callback):
         TUI.keybind[key] = callback

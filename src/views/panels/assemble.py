@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Columns, LineBox
+from urwid import Columns, LineBox, Filler
 
 from src.models.assemble import assemble
 from src.models.state import state

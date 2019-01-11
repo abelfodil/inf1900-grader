@@ -55,8 +55,8 @@ class AbstractPanel(Controller):
         )
 
         self.tree = tree
-        self.root = Pile([Filler(self.tree, valign="top")])
         self.form = form
+        self.root = Filler(self.tree, valign="top")
 
     def confirm(self, button):
         try:
