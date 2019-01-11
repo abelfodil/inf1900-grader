@@ -9,6 +9,7 @@ from urwid import Filler
 from src.views.base.buffer import Controller, Signal
 from src.views.base.hydra import Hydra, HydraWidget
 
+from src.views.base.tui import TUI
 
 @Signal("on_swap")
 class MainPanel(HydraWidget, Controller):
@@ -21,17 +22,16 @@ class MainPanel(HydraWidget, Controller):
 
         super().__init__(hydra=hydra, align="center")
 
-        self.body = Filler(self, valign="bottom")
+        self.root = Filler(self, valign="bottom")
 
     def add_views(self, views):
 
-        if not isinstance(views, list):
-            views = [views]
 
         heads = []
 
-        for view in views:
-            heads.append((view[0], lambda: self.swap_view(view[1]), view[2]))
+        for letter, view, hint,  in views:
+            heads.append((letter, self.swap_view, hint, None, {"view":view,
+                                                               "hint":hint}))
 
         self.add_heads(heads)
 
@@ -47,8 +47,8 @@ class MainPanel(HydraWidget, Controller):
 
         self.add_heads(heads)
 
-    def swap_view(self, view):
-        self.emit("on_swap", view.root)
+    def swap_view(self, view, hint):
+        self.emit("on_swap", view, hint)
 
     def restore(self, *kargs):
-        self.emit("on_swap", self.body)
+        self.emit("on_swap", self, "")

@@ -6,6 +6,7 @@
 
 from urwid import Text
 
+from src.views.base.tui import TUI
 
 class HydraHead:
 
@@ -58,16 +59,14 @@ class Hydra:
 
     def __init__(self, name, heads, info="",
                  color=None, foreign_keys=False, exit_=False,
-                 **kwargs):
-
-        for key in kwargs:
-            self.__dict__[key] = kwargs[key]
+                 params={}):
 
         self.foreign_keys = foreign_keys
         self.exit_        = exit_
         self.info         = info
         self.heads        = {}
         self.name         = name
+        self.params       = params
 
         if color == Hydra.red:
             pass
@@ -98,17 +97,12 @@ class Hydra:
 
         return "{}\n{}".format(self.info, heads_str)
 
-    def on_key(self, key):
-        if key in self.heads:
-            self.heads[key]()
-        else:
-            if self.foreign_keys == Hydra.warn:
-                try:
-                    self.on_warn()
-                except AttributeError:
-                    pass
+
+    def __call__(self):
+        self.func(**self.params)
 
     def add_heads(self, heads):
+
         for head in heads:
 
             letter = head[0]
@@ -142,6 +136,7 @@ class Hydra:
             self.heads[letter] = HydraHead(self, letter, func, hint, exit_, params)
 
 
+
 class HydraWidget(Text):
 
     def __init__(self, hydra=None, *kargs, **kwargs):
@@ -164,15 +159,12 @@ class HydraWidget(Text):
     def parse_hydra(self):
 
         markup  = []
-        keybind = {}
 
         # To refractor if better idea on how to make that
 
         markup.append(("", f"{self.hydra.info}\n"))
 
         for letter, head in self.hydra.heads.items():
-
-            keybind[letter] = head
 
             if head.exit_ == Hydra.t:
                 tmp_letter = ("blue_head", head.letter)
@@ -189,16 +181,16 @@ class HydraWidget(Text):
 
         markup.pop()
 
-        self.keybind = keybind
         self.set_text(markup if len(markup) != 0 else "")
 
     def keypress(self, size, key):
 
-        if key in self.keybind:
-            self.keybind[key]()
+        if key in self.hydra.heads:
+            self.hydra.heads[key]()
             return None
 
         return key
+
 
     def add_heads(self, heads):
         if self.hydra is not None:
