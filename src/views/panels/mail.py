@@ -23,9 +23,9 @@ class MailPanel(Controller):
 
         super().__init__()
 
-        sender   = LineBox(Buffer(("header", "Sender\n\n"), state.grader_email))
-        receiver = LineBox(Buffer(("header", "Receiver\n\n"), state.recipient))
-        column1  = Columns([sender, receiver])
+        sender    = LineBox(Buffer(("header", "Sender email\n\n"), state.sender_email))
+        recipient = LineBox(Buffer(("header", "Recipient email\n\n"), state.recipient_email))
+        column1   = Columns([sender, recipient])
 
         grading_directory = LineBox(Buffer(("header", "Grading directory\n\n"), state.grading_directory))
         subject  = LineBox(Buffer(("header", "Subject\n\n"), state.subject))
@@ -74,10 +74,11 @@ class MailPanel(Controller):
         self.root = Pile([Filler(tree, valign="top")])
 
         self.form = Form(mail,
-                         sender=sender,
-                         recipient=receiver,
+                         sender_email=sender,
+                         recipient_email=recipient,
                          subject=subject,
-                         message=message)
+                         message=message,
+                         grading_directory=grading_directory)
 
     def confirm(self, button):
         try:

@@ -6,6 +6,8 @@
 
 from urwid import Edit, WidgetDecoration
 
+from src.models.state import state
+
 
 def unwrap_data(wrapped_widget):
     return wrapped_widget.base_widget.get_data()
@@ -25,9 +27,9 @@ class Form:
         self.widgets.append((name, widget, getter))
 
     def submit(self):
-        data = {}
-
-        for name, widget in self.widgets.items():
-            data[name] = widget.get_data()
-
+        data = self.get_data()
         self.on_submit(**data)
+        state.override_state(**data)
+
+    def get_data(self):
+        return {name: widget.get_data() for name, widget in self.widgets.items()}
