@@ -4,12 +4,11 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import AttrMap, Columns, LineBox, ProgressBar
+from urwid import LineBox, Columns
 
-from src.models.mail import mail
+from src.models import grade
 from src.models.state import state
 from src.views.base.buffer import Buffer
-from src.views.base.button import Button
 from src.views.base.form import Form
 from src.views.base.signal import Signal
 from src.views.panels.abstract import AbstractPanel
@@ -19,42 +18,34 @@ from src.views.panels.abstract import AbstractPanel
 class GradePanel(AbstractPanel):
 
     def __init__(self):
-        sender    = LineBox(Buffer(("header", "Sender email\n\n"), state.sender_email))
-        recipient = LineBox(Buffer(("header", "Recipient email\n\n"), state.recipient_email))
-        column1   = Columns([sender, recipient])
-
         grading_directory = LineBox(Buffer(("header", "Grading directory\n\n"), state.grading_directory))
-        subject  = LineBox(Buffer(("header", "Subject\n\n"), state.subject))
-        column2  = Columns([grading_directory, subject])
+        subdirectories = LineBox(Buffer(("header", "Subdirectories\n\n"), str(state.subdirectories)))
+        directory_column = Columns([grading_directory, subdirectories])
 
-        message  = LineBox(Buffer(("header" ,"Message\n\n"), state.message, multiline=True))
+        grader_name = LineBox(Buffer(("header", "Grader's name\n\n"), state.grader_name))
+        group_number = LineBox(Buffer(("header", "Group number\n\n"), str(state.group_number)))
+        grader_column = Columns([grader_name, group_number])
 
-        confirm  = LineBox(AttrMap(Button("Confirm",
-                                          on_press=self.confirm,
-                                          align="center"),
-                                   "default",
-                                   "confirm_button"))
+        assignment_type = LineBox(Buffer(("header", "Assignment type\n\n"), str(state.assignment_type)))
+        deadline = LineBox(Buffer(("header", "Deadline\n\n"), state.deadline))
+        assignment_column = Columns([assignment_type, deadline])
 
-        abort    = LineBox(AttrMap(Button("Abort",
-                                          on_press=self.abort,
-                                          align="center"),
-                                   "default",
-                                   "abort_button"))
+        assignment_sname = LineBox(Buffer(("header", "Assignment short name\n\n"), state.assignment_sname))
+        assignment_lname = LineBox(Buffer(("header", "Assignment long name\n\n"), state.assignment_lname))
+        assignment_name_column = Columns([assignment_sname, assignment_lname])
 
-        buttons_column  = Columns([confirm, abort])
+        form = Form(grade,
+                    grading_directory=grading_directory,
+                    subdirectories=subdirectories,
+                    grader_name=grader_name,
+                    group_number=group_number,
+                    assignment_type=assignment_type,
+                    deadline=deadline,
+                    assignment_sname=assignment_sname,
+                    assignment_lname=assignment_lname)
 
-        bar      = ProgressBar("progress_low",
-                               "progress_hight",
-                               current=10)
-
-        form = Form(mail,
-                    sender_email=sender,
-                    recipient_email=recipient,
-                    subject=subject,
-                    message=message,
-                    grading_directory=grading_directory)
-
-        super().__init__(column1, form)
-        self.tree.split_vertically(column2)
-        self.tree.split_vertically(message)
-        self.tree.split_vertically(buttons_column)
+        super().__init__(directory_column, form)
+        self.tree.split_vertically(grader_column)
+        self.tree.split_vertically(assignment_column)
+        self.tree.split_vertically(assignment_name_column)
+        self.tree.split_vertically(self.buttons_column)
