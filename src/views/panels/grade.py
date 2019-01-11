@@ -4,9 +4,9 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Columns, LineBox
+from urwid import Columns, LineBox, RadioButton
 
-from src.models.grade import grade
+from src.models.grade import AssignmentType, grade
 from src.models.state import state
 from src.views.base.buffer import Buffer
 from src.views.base.form import Form
@@ -26,9 +26,12 @@ class GradePanel(AbstractPanel):
         group_number = LineBox(Buffer(("header", "Group number\n\n"), str(state.group_number)))
         grader_column = Columns([grader_name, group_number])
 
-        assignment_type = LineBox(Buffer(("header", "Assignment type\n\n"), str(state.assignment_type)))
+        assignment_type_group = []
+        type1 = RadioButton(assignment_type_group, AssignmentType.CODE.name.capitalize())
+        type2 = RadioButton(assignment_type_group, AssignmentType.REPORT.name.capitalize())
+
         deadline = LineBox(Buffer(("header", "Deadline\n\n"), state.deadline))
-        assignment_column = Columns([assignment_type, deadline])
+        assignment_column = Columns([deadline])
 
         assignment_sname = LineBox(Buffer(("header", "Assignment short name\n\n"), state.assignment_sname))
         assignment_lname = LineBox(Buffer(("header", "Assignment long name\n\n"), state.assignment_lname))
@@ -39,7 +42,7 @@ class GradePanel(AbstractPanel):
                     subdirectories=subdirectories,
                     grader_name=grader_name,
                     group_number=group_number,
-                    assignment_type=assignment_type,
+                    assignment_type=assignment_type_group,
                     deadline=deadline,
                     assignment_sname=assignment_sname,
                     assignment_lname=assignment_lname)
@@ -48,4 +51,6 @@ class GradePanel(AbstractPanel):
         self.tree.split_vertically(grader_column)
         self.tree.split_vertically(assignment_column)
         self.tree.split_vertically(assignment_name_column)
+        self.tree.split_vertically(type1)
+        self.tree.split_vertically(type2)
         self.tree.split_vertically(self.buttons_column)
