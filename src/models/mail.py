@@ -9,6 +9,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from src.models.assemble import generate_grades_path
 from src.models.validate import validate_email_address, validate_grades_path
 
 
@@ -62,10 +63,12 @@ class Mail:
         self.sent = True
 
 
-def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
-    validate_email_address(sender)
+def mail(grader_email: str, recipient: str, subject: str, message: str, grading_directory: str):
+    grades_path = generate_grades_path(grading_directory)
+
+    validate_email_address(grader_email)
     validate_email_address(recipient)
     validate_grades_path(grades_path)
 
     attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
-    Mail(sender, recipient, subject, message, attachments).send()
+    Mail(grader_email, recipient, subject, message, attachments).send()
