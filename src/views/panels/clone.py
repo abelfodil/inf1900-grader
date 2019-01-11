@@ -21,11 +21,7 @@ class ClonePanel(AbstractPanel):
         grading_directory = LineBox(EditBuffer(("header", "Grading directory\n\n"), state.grading_directory))
 
         group_number = LineBox(IntEditBuffer(("header", "Group number\n\n"), state.group_number))
-        team_type = RadioBuffer([
-            (TeamType.DUOS.name.capitalize(), TeamType.DUOS),
-            (TeamType.QUARTET.name.capitalize(), TeamType.QUARTET)
-        ])
-
+        team_type = RadioBuffer(TeamType, state.team_type)
         group_detail_column = Columns([group_number, team_type.wrap])
 
         form = Form(clone,

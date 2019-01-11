@@ -25,21 +25,22 @@ class IntEditBuffer(IntEdit, Controller):
 
 @Signal("on_flush")
 class RadioBuffer(Controller):
-    def __init__(self, radios):
+    def __init__(self, enum_type, starting_value):
         super().__init__()
 
-        self.selected_value = radios[0][1]
+        self.selected_value = starting_value
 
         radio_group = []
-        for radio in radios:
-            RadioButton(radio_group, radio[0],
+        for choice in enum_type:
+            RadioButton(radio_group, choice.name,
+                        state=choice is starting_value,
                         on_state_change=self.__set_selected_value,
-                        user_data=radio[1])
+                        user_data=choice)
 
         self.wrap = LineBox(Pile(radio_group))
 
-    def __set_selected_value(self, **kwargs):
-        self.selected_value = kwargs["user_data"]
+    def __set_selected_value(self, *kargs):
+        self.selected_value = kargs[2]
 
     def get_data(self):
         return self.selected_value
