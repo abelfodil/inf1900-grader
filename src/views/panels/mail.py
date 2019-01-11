@@ -4,19 +4,22 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar, WidgetPlaceholder
+from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar, WidgetPlaceholder, WidgetDecoration
 
 from src.models.state import state
-from src.views.base.buffer import Buffer, Controller, Signal
+from src.models.mail  import mail
+from src.views.base.buffer import Buffer
+from src.views.base.controller import Controller
+from src.views.base.signal import Signal
 from src.views.base.button import Button
 from src.views.base.tree import TreeWidget
+from src.views.base.form import Form
 
 
-def get_edit_text(self):
+def unwrap_buffer(wrapped_widget):
     return self.base_widget.get_edit_text()
 
 
-LineBox.get_value = get_edit_text
 
 @Signal("on_quit")
 class MailPanel(Controller):
@@ -73,28 +76,19 @@ class MailPanel(Controller):
             ]
         )
 
-        self.bar       = Filler(bar, valign="bottom")
-        self.hack_pile = Pile([])
-        self.subject  = subject
-        self.sender   = sender
-        self.receiver = receiver
-        self.message  = message
+        self.root = Pile([Filler(tree, valign="top")])
 
-        self.root     = Pile([Filler(tree, valign="top"),
-                              WidgetPlaceholder(self.hack_pile)])
-
-    def swap_bar(self):
-        self.root.contents[1][0].original_widget = self.bar
+        self.form = Form(mail,
+                         sender=sender,
+                         recipient=receiver,
+                         subject=subject,
+                         message=message)
 
     def confirm(self, button):
-        subject  = self.subject.get_value()
-        sender   = self.sender.get_value()
-        receiver = self.receiver.get_value()
-        message  = self.message.get_value()
-
-        self.swap_bar()
-
-#        mail(sender, receiver, subject, message)
+        try:
+            self.form.submit()
+        except Exception as e:
+            print(e)
 
     def abort(self, button):
         self.emit("on_quit", button)
