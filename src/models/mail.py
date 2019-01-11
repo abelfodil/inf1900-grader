@@ -63,12 +63,13 @@ class Mail:
         self.sent = True
 
 
-def mail(grader_email: str, recipient: str, subject: str, message: str, grading_directory: str):
+def mail(sender_email: str, recipient_email: str,
+         subject: str, message: str, grading_directory: str):
     grades_path = generate_grades_path(grading_directory)
 
-    validate_email_address(grader_email)
-    validate_email_address(recipient)
+    validate_email_address(sender_email)
+    validate_email_address(recipient_email)
     validate_grades_path(grades_path)
 
     attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
-    Mail(grader_email, recipient, subject, message, attachments).send()
+    Mail(sender_email, recipient_email, subject, message, attachments).send()

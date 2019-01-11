@@ -31,9 +31,9 @@ class ApplicationState:
         repo = Repo(script_root_directory)
         return {
             "grader_name"      : repo.config_reader().get_value("user", "name"),
-            "grader_email"     : repo.config_reader().get_value("user", "email"),
+            "sender_email"     : repo.config_reader().get_value("user", "email"),
             # "recipient"    : "jerome.collin@polymtl.ca",
-            "recipient"        : "test@test.com",  # TODO: remove this after debugging
+            "recipient_email"  : "test@test.com",  # TODO: remove this after debugging
             "subject"          : "[inf1900-grader] TP corrigé",
             "message"          : "Correction d'un travail terminée.",
             "deadline"         : strftime(time_format, localtime()),
