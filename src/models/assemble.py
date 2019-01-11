@@ -59,8 +59,6 @@ def assemble(grading_directory: str, assignment_sname: str):
 
     teams = get_teams_list(grading_directory)
     for team in teams:
-        print(f"Sending grades to team {team}...")
-
         commit_and_merge(grading_directory, team, assignment_sname)
         grades[team] = read_grade(grading_directory, team, assignment_sname)
 
