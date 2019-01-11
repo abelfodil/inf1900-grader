@@ -4,10 +4,14 @@ from src.views.panels.mail import MailPanel
 from src.views.panels.main import MainPanel
 from src.views.base.tui    import TUI
 
+from urwid import Text
+
 if __name__ == "__main__":
 
     main_view = MainPanel()
-    tui       = TUI(main_view.body)
+    tui       = TUI(main_view.body, header=Text(""))
+
+    tui.print = tui.header()[0].set_text
 
     main_view.connect("on_swap", lambda *x: tui.body(x[0]))
 

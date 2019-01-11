@@ -57,7 +57,12 @@ class TUI:
 
     keybind = {}
 
+    singleton = None
+
     def __init__(self, body, header=None, footer=None):
+
+        if TUI.singleton is not None:
+            raise Exception("More than one singleton instance")
 
         self.root = Frame(body,
                           header,
@@ -67,6 +72,8 @@ class TUI:
                             unhandled_input=self.unhandled_input)
 
         TUI.install_signals_handler()
+
+        TUI.singleton = self
 
     def __call__(self):
         TUI.loop.run()
@@ -116,6 +123,11 @@ class TUI:
 
     def bind_global(self, key, callback):
         TUI.keybind[key] = callback
+
+
+    @classmethod
+    def print(cls, string):
+        cls.singleton.print(string)
 
     @staticmethod
     def quit(*kargs):

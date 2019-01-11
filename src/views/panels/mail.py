@@ -15,6 +15,8 @@ from src.views.base.form import Form
 from src.views.base.signal import Signal
 from src.views.base.tree import TreeWidget
 
+from src.views.base.tui import TUI
+
 
 @Signal("on_quit")
 class MailPanel(Controller):
@@ -83,8 +85,9 @@ class MailPanel(Controller):
     def confirm(self, button):
         try:
             self.form.submit()
+            self.emit("on_quit", button)
         except Exception as e:
-            print(e)
+            TUI.print(str(e))
 
     def abort(self, button):
         self.emit("on_quit", button)
