@@ -129,6 +129,10 @@ class TUI:
     def print(cls, string):
         cls.singleton.print(string)
 
+    @classmethod
+    def clear(cls):
+        cls.singleton.print("")
+
     @staticmethod
     def quit(*kargs):
         raise ExitMainLoop()

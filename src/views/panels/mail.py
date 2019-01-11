@@ -84,6 +84,7 @@ class MailPanel(Controller):
 
     def confirm(self, button):
         try:
+            TUI.clear()
             self.form.submit()
             self.emit("on_quit", button)
         except Exception as e:
