@@ -4,9 +4,9 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import LineBox, Columns
+from urwid import Columns, LineBox
 
-from src.models import grade
+from src.models.grade import grade
 from src.models.state import state
 from src.views.base.buffer import Buffer
 from src.views.base.form import Form

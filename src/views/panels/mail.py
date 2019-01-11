@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Columns, LineBox, ProgressBar
+from urwid import Columns, LineBox
 
 from src.models.mail import mail
 from src.models.state import state

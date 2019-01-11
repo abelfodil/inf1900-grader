@@ -6,7 +6,7 @@
 
 from urwid import LineBox
 
-from src.models import clone
+from src.models.clone import clone
 from src.models.state import state
 from src.views.base.buffer import Buffer
 from src.views.base.form import Form
