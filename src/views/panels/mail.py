@@ -4,21 +4,16 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar, WidgetPlaceholder, WidgetDecoration
+from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar
 
+from src.models.mail import mail
 from src.models.state import state
-from src.models.mail  import mail
 from src.views.base.buffer import Buffer
-from src.views.base.controller import Controller
-from src.views.base.signal import Signal
 from src.views.base.button import Button
-from src.views.base.tree import TreeWidget
+from src.views.base.controller import Controller
 from src.views.base.form import Form
-
-
-def unwrap_buffer(wrapped_widget):
-    return self.base_widget.get_edit_text()
-
+from src.views.base.signal import Signal
+from src.views.base.tree import TreeWidget
 
 
 @Signal("on_quit")
