@@ -7,6 +7,10 @@ from src.models.grade import generate_grading_file_name, get_teams_list
 from src.models.validate import ensure_grading_directory_exists, ensure_not_empty
 
 
+def generate_grades_path(grading_directory: str):
+    return f"{grading_directory}/grades.csv"
+
+
 def read_grade(grading_directory: str, team: str, assignment_name: str):
     repo_path = f"{grading_directory}/{team}"
     grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_name)}"
@@ -22,7 +26,7 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
 def write_grades_file(grading_directory: str, grades: dict, assignment_name: str):
     student_list = read_student_list(grading_directory)
 
-    with open(f"{grading_directory}/grades.csv", 'w', newline='', encoding="utf-8") as csvfile:
+    with open(generate_grades_path(grading_directory), 'w', newline='', encoding="utf-8") as csvfile:
         csv_writer = writer(csvfile)
 
         csv_writer.writerow(["Travail:", assignment_name])

@@ -52,9 +52,9 @@ def fetch_student_list(group_number: int, team_type: TeamType):
         html_student = html_student.find_all("td")
 
         student_list.append({
-            "last_name": html_student[0].text.strip(),
+            "last_name" : html_student[0].text.strip(),
             "first_name": html_student[1].text.strip(),
-            "team": html_student[2].text.strip(),
+            "team"      : html_student[2].text.strip(),
         })
 
     return student_list
