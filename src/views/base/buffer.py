@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Edit, IntEdit
+from urwid import Edit, IntEdit, LineBox, Pile, RadioButton
 
 from src.util.dlist import Dlist
 from src.views.base.controller import Controller
@@ -21,6 +21,28 @@ class EditBuffer(Edit, Controller):
 class IntEditBuffer(IntEdit, Controller):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+@Signal("on_flush")
+class RadioBuffer(Controller):
+    def __init__(self, radios):
+        super().__init__()
+
+        self.selected_value = radios[0][1]
+
+        radio_group = []
+        for radio in radios:
+            RadioButton(radio_group, radio[0],
+                        on_state_change=self.__set_selected_value,
+                        user_data=radio[1])
+
+        self.wrap = LineBox(Pile(radio_group))
+
+    def __set_selected_value(self, **kwargs):
+        self.selected_value = kwargs["user_data"]
+
+    def get_data(self):
+        return self.selected_value
 
 
 @Signal("on_flush")
