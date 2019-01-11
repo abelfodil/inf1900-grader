@@ -1,4 +1,4 @@
-from json import dump, load
+from pickle import dump, load
 from os.path import dirname, realpath
 from sys import argv
 from time import localtime, strftime
@@ -10,7 +10,7 @@ from src.models.grade import AssignmentType
 from src.models.validate import time_format
 
 script_root_directory = dirname(realpath(argv[0]))
-state_file_path = f"{script_root_directory}/state.json"
+state_file_path = f"{script_root_directory}/user.bin"
 
 
 class ApplicationState:
@@ -19,7 +19,7 @@ class ApplicationState:
         self.__dict__ = loaded_state if loaded_state else self.__default_state()
 
     def __save_state(self):
-        with open(state_file_path, 'w') as f:
+        with open(state_file_path, 'wb') as f:
             dump(self.__dict__, f)
 
     def override_state(self, **kwargs):
@@ -49,8 +49,8 @@ class ApplicationState:
     @staticmethod
     def __load_state():
         try:
-            with open(state_file_path, 'r') as f:
-                return load(f.read())
+            with open(state_file_path, 'rb') as f:
+                return load(f)
         except:
             return {}
 
