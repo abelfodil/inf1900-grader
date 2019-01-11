@@ -8,7 +8,7 @@ from urwid import LineBox, RadioButton
 
 from src.models.clone import TeamType, clone
 from src.models.state import state
-from src.views.base.buffer import Buffer
+from src.views.base.buffer import EditBuffer, IntEditBuffer
 from src.views.base.form import Form
 from src.views.base.signal import Signal
 from src.views.panels.abstract import AbstractPanel
@@ -18,8 +18,8 @@ from src.views.panels.abstract import AbstractPanel
 class ClonePanel(AbstractPanel):
 
     def __init__(self):
-        grading_directory = LineBox(Buffer(("header", "Grading directory\n\n"), state.grading_directory))
-        group_number  = LineBox(Buffer(("header", "Group number\n\n"), str(state.group_number)))
+        grading_directory = LineBox(EditBuffer(("header", "Grading directory\n\n"), state.grading_directory))
+        group_number = LineBox(IntEditBuffer(("header", "Group number\n\n"), state.group_number))
         team_type_group = []
         type1 = RadioButton(team_type_group, TeamType.DUOS.name.capitalize())
         type2 = RadioButton(team_type_group, TeamType.QUARTET.name.capitalize())
