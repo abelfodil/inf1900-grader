@@ -4,8 +4,9 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Filler, Pile
+from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar
 
+from src.views.base.button import Button
 from src.views.base.controller import Controller
 from src.views.base.signal import Signal
 from src.views.base.tree import TreeWidget
@@ -18,6 +19,24 @@ class AbstractPanel(Controller):
     def __init__(self, widget, form):
 
         super().__init__()
+
+        confirm  = LineBox(AttrMap(Button("Confirm",
+                                          on_press=self.confirm,
+                                          align="center"),
+                                   "default",
+                                   "confirm_button"))
+
+        abort    = LineBox(AttrMap(Button("Abort",
+                                          on_press=self.abort,
+                                          align="center"),
+                                   "default",
+                                   "abort_button"))
+
+        self.buttons_column  = Columns([confirm, abort])
+
+        bar      = ProgressBar("progress_low",
+                               "progress_hight",
+                               current=10)
 
         tree = TreeWidget(widget)
 

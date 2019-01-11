@@ -4,12 +4,11 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import AttrMap, Columns, LineBox, ProgressBar
+from urwid import Columns, LineBox, ProgressBar
 
 from src.models.mail import mail
 from src.models.state import state
 from src.views.base.buffer import Buffer
-from src.views.base.button import Button
 from src.views.base.form import Form
 from src.views.base.signal import Signal
 from src.views.panels.abstract import AbstractPanel
@@ -29,24 +28,6 @@ class MailPanel(AbstractPanel):
 
         message  = LineBox(Buffer(("header" ,"Message\n\n"), state.message, multiline=True))
 
-        confirm  = LineBox(AttrMap(Button("Confirm",
-                                          on_press=self.confirm,
-                                          align="center"),
-                                   "default",
-                                   "confirm_button"))
-
-        abort    = LineBox(AttrMap(Button("Abort",
-                                          on_press=self.abort,
-                                          align="center"),
-                                   "default",
-                                   "abort_button"))
-
-        buttons_column  = Columns([confirm, abort])
-
-        bar      = ProgressBar("progress_low",
-                               "progress_hight",
-                               current=10)
-
         form = Form(mail,
                     sender_email=sender,
                     recipient_email=recipient,
@@ -57,4 +38,4 @@ class MailPanel(AbstractPanel):
         super().__init__(column1, form)
         self.tree.split_vertically(column2)
         self.tree.split_vertically(message)
-        self.tree.split_vertically(buttons_column)
+        self.tree.split_vertically(self.buttons_column)
