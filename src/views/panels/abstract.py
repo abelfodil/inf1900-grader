@@ -64,7 +64,7 @@ class AbstractPanel(Controller):
             self.form.submit()
             self.emit("on_quit", button)
         except Exception as e:
-            TUI.print(str(e))
+            TUI.print(("error", str(e)))
 
     def abort(self, button):
         TUI.clear()
