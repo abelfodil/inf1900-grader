@@ -25,14 +25,15 @@ class MailPanel(Controller):
 
         super().__init__()
 
-        subject  = LineBox(Buffer(("header", "Subject\n\n"), state.subject))
-
         sender   = LineBox(Buffer(("header", "Sender\n\n"), state.grader_email))
         receiver = LineBox(Buffer(("header", "Receiver\n\n"), state.recipient))
+        column1  = Columns([sender, receiver])
 
-        infos    = Columns([sender, receiver])
+        grading_directory = LineBox(Buffer(("header", "Grading directory\n\n"), state.grading_directory))
+        subject  = LineBox(Buffer(("header", "Subject\n\n"), state.subject))
+        column2  = Columns([grading_directory, subject])
 
-        message  = LineBox(Buffer(("header" ,"Message\n\n"), "", multiline=True))
+        message  = LineBox(Buffer(("header" ,"Message\n\n"), state.message, multiline=True))
 
         confirm  = LineBox(AttrMap(Button("Confirm",
                                           on_press=self.confirm,
@@ -46,17 +47,17 @@ class MailPanel(Controller):
                                    "default",
                                    "abort_button"))
 
-        buttons  = Columns([confirm, abort])
+        buttons_column  = Columns([confirm, abort])
 
         bar      = ProgressBar("progress_low",
                                "progress_hight",
                                current=10)
 
-        tree     = TreeWidget(subject)
+        tree     = TreeWidget(column1)
 
-        tree.split_vertically(infos)
+        tree.split_vertically(column2)
         tree.split_vertically(message)
-        tree.split_vertically(buttons)
+        tree.split_vertically(buttons_column)
 
         tree.bind("up",  tree.focus_prev_node)
         tree.bind("down",tree.focus_next_node)
