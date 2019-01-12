@@ -27,7 +27,7 @@ class AbstractPanel(Controller):
                                    "confirm_button"))
 
         abort    = LineBox(AttrMap(Button("Abort",
-                                          on_press=self.abort,
+                                          on_press=self.quit,
                                           align="center"),
                                    "default",
                                    "abort_button"))
@@ -61,11 +61,11 @@ class AbstractPanel(Controller):
     def confirm(self, button):
         try:
             self.form.submit()
-            self.abort(button)
+            self.quit(button)
         except Exception as e:
             TUI.print(("error", str(e)))
 
-    def abort(self, button):
+    def quit(self, button):
         TUI.clear()
         self.emit("on_quit", button)
         self.tree.focus_first_node()
