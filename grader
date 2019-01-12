@@ -2,10 +2,6 @@
 from urwid import Text
 
 from src.views.base.tui import TUI
-from src.views.panels.assemble import AssemblePanel
-from src.views.panels.clone import ClonePanel
-from src.views.panels.grade import GradePanel
-from src.views.panels.mail import MailPanel
 from src.views.panels.main import MainPanel
 
 if __name__ == "__main__":
@@ -18,34 +14,6 @@ if __name__ == "__main__":
 
     main_view.connect("on_swap", lambda view, hint: (tui.body(view.root), tui.print(hint)))
 
-    clone_view = ClonePanel()
-    grade_view = GradePanel()
-    assemble_view = AssemblePanel()
-    mail_view = MailPanel()
-
-    main_view.add_views(
-        [
-            ("c", clone_view, "Clone"),
-            ("g", grade_view, "Grade"),
-            ("a", assemble_view, "Assemble"),
-            ("m", mail_view, "Mail")
-        ]
-    )
-
-    # Add actions not related to views here
-    main_view.add_actions(
-        [
-            ("q", TUI.quit, "Quit"),
-        ]
-    )
-
-    # Bind your views to the TUI or the main view here
-    clone_view.connect("on_quit", main_view.restore)
-    grade_view.connect("on_quit", main_view.restore)
-    assemble_view.connect("on_quit", main_view.restore)
-    mail_view.connect("on_quit", main_view.restore)
-
-    # End of time
     try:
         tui()
     finally:
