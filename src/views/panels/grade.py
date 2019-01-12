@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import Columns, LineBox, RadioButton
+from urwid import Columns, LineBox
 
 from src.models.grade import AssignmentType, grade
 from src.models.state import state

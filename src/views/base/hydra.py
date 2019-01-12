@@ -6,7 +6,6 @@
 
 from urwid import Text
 
-from src.views.base.tui import TUI
 
 class HydraHead:
 

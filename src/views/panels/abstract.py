@@ -4,7 +4,7 @@
 # Olivier Dion - 2019 #
 #######################
 
-from urwid import AttrMap, Columns, Filler, LineBox, Pile, ProgressBar
+from urwid import AttrMap, Columns, Filler, LineBox, ProgressBar
 
 from src.views.base.button import Button
 from src.views.base.controller import Controller

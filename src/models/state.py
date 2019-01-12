@@ -1,5 +1,5 @@
-from pickle import dump, load
 from os.path import dirname, realpath
+from pickle import dump, load
 from sys import argv
 from time import localtime, strftime
 
