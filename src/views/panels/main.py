@@ -25,22 +25,18 @@ class MainPanel(HydraWidget, Controller):
 
         super().__init__(hydra=hydra, align="center")
 
-        views = [
+        self.add_views([
             ("c", ClonePanel(), "Clone"),
             ("g", GradePanel(), "Grade"),
             ("a", AssemblePanel(), "Assemble"),
             ("m", MailPanel(), "Mail")
-        ]
+        ])
 
-        self.add_views(views)
+        self.add_actions([
+            ("q", TUI.quit, "Quit"),
+        ])
 
         self.root = Filler(self, valign="bottom")
-
-        self.add_actions(
-            [
-                ("q", TUI.quit, "Quit"),
-            ]
-        )
 
     def add_views(self, views):
 

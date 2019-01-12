@@ -124,19 +124,19 @@ class TUI:
             TUI.keybind[key]()
             return None
 
-
-
     def bind_global(self, key, callback):
         TUI.keybind[key] = callback
 
+    def print_header(self, string):
+        self.header()[0].set_text(string)
 
     @classmethod
     def print(cls, string):
-        cls.singleton.print(string)
+        cls.singleton.print_header(string)
 
     @classmethod
     def clear(cls):
-        cls.singleton.print("")
+        cls.print("")
 
     @staticmethod
     def quit(*kargs):
