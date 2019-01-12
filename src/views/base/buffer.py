@@ -29,21 +29,20 @@ class RadioBuffer(Controller):
         super().__init__()
 
         self.selected_value = starting_value
+        self.enum_type = enum_type
 
-        radio_group = []
+        self.radio_group = []
         for choice in enum_type:
-            RadioButton(radio_group, choice.name,
-                        state=choice is starting_value,
-                        on_state_change=self.__set_selected_value,
-                        user_data=choice)
+            RadioButton(self.radio_group,
+                        label=choice.name,
+                        state=choice is starting_value)
 
-        self.wrap = LineBox(Pile(radio_group))
-
-    def __set_selected_value(self, *kargs):
-        self.selected_value = kargs[2]
+        self.wrap = LineBox(Pile(self.radio_group))
 
     def get_data(self):
-        return self.selected_value
+        for radio in self.radio_group:
+            if radio.state:
+                return self.enum_type[radio.label]
 
 
 @Signal("on_flush")
