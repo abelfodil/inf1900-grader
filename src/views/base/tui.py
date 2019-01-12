@@ -10,6 +10,8 @@ import sys
 
 from urwid import ExitMainLoop, Frame, MainLoop
 
+from src.util.singleton import Singleton
+
 
 # +=====================================================+
 # |+-: root (box) -------------------------------------+|
@@ -41,8 +43,7 @@ class TUIException(Exception):
         super().__init__(msg, *kargs, **kwargs)
 
 
-class TUI:
-    # TODO: add static method to add palette from view
+class TUI(metaclass=Singleton):
     palette = [
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
@@ -58,13 +59,7 @@ class TUI:
 
     keybind = {}
 
-    singleton = None
-
     def __init__(self, body, header=None, footer=None):
-
-        if TUI.singleton is not None:
-            raise Exception("More than one singleton instance")
-
         self.root = Frame(body,
                           header,
                           footer)
@@ -73,8 +68,6 @@ class TUI:
                             unhandled_input=self.unhandled_input)
 
         TUI.install_signals_handler()
-
-        TUI.singleton = self
 
     def __call__(self):
         TUI.loop.run()
@@ -132,7 +125,7 @@ class TUI:
 
     @classmethod
     def print(cls, string):
-        cls.singleton.print_header(string)
+        TUI().print_header(string)
 
     @classmethod
     def clear(cls):
