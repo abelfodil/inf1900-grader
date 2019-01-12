@@ -22,23 +22,23 @@ class MainPanel(HydraWidget, Controller):
         super().__init__(info="Welcome to INF1900 interactive grading tool!", align="center")
 
         self.add_views([
-            ("c", ClonePanel(), "Clone"),
-            ("g", GradePanel(), "Grade"),
-            ("a", AssemblePanel(), "Assemble"),
-            ("m", MailPanel(), "Mail")
+            ("c", "Clone", ClonePanel()),
+            ("g", "Grade", GradePanel()),
+            ("a", "Assemble", AssemblePanel()),
+            ("m", "Mail", MailPanel())
         ])
 
         self.add_actions([
-            ("q", "red_head", TUI.quit, "Quit"),
+            ("q", "red_head", "Quit", TUI.quit),
         ])
 
         self.root = Filler(self, valign="bottom")
 
     def add_views(self, views):
         heads = []
-        for letter, view, hint, in views:
+        for letter, hint, view, in views:
             view.connect("on_quit", self.restore)
-            heads.append((letter, "blue_head", self.swap_view, hint, {"view": view, "hint": hint}))
+            heads.append((letter, "blue_head", hint, self.swap_view, {"view": view, "hint": hint}))
 
         self.add_heads(heads)
 

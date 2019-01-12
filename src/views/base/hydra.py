@@ -8,11 +8,11 @@ from urwid import Text
 
 
 class HydraHead:
-    def __init__(self, letter, letter_color, func, hint, params={}):
+    def __init__(self, letter, letter_color, hint, func, params={}):
         self.letter = letter
         self.letter_color = letter_color
-        self.func = func
         self.hint = hint
+        self.func = func
         self.params = params
 
     def urwid_text(self):
