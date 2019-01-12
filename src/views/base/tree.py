@@ -56,7 +56,7 @@ class TreeWidget(WidgetWrap):
                     return widget, options
 
                 if (isinstance(widget, WidgetContainerMixin) or
-                    isinstance(widget, TreeWidget)):
+                        isinstance(widget, TreeWidget)):
                     queue.appendleft(widget)
 
     def keypress(self, size, key):
@@ -75,6 +75,9 @@ class TreeWidget(WidgetWrap):
 
     def focus_prev_node(self, *kargs, **kwargs):
         self.focus_node(-1)
+
+    def focus_first_node(self):
+        self._w.set_focus_path([0])
 
     # Best way I found to fetch surrounding node
     def focus_node(self, direction):

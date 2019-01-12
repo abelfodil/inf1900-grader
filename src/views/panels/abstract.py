@@ -60,12 +60,12 @@ class AbstractPanel(Controller):
 
     def confirm(self, button):
         try:
-            TUI.clear()
             self.form.submit()
-            self.emit("on_quit", button)
+            self.abort(button)
         except Exception as e:
             TUI.print(("error", str(e)))
 
     def abort(self, button):
         TUI.clear()
         self.emit("on_quit", button)
+        self.tree.focus_first_node()
