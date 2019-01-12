@@ -3,8 +3,9 @@
 #                     #
 # Olivier Dion - 2019 #
 #######################
+from re import sub
 
-from urwid import Edit, IntEdit, LineBox, Pile, RadioButton
+from urwid import Edit, IntEdit, LineBox, Pile, RadioButton, Text
 
 from src.util.dlist import Dlist
 from src.views.base.controller import Controller
@@ -34,15 +35,16 @@ class RadioBuffer(Controller):
         self.radio_group = []
         for choice in enum_type:
             RadioButton(self.radio_group,
-                        label=choice.name,
+                        label=choice.name.capitalize(),
                         state=choice is starting_value)
 
-        self.wrap = LineBox(Pile(self.radio_group))
+        radio_title = sub(r"(\w)([A-Z])", r"\1 \2", enum_type.__name__).capitalize()
+        self.wrap = LineBox(Pile([Text(("header", radio_title)), *self.radio_group]))
 
     def get_data(self):
         for radio in self.radio_group:
             if radio.state:
-                return self.enum_type[radio.label]
+                return self.enum_type[radio.label.upper()]
 
 
 @Signal("on_flush")
