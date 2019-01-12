@@ -10,7 +10,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from src.models.assemble import generate_grades_path
-from src.models.validate import validate_email_address, validate_grades_path
+from src.models.validate import ensure_not_empty, validate_email_address, validate_grades_path
 
 
 class MailException(Exception):
@@ -69,6 +69,8 @@ def mail(sender_email: str, recipient_email: str,
 
     validate_email_address(sender_email)
     validate_email_address(recipient_email)
+    ensure_not_empty(subject, "Subject")
+    ensure_not_empty(message, "Message")
     validate_grades_path(grades_path)
 
     attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]

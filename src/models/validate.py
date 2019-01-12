@@ -17,12 +17,14 @@ def validate_email_address(email: str):
 
 def ensure_grading_directory_exists(directory_path: str):
     if not isdir(directory_path):
-        raise InvalidInput(f'The grading directory "{directory_path}" does not exist.')
+        raise InvalidInput(f'The grading directory "{directory_path}" does not exist. '
+                           f'Please clone students repos first.')
 
 
 def ensure_grading_directory_available(directory_path: str):
     if isdir(directory_path):
-        raise InvalidInput(f'The grading directory "{directory_path}" already exists.')
+        raise InvalidInput(f'The grading directory "{directory_path}" already exists. '
+                           f'Please delete it or resume grading.')
 
 
 def ensure_not_empty(field, field_name: str):

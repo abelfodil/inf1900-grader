@@ -6,7 +6,7 @@ from urllib import request
 from bs4 import BeautifulSoup
 from git import Repo
 
-from src.models.validate import ensure_grading_directory_available
+from src.models.validate import ensure_grading_directory_available, ensure_not_empty
 
 
 class TeamType(Enum):
@@ -62,6 +62,7 @@ def fetch_student_list(group_number: int, team_type: TeamType):
 
 def clone(grading_directory: str, group_number: int, team_type: TeamType):
     ensure_grading_directory_available(grading_directory)
+    ensure_not_empty(group_number, "Group number")
 
     mkdir(grading_directory)
     student_list = fetch_student_list(group_number, team_type)
