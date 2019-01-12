@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 from urwid import AttrMap, Columns, Filler, LineBox, ProgressBar
 
 from src.views.base.button import Button

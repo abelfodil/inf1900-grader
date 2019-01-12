@@ -1,8 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
 from re import sub
 
 from urwid import Edit, IntEdit, LineBox, Pile, RadioButton, Text

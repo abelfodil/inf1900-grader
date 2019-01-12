@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 from urwid import Edit, IntEdit, WidgetDecoration
 
 from src.models.state import state

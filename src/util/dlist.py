@@ -1,10 +1,5 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 # From Linux Kernel : linux/include/linux/list.h
+
 
 class Dlist:
 
@@ -12,7 +7,6 @@ class Dlist:
 
         self.data = data
         self.init()
-
 
     def init(self):
         self.next = self

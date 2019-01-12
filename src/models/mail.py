@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
