@@ -87,6 +87,7 @@ class MiniBuffer(EditBuffer):
         self.update_text(self.history.data)
 
     def reverse_i_search(self):
+        # TODO: https://docs.python.org/3.7/library/readline.html
         pass
 
     def update_text(self, text):
