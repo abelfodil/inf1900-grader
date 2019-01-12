@@ -73,5 +73,6 @@ def mail(sender_email: str, recipient_email: str,
     ensure_not_empty(message, "Message")
     validate_grades_path(grades_path)
 
-    attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
+    attachment_name = subject.lower().replace(" ", "_")
+    attachments = [MailAttachment("text/csv", grades_path, attachment_name)]
     Mail(sender_email, recipient_email, subject, message, attachments).send()

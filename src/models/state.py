@@ -33,7 +33,7 @@ class ApplicationState:
             "grader_name"      : repo.config_reader().get_value("user", "name"),
             "sender_email"     : repo.config_reader().get_value("user", "email"),
             "recipient_email"  : "jerome.collin@polymtl.ca",
-            "subject"          : "[inf1900-grader] TP corrigé",
+            "subject"          : "[inf1900-grader] TP#",
             "message"          : "Correction d'un travail terminée.",
             "deadline"         : strftime(time_format, localtime()),
             "assignment_sname" : "tp6",
