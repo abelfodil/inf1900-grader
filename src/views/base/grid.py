@@ -84,6 +84,10 @@ class Grid(WidgetWrap):
 
         return self.focus_vertical(-1)
 
+    def focus_first(self):
+        # TODO: fix buggy behaviour
+        self._w.set_focus_path([0, 0])
+
     def focus(self, i, j):
         self._w.set_focus_path([i, j])
         self.i = i

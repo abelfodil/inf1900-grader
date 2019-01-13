@@ -43,7 +43,6 @@ class MainPanel(HydraWidget, Controller):
         self.emit("on_swap", view, hint)
 
     def restore(self, *kargs):
-        TUI.print("here")
         self.emit("on_swap", self, "")
 
     def start_tui(self):

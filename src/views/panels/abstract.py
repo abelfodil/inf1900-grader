@@ -41,4 +41,4 @@ class AbstractPanel(Controller):
     def quit(self, button):
         TUI.clear()
         self.emit("on_quit", button)
-#        self.tree.focus_first_node()
+        self.root.base_widget.focus_first()

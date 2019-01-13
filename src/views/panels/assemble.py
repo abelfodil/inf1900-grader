@@ -17,11 +17,12 @@ class AssemblePanel(AbstractPanel):
         assignment_sname = LineBox(
             EditBuffer(("header", "Assignment short name\n\n"), state.assignment_sname))
 
+        grid_elements = [
+            [grading_directory, assignment_sname]
+        ]
+
         form = Form(assemble,
                     grading_directory=grading_directory,
                     assignment_sname=assignment_sname)
 
-        grid_elements = [
-            [grading_directory, assignment_sname]
-        ]
         super().__init__(grid_elements, form)

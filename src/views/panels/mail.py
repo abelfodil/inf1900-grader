@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 from urwid import LineBox
 
 from src.models.mail import mail
@@ -33,17 +27,17 @@ class MailPanel(AbstractPanel):
         message = LineBox(EditBuffer(("header", "Message\n\n"),
                                      state.message, multiline=True))
 
+        grid_elements = [
+            [sender, recipient],
+            [grading_directory, subject],
+            [message],
+        ]
+
         form = Form(mail,
                     sender_email=sender,
                     recipient_email=recipient,
                     subject=subject,
                     message=message,
                     grading_directory=grading_directory)
-
-        grid_elements = [
-            [sender, recipient],
-            [grading_directory, subject],
-            [message],
-        ]
 
         super().__init__(grid_elements, form)

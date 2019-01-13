@@ -20,15 +20,14 @@ class ClonePanel(AbstractPanel):
 
         team_type = RadioBuffer(TeamType, state.team_type)
 
-        form = Form(clone,
-                    grading_directory=grading_directory,
-                    group_number=group_number,
-                    team_type=team_type)
-
         grid_elements = [
             [grading_directory],
             [group_number, team_type.wrap],
         ]
 
-        super().__init__(grid_elements, form)
+        form = Form(clone,
+                    grading_directory=grading_directory,
+                    group_number=group_number,
+                    team_type=team_type)
 
+        super().__init__(grid_elements, form)

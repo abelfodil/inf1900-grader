@@ -27,6 +27,13 @@ class GradePanel(AbstractPanel):
         assignment_lname = LineBox(
             EditBuffer(("header", "Assignment long name\n\n"), state.assignment_lname))
 
+        grid_elements = [
+            [grading_directory, subdirectories],
+            [grader_name, group_number],
+            [assignment_type.wrap, deadline],
+            [assignment_sname, assignment_lname],
+        ]
+
         form = Form(grade,
                     grading_directory=grading_directory,
                     subdirectories=subdirectories,
@@ -36,12 +43,5 @@ class GradePanel(AbstractPanel):
                     deadline=deadline,
                     assignment_sname=assignment_sname,
                     assignment_lname=assignment_lname)
-
-        grid_elements = [
-            [grading_directory, subdirectories],
-            [grader_name, group_number],
-            [assignment_type.wrap, deadline],
-            [assignment_sname, assignment_lname],
-        ]
 
         super().__init__(grid_elements, form)
