@@ -14,13 +14,12 @@ class MainPanel(HydraWidget, Controller):
 
     def __init__(self):
         super().__init__(info="Welcome to INF1900 interactive grading tool!", align="center")
-        mail_view = MailPanel()
 
         self.add_views([
             ("c", "Clone", ClonePanel()),
             ("g", "Grade", GradePanel()),
             ("a", "Assemble", AssemblePanel()),
-            ("m", "Mail", mail_view)
+            ("m", "Mail", MailPanel())
         ])
 
         self.add_actions([
