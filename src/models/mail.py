@@ -7,9 +7,6 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from os.path import isfile
 
-from src.ask import get_grading_directory
-from src.ask import get_grader_email
-
 default_receiver = "jerome.collin@polymtl.ca"
 default_subject = "[NO-REPLY] inf1900-grader"
 default_message = "Correction d'un travail terminée."
@@ -64,31 +61,6 @@ class Mail:
         self.sent = True
 
 
-def mail():
-    receiver = default_receiver
-    sender = f"{get_grader_email()}"
-    filename = f"{get_grading_directory(True)}/grades.csv"
-
-    if not isfile(filename):
-        print(f"{filename} does not exist. Please assemble your grades first.")
-        return
-
-    attachments = [MailAttachment("text/csv", filename, filename.replace("/", "_"))]
-    mail = Mail(sender, receiver, default_subject, default_message, attachments)
-
-    print(f"""
-Send file: {filename}
-FROM:      {sender}
-TO:        {receiver}
-""")
-
-    while True:
-        answer = input("Are you sure of this operation? [y/n] ").strip().lower()
-
-        if answer[0] == 'y':
-            mail.send()
-            break
-        elif answer[0] == 'n':
-            break
-        else:
-            print("Invalid answer")
+def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
+    attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
+    Mail(sender, recipient, subject, message, attachments).send()

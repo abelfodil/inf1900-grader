@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from src.clone import clone
-from src.grade import grade
-from src.assemble import assemble
-from src.mail import mail
+from src.models.clone import clone
+from src.models.grade import grade
+from src.models.assemble import assemble
+from src.models.mail import mail
 
 choices = [
     clone,
