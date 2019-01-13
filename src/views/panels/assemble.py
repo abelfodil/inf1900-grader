@@ -1,4 +1,4 @@
-from urwid import Columns, LineBox
+from urwid import LineBox
 
 from src.models.assemble import assemble
 from src.models.state import state
@@ -12,13 +12,16 @@ from src.views.panels.abstract import AbstractPanel
 class AssemblePanel(AbstractPanel):
 
     def __init__(self):
-        grading_directory = LineBox(EditBuffer(("header", "Grading directory\n\n"), state.grading_directory))
-        assignment_sname = LineBox(EditBuffer(("header", "Assignment short name\n\n"), state.assignment_sname))
-        column = Columns([grading_directory, assignment_sname])
+        grading_directory = LineBox(
+            EditBuffer(("header", "Grading directory\n\n"), state.grading_directory))
+        assignment_sname = LineBox(
+            EditBuffer(("header", "Assignment short name\n\n"), state.assignment_sname))
 
         form = Form(assemble,
                     grading_directory=grading_directory,
                     assignment_sname=assignment_sname)
 
-        super().__init__(column, form)
-        self.tree.split_vertically(self.buttons_column)
+        grid_elements = [
+            [grading_directory, assignment_sname]
+        ]
+        super().__init__(grid_elements, form)

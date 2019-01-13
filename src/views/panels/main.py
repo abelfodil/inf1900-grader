@@ -18,8 +18,8 @@ class MainPanel(HydraWidget, Controller):
 
         self.add_views([
             ("c", "Clone", ClonePanel()),
- #           ("g", "Grade", GradePanel()),
-#            ("a", "Assemble", AssemblePanel()),
+            ("g", "Grade", GradePanel()),
+            ("a", "Assemble", AssemblePanel()),
             ("m", "Mail", mail_view)
         ])
 
