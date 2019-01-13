@@ -7,8 +7,12 @@ from src.views.panels.main import MainPanel
 if __name__ == "__main__":
 
     main_view = MainPanel()
-    tui = TUI(main_view.root, header=Text(("header", ""), "center"))
-    main_view.connect("on_swap", lambda view, hint: (tui.body(view.root), tui.print(hint)))
+
+    tui = TUI(main_view.root,
+              header=Text(("header", ""), "center"))
+
+    main_view.connect("on_swap",
+                      lambda view, hint: (tui.body(view.root), tui.print(hint)))
 
     try:
         tui()

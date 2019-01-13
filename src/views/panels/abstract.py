@@ -3,14 +3,13 @@ from urwid import AttrMap, Columns, Filler, LineBox, ProgressBar
 from src.views.base.button import Button
 from src.views.base.controller import Controller
 from src.views.base.signal import Signal
-from src.views.base.tree import TreeWidget
 from src.views.base.tui import TUI
 
 
 @Signal("on_quit")
 class AbstractPanel(Controller):
 
-    def __init__(self, widget, form):
+    def __init__(self, form):
 
         super().__init__()
 
@@ -33,8 +32,6 @@ class AbstractPanel(Controller):
                                "progress_hight",
                                current=10)
 
-        self.root = widget
-
     def confirm(self, button):
         try:
             self.form.submit()
@@ -45,4 +42,4 @@ class AbstractPanel(Controller):
     def quit(self, button):
         TUI.clear()
         self.emit("on_quit", button)
-        self.tree.focus_first_node()
+#        self.tree.focus_first_node()

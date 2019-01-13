@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #######################
 # Authors:            #
 #                     #
@@ -6,10 +5,6 @@
 #######################
 
 from urwid import Columns, LineBox, GridFlow, Filler, AttrMap
-=======
-from urwid import Columns, LineBox
->>>>>>> 303212e8ac596a8d2a5310d5a93c47af28fe6a7b
-
 from src.models.mail           import mail
 from src.models.state          import state
 from src.views.base.buffer     import EditBuffer
@@ -46,11 +41,13 @@ class MailPanel(AbstractPanel):
                     message=message,
                     grading_directory=grading_directory)
 
+        super().__init__(form)
+
         grid = Grid([
             [sender, recipient],
             [grading_directory, subject],
             [message],
-            [self.buttons]      # from parent
+            self.buttons      # from parent
         ])
 
         grid.bind([
@@ -60,11 +57,11 @@ class MailPanel(AbstractPanel):
             ("shift tab", grid.focus_prev)
         ])
 
-        grid.aliases([
+        grid.set_aliases([
             ("ctrl f", "left"),
             ("ctrl b", "right"),
             ("ctrl p", "up"),
             ("ctrl n", "down")
         ])
 
-        super().__init__(grid, form)
+        self.root = Filler(grid, valign="top")

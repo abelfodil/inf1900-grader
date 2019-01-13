@@ -14,12 +14,13 @@ class MainPanel(HydraWidget, Controller):
 
     def __init__(self):
         super().__init__(info="Welcome to INF1900 interactive grading tool!", align="center")
+        mail_view = MailPanel()
 
         self.add_views([
             ("c", "Clone", ClonePanel()),
-            ("g", "Grade", GradePanel()),
-            ("a", "Assemble", AssemblePanel()),
-            ("m", "Mail", MailPanel())
+ #           ("g", "Grade", GradePanel()),
+#            ("a", "Assemble", AssemblePanel()),
+            ("m", "Mail", mail_view)
         ])
 
         self.add_actions([
@@ -43,4 +44,5 @@ class MainPanel(HydraWidget, Controller):
         self.emit("on_swap", view, hint)
 
     def restore(self, *kargs):
+        TUI.print("here")
         self.emit("on_swap", self, "")

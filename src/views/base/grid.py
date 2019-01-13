@@ -91,7 +91,7 @@ class Grid(WidgetWrap):
         self.j = j
 
 
-    def alises(self, aliases):
+    def set_aliases(self, aliases):
 
         if not isinstance(aliases, list):
             aliases = list(aliases)
@@ -116,4 +116,4 @@ class Grid(WidgetWrap):
             self.kbd[key]()
             return None
 
-        return key
+        return super().keypress(size, key)

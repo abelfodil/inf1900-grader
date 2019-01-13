@@ -3,6 +3,8 @@ from urwid import Text
 from src.views.base.controller import Controller
 from src.views.base.signal import Signal
 
+from src.views.base.tui import TUI
+
 
 @Signal("on_press")
 class Button(Text, Controller):
