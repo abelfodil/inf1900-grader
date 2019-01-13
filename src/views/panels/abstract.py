@@ -32,31 +32,14 @@ class AbstractPanel(Controller):
                                    "default",
                                    "abort_button"))
 
-        self.buttons_column  = Columns([confirm, abort])
+        self.buttons = [confirm, abort]
 
+        # bar??
         bar      = ProgressBar("progress_low",
                                "progress_hight",
                                current=10)
 
-        tree = TreeWidget(widget)
-
-        tree.bind("up", tree.focus_prev_node)
-        tree.bind("down", tree.focus_next_node)
-
-        tree.set_aliases(
-            [
-                ("ctrl p", "up"),
-                ("shift tab", "up"),
-                ("ctrl n", "down"),
-                ("tab", "down"),
-                ("ctrl f", "right"),
-                ("ctrl b", "left"),
-            ]
-        )
-
-        self.tree = tree
-        self.form = form
-        self.root = Filler(self.tree, valign="top")
+        self.root = widget
 
     def confirm(self, button):
         try:

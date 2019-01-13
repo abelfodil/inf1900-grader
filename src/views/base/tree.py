@@ -8,6 +8,7 @@ from collections import deque
 
 from urwid import Columns, Pile, WidgetContainerMixin, WidgetDecoration, WidgetWrap
 
+from src.views.base.tui import TUI
 
 # inherit from WidgetContainerMixer instead??
 class TreeWidget(WidgetWrap):
@@ -77,22 +78,49 @@ class TreeWidget(WidgetWrap):
         self.focus_node(-1)
 
     def focus_first_node(self):
-        self._w.set_focus_path([0])
+
+        w = self._w.base_widget
+
+        while True:
+
+            if isinstance(w, WidgetDecoration):
+                w = w.original_widget
+            elif isinstance(w, WidgetWrap):
+                w = w._w
+            elif isinstance(w, WidgetContainerMixin):
+                w.focus_position = 0
+                w = w.focus
+            else:
+                break
+
 
     # Best way I found to fetch surrounding node
     def focus_node(self, direction):
 
-        focus_path = self._w.get_focus_path()
+        widgets_path = self._w.get_focus_widgets()
 
-        while len(focus_path):
+        w = widgets_path.pop()
 
-            focus_path.append(focus_path.pop() + direction)
+        while len(widgets_path):
 
-            try:
-                self._w.set_focus_path(focus_path)
-                return
-            except IndexError:
-                focus_path.pop()
+            if isinstance(w, WidgetDecoration):
+                w = w.original_widget
+            elif isinstance(w, WidgetWrap):
+                w = w._w
+            if isinstance(w, WidgetContainerMixin):
+                TUI.print(w.focus_position)
+                try:
+                    w.focus_position += direction
+                    return
+                except IndexError:
+                    w = wiedgets_path.pop()
+
+            else:
+                w = widgets_path.pop()
+
+
+
+
 
     # for debugging
     def print_node(self, node, out):
