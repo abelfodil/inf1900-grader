@@ -1,18 +1,17 @@
+from enum import IntEnum, auto
 from itertools import chain
 
 from urwid import Columns, Pile as Rows, WidgetWrap
 
 
-class GridException(Exception):
-    pass
+class GridPolicy(IntEnum):
+    HORIZONTAL = auto()
+    VERTICAL = auto()
 
 
 class Grid(WidgetWrap):
-    policies = ("horizontal", "vertical")
-
-    def __init__(self, rows):
-
-        self._w = Rows([Columns(row) for row in rows])
+    def __init__(self, rows, policy=GridPolicy.HORIZONTAL):
+        super().__init__(Rows([Columns(row) for row in rows]))
         self.contents = list(chain.from_iterable(rows))
 
         self.n = len(rows)
@@ -23,15 +22,19 @@ class Grid(WidgetWrap):
 
         self.focus(self.i, self.j)
 
-        self.aliases = {}
-        self.kbd = {}
+        self.keybinds = {
+            "up"       : lambda: self.focus_vertical(-1),
+            "down"     : lambda: self.focus_vertical(1),
+            "tab"      : self.focus_next,
+            "shift tab": self.focus_prev
+        }
 
-        self.policy = "horizontal"
-
-    def set_policy(self, policy):
-
-        if policy not in Grid.policies:
-            raise GridException("Bad policy: {policy}")
+        self.aliases = {
+            "ctrl f": "left",
+            "ctrl b": "right",
+            "ctrl p": "up",
+            "ctrl n": "down"
+        }
 
         self.policy = policy
 
@@ -70,15 +73,13 @@ class Grid(WidgetWrap):
                 pass
 
     def focus_next(self):
-
-        if self.policy == "horizontal":
+        if self.policy == GridPolicy.HORIZONTAL:
             return self.focus_horizontal(1)
 
         return self.focus_vertical(1)
 
     def focus_prev(self):
-
-        if self.policy == "horizontal":
+        if self.policy == GridPolicy.HORIZONTAL:
             return self.focus_horizontal(-1)
 
         return self.focus_vertical(-1)
@@ -88,25 +89,13 @@ class Grid(WidgetWrap):
         self.i = i
         self.j = j
 
-    def set_aliases(self, aliases):
-
-        if not isinstance(aliases, list):
-            aliases = list(aliases)
-
-        for alias in aliases:
-            self.aliases[alias[0]] = alias[1]
-
-    def bind(self, kbds: list):
-        for kbd in kbds:
-            self.kbd[kbd[0]] = kbd[1]
-
     def keypress(self, size, key):
 
         if key in self.aliases:
             key = self.aliases[key]
 
-        if key in self.kbd:
-            self.kbd[key]()
+        if key in self.keybinds:
+            self.keybinds[key]()
             return None
 
         return super().keypress(size, key)

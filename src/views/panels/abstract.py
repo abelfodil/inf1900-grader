@@ -28,25 +28,7 @@ class AbstractPanel(Controller):
 
         grid_elements.append([confirm, abort])
 
-        grid = Grid(grid_elements)
-
-        grid.bind([
-            ("up", lambda: grid.focus_vertical(-1)),
-            ("down", lambda: grid.focus_vertical(1)),
-            ("tab", grid.focus_next),
-            ("shift tab", grid.focus_prev)
-        ])
-
-        grid.set_aliases([
-            ("ctrl f", "left"),
-            ("ctrl b", "right"),
-            ("ctrl p", "up"),
-            ("ctrl n", "down")
-        ])
-
-        grid.set_policy("vertical")
-
-        self.root = Filler(grid, valign="top")
+        self.root = Filler(Grid(grid_elements), valign="top")
         self.form = form
 
     def confirm(self, button):
