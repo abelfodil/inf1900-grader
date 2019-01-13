@@ -1,8 +1,14 @@
 from csv import writer
+
 from git import Repo
 
 from src.models.clone import read_student_list
 from src.models.grade import generate_grading_file_name, get_teams_list
+from src.models.validate import ensure_grading_directory_exists, ensure_not_empty
+
+
+def generate_grades_path(grading_directory: str):
+    return f"{grading_directory}/grades.csv"
 
 
 def read_grade(grading_directory: str, team: str, assignment_name: str):
@@ -20,7 +26,7 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
 def write_grades_file(grading_directory: str, grades: dict, assignment_name: str):
     student_list = read_student_list(grading_directory)
 
-    with open(f"{grading_directory}/grades.csv", 'w', newline='', encoding="utf-8") as csvfile:
+    with open(generate_grades_path(grading_directory), 'w', newline='', encoding="utf-8") as csvfile:
         csv_writer = writer(csvfile)
 
         csv_writer.writerow(["Travail:", assignment_name])
@@ -46,12 +52,13 @@ def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
 
 
 def assemble(grading_directory: str, assignment_sname: str):
+    ensure_grading_directory_exists(grading_directory)
+    ensure_not_empty(assignment_sname, "Assignment short name")
+
     grades = {}
 
     teams = get_teams_list(grading_directory)
     for team in teams:
-        print(f"Sending grades to team {team}...")
-
         commit_and_merge(grading_directory, team, assignment_sname)
         grades[team] = read_grade(grading_directory, team, assignment_sname)
 

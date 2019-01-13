@@ -1,15 +1,10 @@
-# Author: Olivier Dion - 2019
-
 import smtplib
-
-from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from os.path import isfile
 
-default_receiver = "jerome.collin@polymtl.ca"
-default_subject = "[NO-REPLY] inf1900-grader"
-default_message = "Correction d'un travail terminée."
+from src.models.assemble import generate_grades_path
+from src.models.validate import ensure_not_empty, validate_email_address, validate_grades_path
 
 
 class MailException(Exception):
@@ -33,7 +28,8 @@ class MailAttachment:
 
 
 class Mail:
-    def __init__(self, sender: str, receiver: str, subject: str, message: str = "", attachments: list = []):
+    def __init__(self, sender: str, receiver: str, subject: str,
+                 message: str = "", attachments: list = []):
 
         msg = MIMEMultipart()
 
@@ -61,6 +57,16 @@ class Mail:
         self.sent = True
 
 
-def mail(sender: str, recipient: str, subject: str, message: str, grades_path: str):
-    attachments = [MailAttachment("text/csv", grades_path, grades_path.replace("/", "_"))]
-    Mail(sender, recipient, subject, message, attachments).send()
+def mail(sender_email: str, recipient_email: str,
+         subject: str, message: str, grading_directory: str):
+    grades_path = generate_grades_path(grading_directory)
+
+    validate_email_address(sender_email)
+    validate_email_address(recipient_email)
+    ensure_not_empty(subject, "Subject")
+    ensure_not_empty(message, "Message")
+    validate_grades_path(grades_path)
+
+    attachment_name = subject.lower().replace(" ", "_")
+    attachments = [MailAttachment("text/csv", grades_path, attachment_name)]
+    Mail(sender_email, recipient_email, subject, message, attachments).send()

@@ -1,10 +1,14 @@
-from os import listdir, path
-from subprocess import run, PIPE, STDOUT
-from sys import argv
-from git import Repo
 from enum import Enum
+from os import listdir
+from os.path import dirname, isdir, join, realpath
+from subprocess import PIPE, STDOUT, run
+from sys import argv
 
-script_root_directory = path.dirname(path.realpath(argv[0]))
+from git import Repo
+
+from src.models.validate import ensure_grading_directory_exists, ensure_not_empty, validate_datetime
+
+script_root_directory = dirname(realpath(argv[0]))
 bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
 
 
@@ -14,11 +18,13 @@ class AssignmentType(Enum):
 
 
 def get_teams_list(grading_directory: str):
-    return [team for team in listdir(grading_directory) if path.isdir(path.join(grading_directory, team))]
+    return [team for team in listdir(grading_directory) if
+            isdir(join(grading_directory, team))]
 
 
 def generate_partial_grading_file_content(grader_name: str, group_number: int,
-                                          assignment_type: AssignmentType, assignment_long_name: str):
+                                          assignment_type: AssignmentType,
+                                          assignment_long_name: str):
     with open(assignment_type.value, 'r') as f:
         raw_grading_file_content = f.read()
 
@@ -30,6 +36,10 @@ def generate_partial_grading_file_content(grader_name: str, group_number: int,
     return partial_grading_file_content
 
 
+def bannerize(entry):
+    return f"======================= {entry} ============================="
+
+
 def create_branch(repo_path: str, deadline: str, grading_name: str):
     repo = Repo(repo_path)
     deadline_commit = repo.git.rev_list("-n 1", f'--before="{deadline}"', "master")
@@ -37,23 +47,23 @@ def create_branch(repo_path: str, deadline: str, grading_name: str):
 
 
 def get_commit_info(repo_path: str):
-    header = "\n\n======================= Basé sur le commit suivant ============================="
+    header = f"\n\n{bannerize('Basé sur le commit suivant')}"
     commit_info = Repo(repo_path).git.log("-1")
     return f"{header}\n{commit_info}"
 
 
 def get_useless_files(repo_path: str):
-    header = "\n\n====================== Fichiers Indésirables ==================================="
+    header = f"\n\n{bannerize('Fichiers Indésirables')}"
     useless_file_list = Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}")
     return f"{header}\n{useless_file_list}"
 
 
 def get_make_output(repo_path: str, subdirectories: list):
-    header = "\n\n====================== Output de make pour les problemes ======================="
+    header = f"\n\n{bannerize('Output de make pour les problemes')}"
 
     make_output = ""
     for subdirectory in subdirectories:
-        make_output += "============== output de make dans " + subdirectory + " ============================"
+        make_output += f"{bannerize(f'output de make dans {subdirectory}')}"
         result = run(["make", "-C", f"{repo_path}/{subdirectory}"], stdout=PIPE, stderr=STDOUT)
         make_output += "\n" + result.stdout.decode('utf-8') + "\n"
 
@@ -69,14 +79,20 @@ def generate_grading_file_name(assignment_short_name: str):
 
 
 def grade(grading_directory: str, subdirectories: list, grader_name: str, group_number: int,
-          assignment_type: AssignmentType, deadline: str, assignment_sname: str, assignment_lname: str):
+          assignment_type: AssignmentType, deadline: str,
+          assignment_sname: str, assignment_lname: str):
+    ensure_grading_directory_exists(grading_directory)
+    validate_datetime(deadline)
+    ensure_not_empty(subdirectories, "Subdirectories")
+    ensure_not_empty(grader_name, "Grader's name")
+    ensure_not_empty(assignment_sname, "Assignment short name")
+    ensure_not_empty(assignment_lname, "Assignment long name")
+
     partial_grading_text = generate_partial_grading_file_content(grader_name, group_number,
                                                                  assignment_type, assignment_lname)
 
     teams = get_teams_list(grading_directory)
     for team in teams:
-        print(f"Grading team {team}...")
-
         repo_path = f"{grading_directory}/{team}"
         create_branch(repo_path, deadline, generate_grading_name(assignment_sname)).checkout()
 

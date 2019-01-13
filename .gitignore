@@ -6,6 +6,7 @@
 *.tar
 *.json
 *.csv
+*.bin
 
 __pycache__/
 correction*/

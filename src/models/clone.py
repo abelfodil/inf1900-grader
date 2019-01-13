@@ -1,9 +1,12 @@
+from enum import Enum
 from json import dump, load
 from os import mkdir, path
 from urllib import request
+
 from bs4 import BeautifulSoup
 from git import Repo
-from enum import Enum
+
+from src.models.validate import ensure_grading_directory_available, ensure_not_empty
 
 
 class TeamType(Enum):
@@ -40,7 +43,7 @@ def clone_repos(grading_directory: str, student_list: list):
 
 
 def fetch_student_list(group_number: int, team_type: TeamType):
-    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type.value()}Section{group_number}.php"
+    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type.value}Section{group_number}.php"
     html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
 
     html_student_list = html.find_all("table")[-1].find_all("tr")[1:-1]
@@ -49,19 +52,19 @@ def fetch_student_list(group_number: int, team_type: TeamType):
         html_student = html_student.find_all("td")
 
         student_list.append({
-            "last_name": html_student[0].text.strip(),
+            "last_name" : html_student[0].text.strip(),
             "first_name": html_student[1].text.strip(),
-            "team": html_student[2].text.strip(),
+            "team"      : html_student[2].text.strip(),
         })
 
     return student_list
 
 
 def clone(grading_directory: str, group_number: int, team_type: TeamType):
-    if path.exists(grading_directory):
-        print(f"{grading_directory} already exists. Please delete it or resume grading.")
-    else:
-        mkdir(grading_directory)
-        student_list = fetch_student_list(group_number, team_type)
-        write_student_list(grading_directory, student_list)
-        clone_repos(grading_directory, student_list)
+    ensure_grading_directory_available(grading_directory)
+    ensure_not_empty(group_number, "Group number")
+
+    mkdir(grading_directory)
+    student_list = fetch_student_list(group_number, team_type)
+    write_student_list(grading_directory, student_list)
+    clone_repos(grading_directory, student_list)
