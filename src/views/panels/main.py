@@ -1,4 +1,4 @@
-from urwid import Filler
+from urwid import Filler, Text
 
 from src.views.base.buffer import Controller, Signal
 from src.views.base.hydra import HydraWidget
@@ -46,3 +46,12 @@ class MainPanel(HydraWidget, Controller):
     def restore(self, *kargs):
         TUI.print("here")
         self.emit("on_swap", self, "")
+
+    def start_tui(self):
+        tui = TUI(self.root, header=Text(("header", ""), "center"))
+        self.connect("on_swap", lambda view, hint: (tui.body(view.root), tui.print(hint)))
+
+        try:
+            tui()
+        finally:
+            tui.loop.screen.stop()
