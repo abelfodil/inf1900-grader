@@ -1,14 +1,13 @@
-from urwid import Columns
-from urwid import Pile as Rows
-from urwid import WidgetWrap
-
 from itertools import chain
+
+from urwid import Columns, Pile as Rows, WidgetWrap
+
 
 class GridException(Exception):
     pass
 
-class Grid(WidgetWrap):
 
+class Grid(WidgetWrap):
     policies = ("horizontal", "vertical")
 
     def __init__(self, rows):
@@ -19,14 +18,13 @@ class Grid(WidgetWrap):
         self.n = len(rows)
         self.m = round(len(self.contents) / self.n)
 
-
         self.i = 0
         self.j = 0
 
         self.focus(self.i, self.j)
 
         self.aliases = {}
-        self.kbd     = {}
+        self.kbd = {}
 
         self.policy = "horizontal"
 
@@ -90,7 +88,6 @@ class Grid(WidgetWrap):
         self.i = i
         self.j = j
 
-
     def set_aliases(self, aliases):
 
         if not isinstance(aliases, list):
@@ -99,11 +96,7 @@ class Grid(WidgetWrap):
         for alias in aliases:
             self.aliases[alias[0]] = alias[1]
 
-    def bind(self, kbds):
-
-        if not isinstance(kbds, list):
-            kbds = list(kbds)
-
+    def bind(self, kbds: list):
         for kbd in kbds:
             self.kbd[kbd[0]] = kbd[1]
 

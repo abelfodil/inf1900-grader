@@ -1,7 +1,8 @@
-from urwid import AttrMap, Columns, Filler, LineBox, ProgressBar
+from urwid import AttrMap, Filler, LineBox
 
 from src.views.base.button import Button
 from src.views.base.controller import Controller
+from src.views.base.grid import Grid
 from src.views.base.signal import Signal
 from src.views.base.tui import TUI
 
@@ -9,28 +10,44 @@ from src.views.base.tui import TUI
 @Signal("on_quit")
 class AbstractPanel(Controller):
 
-    def __init__(self, form):
+    def __init__(self, grid_elements, form):
 
         super().__init__()
 
-        confirm  = LineBox(AttrMap(Button("Confirm",
-                                          on_press=self.confirm,
-                                          align="center"),
-                                   "default",
-                                   "confirm_button"))
+        confirm = LineBox(AttrMap(Button("Confirm",
+                                         on_press=self.confirm,
+                                         align="center"),
+                                  "default",
+                                  "confirm_button"))
 
-        abort    = LineBox(AttrMap(Button("Abort",
-                                          on_press=self.quit,
-                                          align="center"),
-                                   "default",
-                                   "abort_button"))
+        abort = LineBox(AttrMap(Button("Abort",
+                                       on_press=self.quit,
+                                       align="center"),
+                                "default",
+                                "abort_button"))
 
-        self.buttons = [confirm, abort]
+        grid_elements.append([confirm, abort])
 
-        # bar??
-        bar      = ProgressBar("progress_low",
-                               "progress_hight",
-                               current=10)
+        grid = Grid(grid_elements)
+
+        grid.bind([
+            ("up", lambda: grid.focus_vertical(-1)),
+            ("down", lambda: grid.focus_vertical(1)),
+            ("tab", grid.focus_next),
+            ("shift tab", grid.focus_prev)
+        ])
+
+        grid.set_aliases([
+            ("ctrl f", "left"),
+            ("ctrl b", "right"),
+            ("ctrl p", "up"),
+            ("ctrl n", "down")
+        ])
+
+        grid.set_policy("vertical")
+
+        self.root = Filler(grid, valign="top")
+        self.form = form
 
     def confirm(self, button):
         try:
