@@ -1,8 +1,8 @@
-from urwid import LineBox
+from urwid import Edit, IntEdit, LineBox
 
 from src.models.grade import AssignmentType, grade
 from src.models.state import state
-from src.views.base.buffer import EditBuffer, IntEditBuffer, RadioBuffer
+from src.views.base.buffer import RadioGroup
 from src.views.base.form import Form
 from src.views.base.signal import Signal
 from src.views.panels.abstract import AbstractPanel
@@ -13,24 +13,24 @@ class GradePanel(AbstractPanel):
 
     def __init__(self):
         grading_directory = LineBox(
-            EditBuffer(("header", "Grading directory\n\n"), state.grading_directory))
-        subdirectories = LineBox(EditBuffer(("header", "Subdirectories\n\n"), state.subdirectories))
+            Edit(("header", "Grading directory\n\n"), state.grading_directory))
+        subdirectories = LineBox(Edit(("header", "Subdirectories\n\n"), state.subdirectories))
 
-        grader_name = LineBox(EditBuffer(("header", "Grader's name\n\n"), state.grader_name))
-        group_number = LineBox(IntEditBuffer(("header", "Group number\n\n"), state.group_number))
+        grader_name = LineBox(Edit(("header", "Grader's name\n\n"), state.grader_name))
+        group_number = LineBox(IntEdit(("header", "Group number\n\n"), state.group_number))
 
-        assignment_type = RadioBuffer(AssignmentType, state.assignment_type)
-        deadline = LineBox(EditBuffer(("header", "Deadline\n\n"), state.deadline))
+        assignment_type = RadioGroup(AssignmentType, state.assignment_type)
+        deadline = LineBox(Edit(("header", "Deadline\n\n"), state.deadline))
 
         assignment_sname = LineBox(
-            EditBuffer(("header", "Assignment short name\n\n"), state.assignment_sname))
+            Edit(("header", "Assignment short name\n\n"), state.assignment_sname))
         assignment_lname = LineBox(
-            EditBuffer(("header", "Assignment long name\n\n"), state.assignment_lname))
+            Edit(("header", "Assignment long name\n\n"), state.assignment_lname))
 
         grid_elements = [
             [grading_directory, subdirectories],
             [grader_name, group_number],
-            [assignment_type.wrap, deadline],
+            [assignment_type, deadline],
             [assignment_sname, assignment_lname],
         ]
 

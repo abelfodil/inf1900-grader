@@ -1,29 +1,14 @@
 from re import sub
 
-from urwid import Edit, IntEdit, LineBox, Pile, RadioButton, Text
+from urwid import Edit, LineBox, Pile, RadioButton, Text, WidgetWrap
 
 from src.util.dlist import Dlist
 from src.views.base.controller import Controller
 from src.views.base.signal import Signal
 
 
-@Signal("on_flush")
-class EditBuffer(Edit, Controller):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-
-@Signal("on_flush")
-class IntEditBuffer(IntEdit, Controller):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-
-@Signal("on_flush")
-class RadioBuffer(Controller):
+class RadioGroup(WidgetWrap):
     def __init__(self, enum_type, starting_value):
-        super().__init__()
-
         self.selected_value = starting_value
         self.enum_type = enum_type
 
@@ -34,7 +19,8 @@ class RadioBuffer(Controller):
                         state=choice is starting_value)
 
         radio_title = sub(r"(\w)([A-Z])", r"\1 \2", enum_type.__name__).capitalize()
-        self.wrap = LineBox(Pile([Text(("header", radio_title)), *self.radio_group]))
+
+        super().__init__(LineBox(Pile([Text(("header", radio_title)), *self.radio_group])))
 
     def get_data(self):
         for radio in self.radio_group:
@@ -43,7 +29,7 @@ class RadioBuffer(Controller):
 
 
 @Signal("on_flush")
-class MiniBuffer(EditBuffer):
+class MiniBuffer(Edit, Controller):
 
     def __init__(self, *args, **kwargs):
 
