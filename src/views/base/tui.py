@@ -1,14 +1,12 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
+
 
 import os
 import signal
 import sys
 
 from urwid import ExitMainLoop, Frame, MainLoop
+
+from src.util.singleton import Singleton
 
 
 # +=====================================================+
@@ -41,16 +39,15 @@ class TUIException(Exception):
         super().__init__(msg, *kargs, **kwargs)
 
 
-class TUI:
-    # TODO: add static method to add palette from view
+class TUI(metaclass=Singleton):
     palette = [
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
-        ("header", "bold, underline", ""),
+        ("header", "bold, underline, dark green", ""),
         ("error", "bold, light red", ""),
         ("normal_box", "default", "default"),
         ("selected_box", "black", "light gray"),
-        ("confirm_button", "light cyan", "dark green"),
+        ("confirm_button", "yellow", "dark blue"),
         ("abort_button", "light red", "brown"),
         ("progress_low", "default", "yellow"),
         ("progress_hight", "default", "dark green"),
@@ -58,13 +55,7 @@ class TUI:
 
     keybind = {}
 
-    singleton = None
-
     def __init__(self, body, header=None, footer=None):
-
-        if TUI.singleton is not None:
-            raise Exception("More than one singleton instance")
-
         self.root = Frame(body,
                           header,
                           footer)
@@ -73,8 +64,6 @@ class TUI:
                             unhandled_input=self.unhandled_input)
 
         TUI.install_signals_handler()
-
-        TUI.singleton = self
 
     def __call__(self):
         TUI.loop.run()
@@ -132,7 +121,7 @@ class TUI:
 
     @classmethod
     def print(cls, string):
-        cls.singleton.print_header(string)
+        TUI().print_header(string)
 
     @classmethod
     def clear(cls):

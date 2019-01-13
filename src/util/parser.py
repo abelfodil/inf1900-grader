@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 from optparse import OptionParser
 
 

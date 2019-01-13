@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 from collections import deque
 
 from urwid import Columns, Pile, WidgetContainerMixin, WidgetDecoration, WidgetWrap

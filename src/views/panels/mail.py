@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #######################
 # Authors:            #
 #                     #
@@ -5,6 +6,9 @@
 #######################
 
 from urwid import Columns, LineBox, GridFlow, Filler, AttrMap
+=======
+from urwid import Columns, LineBox
+>>>>>>> 303212e8ac596a8d2a5310d5a93c47af28fe6a7b
 
 from src.models.mail           import mail
 from src.models.state          import state

@@ -1,9 +1,3 @@
-#######################
-# Authors:            #
-#                     #
-# Olivier Dion - 2019 #
-#######################
-
 from urwid import Columns, LineBox
 
 from src.models.clone import TeamType, clone
