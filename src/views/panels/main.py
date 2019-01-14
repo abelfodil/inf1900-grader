@@ -23,7 +23,7 @@ class MainPanel(HydraWidget):
         ])
 
         self.add_actions([
-            ("q", "red_head", "Quit", TUI.quit),
+            ("q", "Quit", TUI.quit),
         ])
 
         self.root = Filler(self, valign="bottom")
@@ -37,7 +37,7 @@ class MainPanel(HydraWidget):
         self.add_heads(heads)
 
     def add_actions(self, actions: list):
-        self.add_heads(actions)
+        self.add_heads(map(lambda action: (action[0], "red_head", *action[1:]), actions))
 
     def swap_view(self, view, hint):
         emit_signal(self, SignalType.SWAP, view, hint)
