@@ -1,9 +1,9 @@
 from urwid import AttrMap, Filler, LineBox, emit_signal
 
-from src.views.base.button import Button
-from src.views.base.grid import Grid
 from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
+from src.views.widgets.button import Button
+from src.views.widgets.grid import Grid
 
 
 class AbstractPanel:

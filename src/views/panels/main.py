@@ -1,12 +1,12 @@
 from urwid import Filler, Text, connect_signal, emit_signal
 
-from src.views.base.hydra import HydraWidget
 from src.views.base.signal import Signal, SignalType
 from src.views.base.tui import TUI
 from src.views.panels.assemble import AssemblePanel
 from src.views.panels.clone import ClonePanel
 from src.views.panels.grade import GradePanel
 from src.views.panels.mail import MailPanel
+from src.views.widgets.hydra import HydraWidget
 
 
 @Signal(SignalType.SWAP)
