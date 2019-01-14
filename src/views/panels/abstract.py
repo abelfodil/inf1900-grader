@@ -1,15 +1,11 @@
-from urwid import AttrMap, Filler, LineBox
+from urwid import AttrMap, Filler, LineBox, emit_signal
 
 from src.views.base.button import Button
-from src.views.base.controller import Controller
 from src.views.base.grid import Grid
-from src.views.base.signal import Signal
 from src.views.base.tui import TUI
 
 
-@Signal("on_quit")
-class AbstractPanel(Controller):
-
+class AbstractPanel:
     def __init__(self, grid_elements, form):
 
         super().__init__()
@@ -40,5 +36,5 @@ class AbstractPanel(Controller):
 
     def quit(self, button):
         TUI.clear()
-        self.emit("on_quit", button)
+        emit_signal(self, "on_quit", button)
         self.root.base_widget.focus_first()

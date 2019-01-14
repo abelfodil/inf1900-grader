@@ -1,11 +1,12 @@
+from urwid import register_signal
+
+
 class Signal:
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args):
         self.signals = args
 
     def __call__(self, *args):
         cls = args[0]
-
-        cls.register(self.signals)
-
+        register_signal(cls, self.signals)
         return cls

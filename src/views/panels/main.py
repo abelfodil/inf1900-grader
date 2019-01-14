@@ -1,6 +1,6 @@
-from urwid import Filler, Text
+from urwid import Filler, Text, connect_signal, emit_signal
 
-from src.views.base.buffer import Controller, Signal
+from src.views.base.buffer import Signal
 from src.views.base.hydra import HydraWidget
 from src.views.base.tui import TUI
 from src.views.panels.assemble import AssemblePanel
@@ -10,7 +10,7 @@ from src.views.panels.mail import MailPanel
 
 
 @Signal("on_swap")
-class MainPanel(HydraWidget, Controller):
+class MainPanel(HydraWidget):
 
     def __init__(self):
         super().__init__(info="Welcome to INF1900 interactive grading tool!", align="center")
@@ -31,7 +31,7 @@ class MainPanel(HydraWidget, Controller):
     def add_views(self, views):
         heads = []
         for letter, hint, view, in views:
-            view.connect("on_quit", self.restore)
+            connect_signal(view, "on_quit", self.restore)
             heads.append((letter, "blue_head", hint, self.swap_view, {"view": view, "hint": hint}))
 
         self.add_heads(heads)
@@ -40,14 +40,14 @@ class MainPanel(HydraWidget, Controller):
         self.add_heads(actions)
 
     def swap_view(self, view, hint):
-        self.emit("on_swap", view, hint)
+        emit_signal(self, "on_swap", view, hint)
 
     def restore(self, *kargs):
-        self.emit("on_swap", self, "")
+        self.swap_view(self, "")
 
     def start_tui(self):
         tui = TUI(self.root, header=Text(("header", ""), "center"))
-        self.connect("on_swap", lambda view, hint: (tui.body(view.root), tui.print(hint)))
+        connect_signal(self, "on_swap", lambda view, hint: (tui.body(view.root), tui.print(hint)))
 
         try:
             tui()
