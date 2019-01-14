@@ -4,11 +4,11 @@ from src.models.grade import AssignmentType, grade
 from src.models.state import state
 from src.views.base.buffer import RadioGroup
 from src.views.base.form import Form
-from src.views.base.signal import Signal
+from src.views.base.signal import Signal, SignalType
 from src.views.panels.abstract import AbstractPanel
 
 
-@Signal("on_quit")
+@Signal(SignalType.QUIT)
 class GradePanel(AbstractPanel):
 
     def __init__(self):

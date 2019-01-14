@@ -2,6 +2,7 @@ from urwid import AttrMap, Filler, LineBox, emit_signal
 
 from src.views.base.button import Button
 from src.views.base.grid import Grid
+from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
 
 
@@ -36,5 +37,5 @@ class AbstractPanel:
 
     def quit(self, button):
         TUI.clear()
-        emit_signal(self, "on_quit", button)
+        emit_signal(self, SignalType.QUIT, button)
         self.root.base_widget.focus_first()

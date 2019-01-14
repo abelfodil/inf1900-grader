@@ -3,7 +3,7 @@ from re import sub
 from urwid import Edit, LineBox, Pile, RadioButton, Text, WidgetWrap, emit_signal
 
 from src.util.dlist import Dlist
-from src.views.base.signal import Signal
+from src.views.base.signal import Signal, SignalType
 
 
 class RadioGroup(WidgetWrap):
@@ -27,7 +27,7 @@ class RadioGroup(WidgetWrap):
                 return self.enum_type[radio.label.upper()]
 
 
-@Signal("on_flush")
+@Signal(SignalType.FLUSH)
 class MiniBuffer(Edit):
 
     def __init__(self, *args, **kwargs):
@@ -59,7 +59,7 @@ class MiniBuffer(Edit):
 
         self.set_edit_text("")
 
-        emit_signal(self, "on_flush", self.get_last_text())
+        emit_signal(self, SignalType.FLUSH, self.get_last_text())
 
     def previous_history(self):
         self.history.data = self.get_edit_text()
