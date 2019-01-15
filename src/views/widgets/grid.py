@@ -37,8 +37,8 @@ class Grid(WidgetWrap):
         self.focus(self.i, self.j)
 
         self.keybinds = {
-            "up"       : lambda: self.focus_vertical(-1),
-            "down"     : lambda: self.focus_vertical(1),
+            "up"       : lambda: self.focus_prev_vertical(),
+            "down"     : lambda: self.focus_next_vertical(),
             "tab"      : self.focus_next,
             "shift tab": self.focus_prev
         }
@@ -103,6 +103,23 @@ class Grid(WidgetWrap):
             if self.current_focus().selectable() == True:
                 break
 
+    def focus_next_vertical(self):
+
+        while True:
+            child = self.current_focus()
+            end_of_grid = self.is_end_of_grid()
+
+            if isinstance(child, Grid):
+                child.focus_next()
+            elif end_of_grid:
+                if self.parent is not None and not self.parent.is_end_of_grid():
+                    return self.parent.focus_vertical(1)
+            else:
+                self.focus_vertical(1)
+
+            if self.current_focus().selectable() == True:
+                break
+
 
     def focus_prev(self):
 
@@ -117,6 +134,23 @@ class Grid(WidgetWrap):
                     return self.parent.focus_horizontal(-1)
             else:
                 self.focus_horizontal(-1)
+
+            if self.current_focus().selectable() == True:
+                break
+
+    def focus_prev_vertical(self):
+
+        while True:
+            focus = self.current_focus()
+            beg_of_grid = self.is_beg_of_grid()
+
+            if isinstance(focus, Grid):
+                focus.focus_prev()
+            elif beg_of_grid:
+                if self.parent is not None and not self.parent.is_beg_of_grid():
+                    return self.parent.focus_vertical(-1)
+            else:
+                self.focus_vertical(-1)
 
             if self.current_focus().selectable() == True:
                 break
