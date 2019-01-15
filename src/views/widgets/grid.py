@@ -35,10 +35,10 @@ class Grid(WidgetWrap):
         self.focus(self.i, self.j)
 
         self.keybinds = {
-            "up"       : lambda: self.focus_prev_vertical(),
-            "down"     : lambda: self.focus_next_vertical(),
-            "tab"      : self.focus_next,
-            "shift tab": self.focus_prev
+            "down"     : lambda: self.focus_recursive(1, horizontal=False),
+            "up"       : lambda: self.focus_recursive(-1, horizontal=False),
+            "tab"      : lambda: self.focus_recursive(1, horizontal=True),
+            "shift tab": lambda: self.focus_recursive(-1, horizontal=True)
         }
 
         self.aliases = {
@@ -50,14 +50,19 @@ class Grid(WidgetWrap):
 
         self.parent = None
 
-    def focus_horizontal(self, direction):
+    def focus_direction(self, direction, horizontal=True):
 
         j = self.j
         i = self.i
 
         while True:
-            j += direction
-            i += j // self.m
+            if horizontal:
+                j += direction
+                i += j // self.m
+            else:
+                i += direction
+                j += i // self.n
+
             j %= self.m
             i %= self.n
 
@@ -67,87 +72,20 @@ class Grid(WidgetWrap):
             except IndexError:
                 pass
 
-    def focus_vertical(self, direction):
-
-        j = self.j
-        i = self.i
-
-        while True:
-            i += direction
-            j += i // self.n
-            j %= self.m
-            i %= self.n
-
-            try:
-                self.focus(i, j)
-                break
-            except IndexError:
-                pass
-
-    def focus_next(self):
-
+    def focus_recursive(self, direction, horizontal):
         while True:
             child = self.current_focus()
-            end_of_grid = self.__is_last()
 
             if isinstance(child, Grid):
-                child.focus_next()
-            elif end_of_grid:
-                if self.parent is not None and not self.parent.__is_last():
-                    return self.parent.focus_horizontal(1)
-            else:
-                self.focus_horizontal(1)
-
-            if self.current_focus().selectable():
-                break
-
-    def focus_next_vertical(self):
-
-        while True:
-            child = self.current_focus()
-            end_of_grid = self.__is_last()
-
-            if isinstance(child, Grid):
-                child.focus_next()
-            elif end_of_grid:
-                if self.parent is not None and not self.parent.__is_last():
-                    return self.parent.focus_vertical(1)
-            else:
-                self.focus_vertical(1)
-
-            if self.current_focus().selectable():
-                break
-
-    def focus_prev(self):
-
-        while True:
-            focus = self.current_focus()
-            beg_of_grid = self.__is_first()
-
-            if isinstance(focus, Grid):
-                focus.focus_prev()
-            elif beg_of_grid:
+                child.focus_recursive(direction, horizontal)
+            elif direction == -1 and self.__is_first():
                 if self.parent is not None and not self.parent.__is_first():
-                    return self.parent.focus_horizontal(-1)
+                    return self.parent.focus_direction(direction, horizontal)
+            elif direction == 1 and self.__is_last():
+                if self.parent is not None and not self.parent.__is_last():
+                    return self.parent.focus_direction(direction, horizontal)
             else:
-                self.focus_horizontal(-1)
-
-            if self.current_focus().selectable():
-                break
-
-    def focus_prev_vertical(self):
-
-        while True:
-            focus = self.current_focus()
-            beg_of_grid = self.__is_first()
-
-            if isinstance(focus, Grid):
-                focus.focus_prev()
-            elif beg_of_grid:
-                if self.parent is not None and not self.parent.__is_first():
-                    return self.parent.focus_vertical(-1)
-            else:
-                self.focus_vertical(-1)
+                self.focus_direction(direction, horizontal)
 
             if self.current_focus().selectable():
                 break
