@@ -1,11 +1,17 @@
 from re import sub
+from enum import IntEnum, auto
 
 from urwid import LineBox, Pile, RadioButton, Text, WidgetWrap
 
 from src.views.widgets.grid import Grid
 
+class RadioPolicy:
+    HORIZONTAL = auto()
+    VERTICAL   = auto()
+
+
 class RadioGroup(Grid):
-    def __init__(self, enum_type, starting_value):
+    def __init__(self, enum_type, starting_value, policy=RadioPolicy.VERTICAL):
         self.selected_value = starting_value
         self.enum_type = enum_type
 
@@ -21,8 +27,14 @@ class RadioGroup(Grid):
             [Text(("header", radio_title))]
         ]
 
-        for radio in self.radio_group:
-            rows.append([radio])
+        if policy is RadioPolicy.VERTICAL:
+            for radio in self.radio_group:
+                rows.append([radio])
+        else:
+            col = []
+            for radio in self.radio_group:
+                col.append(radio)
+            rows.append(col)
 
         super().__init__(rows)
 

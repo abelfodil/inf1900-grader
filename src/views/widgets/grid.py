@@ -79,16 +79,12 @@ class Grid(WidgetWrap):
                 child.focus_next()
             elif end_of_grid:
                 if self.parent is not None and not self.parent.is_end_of_grid():
-                    self.parent.focus_horizontal(1)
+                    return self.parent.focus_horizontal(1)
             else:
                 self.focus_horizontal(1)
 
             if self.current_focus().selectable() == True:
                 break
-            else:
-                with open("out", "w") as f:
-                    f.write("next not selectable")
-
 
 
     def focus_prev(self):
@@ -101,15 +97,12 @@ class Grid(WidgetWrap):
                 focus.focus_prev()
             elif beg_of_grid:
                 if self.parent is not None and not self.parent.is_beg_of_grid():
-                    self.parent.focus_horizontal(-1)
+                    return self.parent.focus_horizontal(-1)
             else:
                 self.focus_horizontal(-1)
 
             if self.current_focus().selectable() == True:
                 break
-            else:
-                with open("out", "w") as f:
-                    f.write("prev not selectable")
 
 
     def focus_first(self):
