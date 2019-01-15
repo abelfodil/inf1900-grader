@@ -131,7 +131,7 @@ class Grid(WidgetWrap):
         self.j = j
 
     def current_focus(self):
-        return self._w.base_widget.contents[self.i][0].contents[self.j][0]
+        return self._w.base_widget.contents[self.i][0].contents[self.j][0].base_widget
 
     def is_end_of_grid(self):
         return  self.i == self.n - 1 and self.j == self.m - 1
