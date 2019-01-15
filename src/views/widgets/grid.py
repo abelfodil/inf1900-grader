@@ -69,6 +69,23 @@ class Grid(WidgetWrap):
             except IndexError:
                 pass
 
+    def focus_vertical(self, direction):
+
+        j = self.j
+        i = self.i
+
+        while True:
+            i += direction
+            j += i // self.n
+            j %= self.m
+            i %= self.n
+
+            try:
+                self.focus(i, j)
+                break
+            except IndexError:
+                pass
+
     def focus_next(self):
 
         while True:
