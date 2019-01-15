@@ -2,7 +2,7 @@ from enum import IntEnum, auto
 
 # Columns as Row and Pile as Column?
 # Think of it has a matrix
-from urwid import Columns, Pile as Rows, WidgetWrap, WidgetContainerMixin, WidgetDecoration
+from urwid import Columns, Pile as Rows, WidgetWrap, WidgetContainerMixin, WidgetDecoration, LineBox
 
 from src.views.base.tui import TUI
 
@@ -126,12 +126,12 @@ class Grid(WidgetWrap):
         self.focus(0, 0)
 
     def focus(self, i, j):
-        self._w.set_focus_path([i, j])
+        self._w.base_widget.set_focus_path([i, j])
         self.i = i
         self.j = j
 
     def current_focus(self):
-        return self._w.contents[self.i][0].contents[self.j][0]
+        return self._w.base_widget.contents[self.i][0].contents[self.j][0]
 
     def is_end_of_grid(self):
         return  self.i == self.n - 1 and self.j == self.m - 1

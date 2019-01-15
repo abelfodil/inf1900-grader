@@ -5,7 +5,7 @@ from urwid import LineBox, Pile, RadioButton, Text, WidgetWrap
 
 from src.views.widgets.grid import Grid
 
-class RadioPolicy:
+class RadioPolicy(IntEnum):
     HORIZONTAL = auto()
     VERTICAL   = auto()
 
@@ -37,6 +37,7 @@ class RadioGroup(Grid):
             rows.append(col)
 
         super().__init__(rows)
+        self._w = LineBox(self._w)
 
     def get_data(self):
         for radio in self.radio_group:
