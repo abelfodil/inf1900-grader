@@ -1,21 +1,35 @@
 from enum import IntEnum, auto
-from itertools import chain
 
-from urwid import Columns, Pile as Rows, WidgetWrap
+# Columns as Row and Pile as Column?
+# Think of it has a matrix
+from urwid import Columns, Pile as Rows, WidgetWrap, WidgetContainerMixin, WidgetDecoration
 
+from src.views.base.tui import TUI
 
-class GridPolicy(IntEnum):
+class GridPolicy:
     HORIZONTAL = auto()
     VERTICAL = auto()
 
-
 class Grid(WidgetWrap):
-    def __init__(self, rows, policy=GridPolicy.HORIZONTAL):
-        super().__init__(Rows([Columns(row) for row in rows]))
-        self.contents = list(chain.from_iterable(rows))
+    def __init__(self, rows):
+
+        m    = 1
+        cols = []
+
+        for row in rows:
+            if len(row) > m:
+                m = len(row)
+
+            for c in row:
+                if isinstance(c, Grid):
+                    c.parent = self
+
+            cols.append(Columns(row))
+
+        super().__init__(Rows(cols))
 
         self.n = len(rows)
-        self.m = round(len(self.contents) / self.n)
+        self.m = m
 
         self.i = 0
         self.j = 0
@@ -36,7 +50,7 @@ class Grid(WidgetWrap):
             "ctrl n": "down"
         }
 
-        self.policy = policy
+        self.parent = None
 
     def focus_horizontal(self, direction):
 
@@ -55,43 +69,65 @@ class Grid(WidgetWrap):
             except IndexError:
                 pass
 
-    def focus_vertical(self, direction):
-
-        i = self.i
-        j = self.j
+    def focus_next(self):
 
         while True:
-            i += direction
-            j += i // self.n
-            i %= self.n
-            j %= self.m
+            child = self.current_focus()
+            end_of_grid = self.is_end_of_grid()
 
-            try:
-                self.focus(i, j)
+            if isinstance(child, Grid):
+                child.focus_next()
+            elif end_of_grid:
+                if self.parent is not None and not self.parent.is_end_of_grid():
+                    self.parent.focus_horizontal(1)
+            else:
+                self.focus_horizontal(1)
+
+            if self.current_focus().selectable() == True:
                 break
-            except IndexError:
-                pass
+            else:
+                with open("out", "w") as f:
+                    f.write("next not selectable")
 
-    def focus_next(self):
-        if self.policy == GridPolicy.HORIZONTAL:
-            return self.focus_horizontal(1)
 
-        return self.focus_vertical(1)
 
     def focus_prev(self):
-        if self.policy == GridPolicy.HORIZONTAL:
-            return self.focus_horizontal(-1)
 
-        return self.focus_vertical(-1)
+        while True:
+            focus = self.current_focus()
+            beg_of_grid = self.is_beg_of_grid()
+
+            if isinstance(focus, Grid):
+                focus.focus_prev()
+            elif beg_of_grid:
+                if self.parent is not None and not self.parent.is_beg_of_grid():
+                    self.parent.focus_horizontal(-1)
+            else:
+                self.focus_horizontal(-1)
+
+            if self.current_focus().selectable() == True:
+                break
+            else:
+                with open("out", "w") as f:
+                    f.write("prev not selectable")
+
 
     def focus_first(self):
-        # TODO: fix buggy behaviour
-        self._w.set_focus_path([0, 0])
+        self.focus(0, 0)
 
     def focus(self, i, j):
         self._w.set_focus_path([i, j])
         self.i = i
         self.j = j
+
+    def current_focus(self):
+        return self._w.contents[self.i][0].contents[self.j][0]
+
+    def is_end_of_grid(self):
+        return  self.i == self.n - 1 and self.j == self.m - 1
+
+    def is_beg_of_grid(self):
+        return  self.i == 0 and self.j == 0
 
     def keypress(self, size, key):
 
