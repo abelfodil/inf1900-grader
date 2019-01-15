@@ -66,8 +66,8 @@ class Grid(WidgetWrap):
                 i += direction
                 j += i // self.n
 
-            j %= self.m
             i %= self.n
+            j %= self.m
 
             try:
                 self.focus(i, j)
@@ -84,9 +84,13 @@ class Grid(WidgetWrap):
             elif not forward and self.__is_first():
                 if self.parent is not None and not self.parent.__is_first():
                     return self.parent.focus_direction(forward, horizontal)
+                else:
+                    self.focus_direction(forward, horizontal)
             elif forward and self.__is_last():
                 if self.parent is not None and not self.parent.__is_last():
                     return self.parent.focus_direction(forward, horizontal)
+                else:
+                    self.focus_direction(forward, horizontal)
             else:
                 self.focus_direction(forward, horizontal)
 
@@ -95,6 +99,8 @@ class Grid(WidgetWrap):
 
     def focus_first(self):
         self.focus(0, 0)
+        self.i = 0
+        self.j = 0
 
     def focus(self, i, j):
         self._w.base_widget.set_focus_path([i, j])
