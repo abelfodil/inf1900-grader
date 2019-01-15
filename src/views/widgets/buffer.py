@@ -3,6 +3,7 @@ from urwid import Edit, emit_signal
 from src.util.dlist import Dlist
 from src.views.base.signal import Signal, SignalType
 
+
 @Signal(SignalType.FLUSH)
 class MiniBuffer(Edit):
 

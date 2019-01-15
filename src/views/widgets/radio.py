@@ -1,9 +1,10 @@
-from re import sub
 from enum import IntEnum, auto
+from re import sub
 
-from urwid import LineBox, Pile, RadioButton, Text, WidgetWrap
+from urwid import LineBox, RadioButton, Text
 
 from src.views.widgets.grid import Grid
+
 
 class RadioPolicy(IntEnum):
     HORIZONTAL = auto()
