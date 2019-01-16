@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
-from urwid import Text
 
-from src.views.base.tui import TUI
 from src.views.panels.main import MainPanel
 
 if __name__ == "__main__":
-
-    main_view = MainPanel()
-    tui = TUI(main_view.root, header=Text(("header", ""), "center"))
-    main_view.connect("on_swap", lambda view, hint: (tui.body(view.root), tui.print(hint)))
-
-    try:
-        tui()
-    finally:
-        tui.loop.screen.stop()
+    MainPanel().start_tui()

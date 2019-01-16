@@ -1,56 +1,32 @@
-from urwid import AttrMap, Columns, Filler, LineBox, ProgressBar
+from urwid import AttrMap, Filler, LineBox, emit_signal
 
-from src.views.base.button import Button
-from src.views.base.controller import Controller
-from src.views.base.signal import Signal
-from src.views.base.tree import TreeWidget
+from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
+from src.views.widgets.button import Button
+from src.views.widgets.grid import Grid
 
 
-@Signal("on_quit")
-class AbstractPanel(Controller):
-
-    def __init__(self, widget, form):
+class AbstractPanel:
+    def __init__(self, grid_elements, form):
 
         super().__init__()
 
-        confirm  = LineBox(AttrMap(Button("Confirm",
-                                          on_press=self.confirm,
-                                          align="center"),
-                                   "default",
-                                   "confirm_button"))
+        confirm = LineBox(AttrMap(Button("Confirm",
+                                         on_press=self.confirm,
+                                         align="center"),
+                                  "default",
+                                  "confirm_button"))
 
-        abort    = LineBox(AttrMap(Button("Abort",
-                                          on_press=self.quit,
-                                          align="center"),
-                                   "default",
-                                   "abort_button"))
+        abort = LineBox(AttrMap(Button("Abort",
+                                       on_press=self.quit,
+                                       align="center"),
+                                "default",
+                                "abort_button"))
 
-        self.buttons_column  = Columns([confirm, abort])
+        grid_elements.append([confirm, abort])
 
-        bar      = ProgressBar("progress_low",
-                               "progress_hight",
-                               current=10)
-
-        tree = TreeWidget(widget)
-
-        tree.bind("up", tree.focus_prev_node)
-        tree.bind("down", tree.focus_next_node)
-
-        tree.set_aliases(
-            [
-                ("ctrl p", "up"),
-                ("shift tab", "up"),
-                ("ctrl n", "down"),
-                ("tab", "down"),
-                ("ctrl f", "right"),
-                ("ctrl b", "left"),
-            ]
-        )
-
-        self.tree = tree
+        self.root = Filler(Grid(grid_elements), valign="top")
         self.form = form
-        self.root = Filler(self.tree, valign="top")
 
     def confirm(self, button):
         try:
@@ -61,5 +37,5 @@ class AbstractPanel(Controller):
 
     def quit(self, button):
         TUI.clear()
-        self.emit("on_quit", button)
-        self.tree.focus_first_node()
+        emit_signal(self, SignalType.QUIT, button)
+        self.root.base_widget.focus_first()

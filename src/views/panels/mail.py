@@ -1,26 +1,28 @@
-from urwid import Columns, LineBox
+from urwid import Edit, LineBox
 
 from src.models.mail import mail
 from src.models.state import state
-from src.views.base.buffer import EditBuffer
 from src.views.base.form import Form
-from src.views.base.signal import Signal
+from src.views.base.signal import Signal, SignalType
 from src.views.panels.abstract import AbstractPanel
 
 
-@Signal("on_quit")
+@Signal(SignalType.QUIT)
 class MailPanel(AbstractPanel):
 
     def __init__(self):
-        sender    = LineBox(EditBuffer(("header", "Sender email\n\n"), state.sender_email))
-        recipient = LineBox(EditBuffer(("header", "Recipient email\n\n"), state.recipient_email))
-        column1   = Columns([sender, recipient])
+        sender = LineBox(Edit(("header", "Sender email\n\n"), state.sender_email))
+        recipient = LineBox(Edit(("header", "Recipient email\n\n"), state.recipient_email))
+        grading_directory = LineBox(
+            Edit(("header", "Grading directory\n\n"), state.grading_directory))
+        subject = LineBox(Edit(("header", "Subject\n\n"), state.subject))
+        message = LineBox(Edit(("header", "Message\n\n"), state.message, multiline=True))
 
-        grading_directory = LineBox(EditBuffer(("header", "Grading directory\n\n"), state.grading_directory))
-        subject  = LineBox(EditBuffer(("header", "Subject\n\n"), state.subject))
-        column2  = Columns([grading_directory, subject])
-
-        message  = LineBox(EditBuffer(("header" , "Message\n\n"), state.message, multiline=True))
+        grid_elements = [
+            [sender, recipient],
+            [grading_directory, subject],
+            [message],
+        ]
 
         form = Form(mail,
                     sender_email=sender,
@@ -29,7 +31,4 @@ class MailPanel(AbstractPanel):
                     message=message,
                     grading_directory=grading_directory)
 
-        super().__init__(column1, form)
-        self.tree.split_vertically(column2)
-        self.tree.split_vertically(message)
-        self.tree.split_vertically(self.buttons_column)
+        super().__init__(grid_elements, form)

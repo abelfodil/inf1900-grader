@@ -1,11 +1,10 @@
-from urwid import Text
+from urwid import Text, connect_signal, emit_signal
 
-from src.views.base.controller import Controller
-from src.views.base.signal import Signal
+from src.views.base.signal import Signal, SignalType
 
 
-@Signal("on_press")
-class Button(Text, Controller):
+@Signal(SignalType.PRESS)
+class Button(Text):
 
     def __init__(self, markup, on_press=None, *kargs, **kwargs):
 
@@ -15,12 +14,11 @@ class Button(Text, Controller):
         self._selectable = True
 
         if callable(on_press):
-            self.connect("on_press", on_press)
+            connect_signal(self, SignalType.PRESS, on_press)
 
     def keypress(self, size, key):
-
         if key == "enter":
-            self.emit("on_press", self)
+            emit_signal(self, SignalType.PRESS, self)
             return None
 
         return key
