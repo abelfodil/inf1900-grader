@@ -26,7 +26,7 @@ class MainPanel(HydraWidget):
             ("q", "Quit", TUI.quit),
         ])
 
-        self.root = Filler(self, valign="bottom")
+        self.root = Filler(self, valign="middle")
 
     def add_views(self, views):
         heads = []
