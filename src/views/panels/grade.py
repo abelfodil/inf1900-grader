@@ -19,7 +19,7 @@ class GradePanel(AbstractPanel):
         grader_name = LineBox(Edit(("header", "Grader's name\n\n"), state.grader_name))
         group_number = LineBox(IntEdit(("header", "Group number\n\n"), state.group_number))
 
-        assignment_type = RadioGroup(AssignmentType, state.assignment_type)
+        assignment_type = RadioGroup("Assignment type", AssignmentType, state.assignment_type)
         deadline = LineBox(Edit(("header", "Deadline\n\n"), state.deadline))
 
         assignment_sname = LineBox(

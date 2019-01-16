@@ -15,7 +15,7 @@ class ClonePanel(AbstractPanel):
         grading_directory = LineBox(
             Edit(("header", "Grading directory\n\n"), state.grading_directory))
         group_number = LineBox(IntEdit(("header", "Group number\n\n"), state.group_number))
-        team_type = RadioGroup(TeamType, state.team_type)
+        team_type = RadioGroup("Team type", TeamType, state.team_type)
 
         grid_elements = [
             [grading_directory],
