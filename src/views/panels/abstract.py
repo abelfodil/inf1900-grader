@@ -1,13 +1,17 @@
+from abc import ABC, abstractmethod
+
 from urwid import AttrMap, Filler, LineBox, emit_signal
 
 from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
 from src.views.widgets.button import Button
 from src.views.widgets.grid import Grid
+from src.views.base.form import Form
 
 
-class AbstractPanel:
-    def __init__(self, grid_elements, form):
+class AbstractPanel(ABC):
+    @abstractmethod
+    def __init__(self, grid_elements: list, form: Form):
 
         super().__init__()
 
