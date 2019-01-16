@@ -1,11 +1,4 @@
-from enum import auto
-
 from urwid import Columns, Pile as Rows, WidgetWrap
-
-
-class GridPolicy:
-    HORIZONTAL = auto()
-    VERTICAL = auto()
 
 
 class Grid(WidgetWrap):
