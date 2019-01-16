@@ -1,7 +1,6 @@
 from collections import Callable
 
-from urwid import AttrMap, Edit, Filler, IntEdit, LineBox, MetaSignals, WidgetDecoration, \
-    emit_signal
+from urwid import Edit, Filler, IntEdit, MetaSignals, WidgetDecoration, emit_signal
 
 from src.models.state import state
 from src.views.base.signal import SignalType
@@ -18,21 +17,14 @@ class Form(Grid, metaclass=MetaSignals):
     signals = [SignalType.QUIT]
 
     def __init__(self, named_grid_elements: list, callback: Callable):
-
-        confirm = LineBox(AttrMap(Button("Confirm", on_press=self.__confirm, align="center"),
-                                  "default",
-                                  "confirm_button"))
-
-        abort = LineBox(AttrMap(Button("Abort", on_press=self.__quit, align="center"),
-                                "default",
-                                "abort_button"))
-
         self.named_widgets = {}
         unnamed_grid_elements = []
         for row in named_grid_elements:
             self.named_widgets.update(row)
             unnamed_grid_elements.append(list(row.values()))
 
+        confirm = Button("Confirm", "confirm_button", self.__confirm)
+        abort = Button("Abort", "abort_button", self.__quit)
         unnamed_grid_elements.append([confirm, abort])
 
         super().__init__(unnamed_grid_elements)
@@ -40,16 +32,16 @@ class Form(Grid, metaclass=MetaSignals):
         self.root = Filler(self, valign="top")
         self.on_submit = callback
 
-    def __confirm(self, button):
+    def __confirm(self):
         try:
             self.__submit()
-            self.__quit(button)
+            self.__quit()
         except Exception as e:
             TUI.print(("error", str(e)))
 
-    def __quit(self, button):
+    def __quit(self):
         TUI.clear()
-        emit_signal(self, SignalType.QUIT, button)
+        emit_signal(self, SignalType.QUIT)
         self.root.base_widget.focus_first()
 
     def __submit(self):

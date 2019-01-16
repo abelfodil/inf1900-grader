@@ -4,5 +4,5 @@ from enum import Enum
 class SignalType(Enum):
     QUIT = "on_quit"
     SWAP = "on_swap"
-    PRESS = "on_press"
+    CLICK = "on_click"
     FLUSH = "on_flush"
