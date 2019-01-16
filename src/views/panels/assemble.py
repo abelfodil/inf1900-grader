@@ -3,11 +3,9 @@ from urwid import Edit, LineBox
 from src.models.assemble import assemble
 from src.models.state import state
 from src.views.base.form import Form
-from src.views.base.signal import Signal, SignalType
 from src.views.panels.abstract import AbstractPanel
 
 
-@Signal(SignalType.QUIT)
 class AssemblePanel(AbstractPanel):
 
     def __init__(self):

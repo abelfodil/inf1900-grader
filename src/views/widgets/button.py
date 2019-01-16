@@ -1,10 +1,10 @@
-from urwid import Text, connect_signal, emit_signal
+from urwid import MetaSignals, Text, connect_signal, emit_signal
 
-from src.views.base.signal import Signal, SignalType
+from src.views.base.signal import SignalType
 
 
-@Signal(SignalType.PRESS)
-class Button(Text):
+class Button(Text, metaclass=MetaSignals):
+    signals = [SignalType.PRESS]
 
     def __init__(self, markup, on_press=None, *kargs, **kwargs):
 

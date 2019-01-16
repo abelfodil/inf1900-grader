@@ -3,11 +3,9 @@ from urwid import Edit, LineBox
 from src.models.mail import mail
 from src.models.state import state
 from src.views.base.form import Form
-from src.views.base.signal import Signal, SignalType
 from src.views.panels.abstract import AbstractPanel
 
 
-@Signal(SignalType.QUIT)
 class MailPanel(AbstractPanel):
 
     def __init__(self):
