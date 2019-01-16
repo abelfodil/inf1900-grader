@@ -28,19 +28,17 @@ class Grid(WidgetWrap):
         self.focus(self.i, self.j)
 
         self.keybinds = {
-            "down" : lambda: self.focus_recursive(forward=True, horizontal=False),
-            "up"   : lambda: self.focus_recursive(forward=False, horizontal=False),
-            "right": lambda: self.focus_recursive(forward=True, horizontal=True),
-            "left" : lambda: self.focus_recursive(forward=False, horizontal=True)
+            "down"     : lambda: self.focus_recursive(forward=True, horizontal=False),
+            "up"       : lambda: self.focus_recursive(forward=False, horizontal=False),
+            "tab"      : lambda: self.focus_recursive(forward=True, horizontal=True),
+            "shift tab": lambda: self.focus_recursive(forward=False, horizontal=True)
         }
 
         self.aliases = {
-            "shift tab": "left",
-            "tab"      : "right",
-            "ctrl f"   : "left",
-            "ctrl b"   : "right",
-            "ctrl p"   : "up",
-            "ctrl n"   : "down"
+            "ctrl f": "left",
+            "ctrl b": "right",
+            "ctrl p": "up",
+            "ctrl n": "down"
         }
 
         self.parent = None
