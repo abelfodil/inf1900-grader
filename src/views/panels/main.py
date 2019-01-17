@@ -28,6 +28,7 @@ class MainPanel(HydraWidget):
 
         self.root = Filler(self, valign="bottom")
 
+
     def add_views(self, views):
         heads = []
         for letter, hint, view, in views:
@@ -46,7 +47,28 @@ class MainPanel(HydraWidget):
         self.swap_view(self, "")
 
     def start_tui(self):
-        tui = TUI(self.root, header=Text(("header", ""), "center"))
+
+        helper = [
+            ("C-p", "Next vertical"),
+            ("C-n", "Prev vertical"),
+            ("C-f", "Forward char"),
+            ("C-b", "Backward char"),
+            ("TAB", "Next horizontal"),
+            ("S-TAB", "Prev horizontal")
+        ]
+
+        # Glitch
+        markup = ["\n"]
+
+        for key, text in helper:
+            markup.append(("helper_key", key))
+            markup.append(" ")
+            markup.append(("helper_text", text))
+            markup.append(" ")
+
+        helper_text = Text(markup, align="center")
+
+        tui = TUI(self.root, header=Text(("header", ""), "center"), footer=helper_text)
         connect_signal(self, SignalType.SWAP,
                        lambda view, hint: (tui.body(view.root), tui.print(hint)))
 

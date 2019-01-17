@@ -49,6 +49,9 @@ class TUI(metaclass=Singleton):
         ("abort_button", "light red", "brown"),
         ("progress_low", "default", "yellow"),
         ("progress_hight", "default", "dark green"),
+        ("helper_key", "bold", "default"),
+        ("helper_text", "black", "dark cyan")
+
     ]
 
     keybind = {}
