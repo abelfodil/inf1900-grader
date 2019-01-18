@@ -1,4 +1,4 @@
-from urwid import Filler, MetaSignals, Text, connect_signal, emit_signal
+from urwid import Filler, MetaSignals, Text, connect_signal
 
 from src.views.base.signal import SignalType
 from src.views.base.tui import TUI

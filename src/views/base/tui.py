@@ -41,7 +41,7 @@ class TUI(metaclass=Singleton):
     palette = [
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
-        ("header", "bold, underline, dark green", ""),
+        ("header", "bold, underline, brown", ""),
         ("error", "bold, light red", ""),
         ("normal_box", "default", "default"),
         ("selected_box", "black", "light gray"),
@@ -50,7 +50,7 @@ class TUI(metaclass=Singleton):
         ("progress_low", "default", "yellow"),
         ("progress_hight", "default", "dark green"),
         ("helper_key", "bold", "default"),
-        ("helper_text", "black", "dark cyan")
+        ("helper_text", "black", "brown")
 
     ]
 
