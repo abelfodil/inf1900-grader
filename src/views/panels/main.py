@@ -66,14 +66,9 @@ class MainPanel(HydraWidget, metaclass=MetaSignals):
 
     @staticmethod
     def generate_helper_text(hints):
-        # Glitch
-        markup = ["\n"]
-
+        markup = []
         for key, text in hints:
-            markup.append(("helper_key", key))
-            markup.append(" ")
-            markup.append(("helper_text", text))
-            markup.append(" ")
+            markup.extend((("helper_key", key), " ", ("helper_text", text), " "))
 
         return Text(markup, align="center")
 
