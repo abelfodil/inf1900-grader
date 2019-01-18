@@ -50,8 +50,10 @@ class TUI(metaclass=Singleton):
         ("progress_low", "default", "yellow"),
         ("progress_hight", "default", "dark green"),
         ("helper_key", "bold", "default"),
-        ("helper_text", "black", "brown")
-
+        ("helper_text_brown", "black", "brown"),
+        ("helper_text_red", "black", "dark red"),
+        ("helper_text_green", "black", "dark green"),
+        ("helper_text_light", "white", "dark blue"),
     ]
 
     keybind = {}

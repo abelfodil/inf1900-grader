@@ -27,15 +27,15 @@ class MainPanel(HydraWidget, metaclass=MetaSignals):
         self.root = Filler(self, valign="middle")
 
         self.main_helper_text = self.generate_helper_text([
-            ("C-\\", "Close program"),
+            ("C-\\", "Close program", "helper_text_red"),
         ])
 
         self.subview_helper_text = self.generate_helper_text([
-            ("C-\\", "Close program"),
-            ("F5", "Confirm"),
-            ("F10", "Abort"),
-            ("TAB", "Next field"),
-            ("S-TAB", "Previous field")
+            ("C-\\", "Close program", "helper_text_red"),
+            ("F5", "Confirm", "helper_text_green"),
+            ("F10", "Abort", "helper_text_brown"),
+            ("TAB", "Next field", "helper_text_light"),
+            ("S-TAB", "Previous field", "helper_text_light")
         ])
 
     def add_views(self, views):
@@ -67,8 +67,8 @@ class MainPanel(HydraWidget, metaclass=MetaSignals):
     @staticmethod
     def generate_helper_text(hints):
         markup = []
-        for key, text in hints:
-            markup.extend((("helper_key", key), " ", ("helper_text", text), " "))
+        for key, text, text_palette in hints:
+            markup.extend((("helper_key", key), " ", (text_palette, text), " "))
 
         return Text(markup, align="center")
 
