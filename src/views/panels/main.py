@@ -28,7 +28,6 @@ class MainPanel(HydraWidget, metaclass=MetaSignals):
 
         self.root = Filler(self, valign="middle")
 
-
     def add_views(self, views):
         heads = []
         for letter, hint, view, in views:
@@ -49,12 +48,11 @@ class MainPanel(HydraWidget, metaclass=MetaSignals):
     def start_tui(self):
 
         helper = [
-            ("C-p", "Next vertical"),
-            ("C-n", "Prev vertical"),
-            ("C-f", "Forward char"),
-            ("C-b", "Backward char"),
-            ("TAB", "Next horizontal"),
-            ("S-TAB", "Prev horizontal")
+            ("C-\\", "Close program"),
+            ("F5", "Confirm"),
+            ("F10", "Abort"),
+            ("TAB", "Next field"),
+            ("S-TAB", "Previous field")
         ]
 
         # Glitch

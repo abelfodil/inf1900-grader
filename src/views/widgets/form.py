@@ -28,8 +28,10 @@ class Form(Grid, metaclass=MetaSignals):
         unnamed_grid_elements.append([confirm, abort])
 
         super().__init__(unnamed_grid_elements)
-
         self.root = Filler(self, valign="top")
+
+        self.keybinds["f5"] = self.__confirm
+        self.keybinds["f10"] = self.__quit
         self.on_submit = callback
 
     def __confirm(self):
