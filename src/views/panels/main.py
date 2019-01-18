@@ -10,8 +10,6 @@ from src.views.widgets.hydra import HydraWidget
 
 
 class MainPanel(HydraWidget, metaclass=MetaSignals):
-    signals = [SignalType.SWAP]
-
     def __init__(self):
         super().__init__(info="Welcome to INF1900 interactive grading tool!", align="center")
 
@@ -28,48 +26,59 @@ class MainPanel(HydraWidget, metaclass=MetaSignals):
 
         self.root = Filler(self, valign="middle")
 
+        self.main_helper_text = self.generate_helper_text([
+            ("C-\\", "Close program"),
+        ])
+
+        self.subview_helper_text = self.generate_helper_text([
+            ("C-\\", "Close program"),
+            ("F5", "Confirm"),
+            ("F10", "Abort"),
+            ("TAB", "Next field"),
+            ("S-TAB", "Previous field")
+        ])
+
     def add_views(self, views):
         heads = []
         for letter, hint, view, in views:
-            connect_signal(view, SignalType.QUIT, self.restore)
-            heads.append((letter, "blue_head", hint, self.swap_view, {"view": view, "hint": hint}))
+            connect_signal(view, SignalType.QUIT, self.display_main)
+            heads.append(
+                (letter, "blue_head", hint, self.display_subview, {"view": view, "hint": hint}))
 
         self.add_heads(heads)
 
     def add_actions(self, actions: list):
         self.add_heads(map(lambda action: (action[0], "red_head", *action[1:]), actions))
 
-    def swap_view(self, view, hint):
-        emit_signal(self, SignalType.SWAP, view, hint)
+    @staticmethod
+    def __change_view(view, hint):
+        tui = TUI()
+        tui.body(view.root)
+        tui.print(hint)
 
-    def restore(self, *kargs):
-        self.swap_view(self, "")
+    def display_subview(self, view, hint):
+        TUI().root.footer = self.subview_helper_text
+        self.__change_view(view, hint)
 
-    def start_tui(self):
+    def display_main(self, *kargs):
+        TUI().root.footer = self.main_helper_text
+        self.__change_view(self, "")
 
-        helper = [
-            ("C-\\", "Close program"),
-            ("F5", "Confirm"),
-            ("F10", "Abort"),
-            ("TAB", "Next field"),
-            ("S-TAB", "Previous field")
-        ]
-
+    @staticmethod
+    def generate_helper_text(hints):
         # Glitch
         markup = ["\n"]
 
-        for key, text in helper:
+        for key, text in hints:
             markup.append(("helper_key", key))
             markup.append(" ")
             markup.append(("helper_text", text))
             markup.append(" ")
 
-        helper_text = Text(markup, align="center")
+        return Text(markup, align="center")
 
-        tui = TUI(self.root, header=Text(("header", ""), "center"), footer=helper_text)
-        connect_signal(self, SignalType.SWAP,
-                       lambda view, hint: (tui.body(view.root), tui.print(hint)))
-
+    def start_tui(self):
+        tui = TUI(self.root, header=Text(("header", ""), "center"), footer=self.main_helper_text)
         try:
             tui()
         finally:

@@ -56,10 +56,8 @@ class TUI(metaclass=Singleton):
 
     keybind = {}
 
-    def __init__(self, body, header=None, footer=None):
-        self.root = Frame(body,
-                          header,
-                          footer)
+    def __init__(self, body, header, footer):
+        self.root = Frame(body, header, footer)
 
         TUI.loop = MainLoop(self.root, TUI.palette,
                             unhandled_input=self.unhandled_input)
