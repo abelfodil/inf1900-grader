@@ -29,3 +29,4 @@
 
 # Ce qui manque
 - Utiliser clang-format et clang-tidy pour plus d'automatisations.
+- Simuler le matériel pour plus d'automatisations.

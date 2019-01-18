@@ -1,5 +1,4 @@
 from enum import IntEnum, auto
-from re import sub
 
 from urwid import LineBox, RadioButton, Text
 
@@ -12,7 +11,7 @@ class RadioPolicy(IntEnum):
 
 
 class RadioGroup(Grid):
-    def __init__(self, enum_type, starting_value, policy=RadioPolicy.VERTICAL):
+    def __init__(self, title, enum_type, starting_value, policy=RadioPolicy.VERTICAL):
         self.selected_value = starting_value
         self.enum_type = enum_type
 
@@ -22,10 +21,8 @@ class RadioGroup(Grid):
                         label=choice.name.capitalize(),
                         state=choice is starting_value)
 
-        radio_title = sub(r"(\w)([A-Z])", r"\1 \2", enum_type.__name__).capitalize()
-
         rows = [
-            [Text(("header", radio_title))]
+            [Text(("header", title))]
         ]
 
         if policy is RadioPolicy.VERTICAL:

@@ -1,11 +1,11 @@
-from urwid import Edit, emit_signal
+from urwid import Edit, MetaSignals, emit_signal
 
 from src.util.dlist import Dlist
-from src.views.base.signal import Signal, SignalType
+from src.views.base.signal import SignalType
 
 
-@Signal(SignalType.FLUSH)
 class MiniBuffer(Edit):
+    signals = [SignalType.FLUSH]
 
     def __init__(self, *args, **kwargs):
 
