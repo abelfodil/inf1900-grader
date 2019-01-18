@@ -1,11 +1,11 @@
 from collections import Callable
 
-from urwid import AttrMap, LineBox, MetaSignals, Text, WidgetWrap, connect_signal, emit_signal
+from urwid import AttrMap, LineBox, Text, WidgetWrap, connect_signal, emit_signal
 
 from src.views.base.signal import SignalType
 
 
-class Button(WidgetWrap, metaclass=MetaSignals):
+class Button(WidgetWrap):
     signals = [SignalType.CLICK]
 
     def __init__(self, text: str, palette: str, callback: Callable):

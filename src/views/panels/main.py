@@ -1,4 +1,4 @@
-from urwid import Filler, MetaSignals, Text, connect_signal
+from urwid import Filler, Text, connect_signal
 
 from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
@@ -9,7 +9,7 @@ from src.views.panels.mail import MailPanel
 from src.views.widgets.hydra import HydraWidget
 
 
-class MainPanel(HydraWidget, metaclass=MetaSignals):
+class MainPanel(HydraWidget):
     def __init__(self):
         super().__init__(info="Welcome to INF1900 interactive grading tool!", align="center")
 
