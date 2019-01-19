@@ -20,22 +20,18 @@ class MainPanel(HydraWidget):
             ("m", "Mail", MailPanel())
         ])
 
-        self.add_actions([
-            ("q", "Quit", TUI.quit),
-        ])
-
         self.root = Filler(self, valign="middle")
 
         self.main_helper_text = self.generate_helper_text([
-            ("C-\\", "Close program", "helper_text_red"),
+            ("F10", "Quit", "helper_text_red"),
         ])
 
         self.subview_helper_text = self.generate_helper_text([
-            ("C-\\", "Close program", "helper_text_red"),
-            ("F5", "Confirm", "helper_text_green"),
-            ("F10", "Abort", "helper_text_brown"),
-            ("TAB", "Next field", "helper_text_light"),
-            ("S-TAB", "Previous field", "helper_text_light")
+            ("F1", "Confirm", "helper_text_green"),
+            ("F5", "Abort", "helper_text_brown"),
+            ("F10", "Quit", "helper_text_red"),
+            ("TAB", "Next", "helper_text_light"),
+            ("S-TAB", "Previous", "helper_text_light")
         ])
 
     def add_views(self, views):
@@ -74,6 +70,8 @@ class MainPanel(HydraWidget):
 
     def start_tui(self):
         tui = TUI(self.root, header=Text(("header", ""), "center"), footer=self.main_helper_text)
+        tui.bind_global("f10", tui.quit)
+
         try:
             tui()
         finally:

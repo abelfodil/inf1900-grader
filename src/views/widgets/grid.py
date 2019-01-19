@@ -27,7 +27,7 @@ class Grid(WidgetWrap):
 
         self.focus(self.i, self.j)
 
-        self.keybinds = {
+        self.keybind = {
             "down"     : lambda: self.focus_recursive(forward=True, horizontal=False),
             "up"       : lambda: self.focus_recursive(forward=False, horizontal=False),
             "tab"      : lambda: self.focus_recursive(forward=True, horizontal=True),
@@ -112,8 +112,8 @@ class Grid(WidgetWrap):
         if key in self.aliases:
             key = self.aliases[key]
 
-        if key in self.keybinds:
-            self.keybinds[key]()
+        if key in self.keybind:
+            self.keybind[key]()
             return None
 
         return super().keypress(size, key)
