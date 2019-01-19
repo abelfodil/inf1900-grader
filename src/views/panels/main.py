@@ -1,11 +1,11 @@
 from urwid import Filler, Text, connect_signal
 
-from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
 from src.views.panels.assemble import AssemblePanel
 from src.views.panels.clone import ClonePanel
 from src.views.panels.grade import GradePanel
 from src.views.panels.mail import MailPanel
+from src.views.widgets.form import QUIT_SIGNAL
 from src.views.widgets.hydra import HydraWidget
 
 
@@ -37,7 +37,7 @@ class MainPanel(HydraWidget):
     def add_views(self, views):
         heads = []
         for letter, hint, view, in views:
-            connect_signal(view, SignalType.QUIT, self.display_main)
+            connect_signal(view, QUIT_SIGNAL, self.display_main)
             heads.append(
                 (letter, "blue_head", hint, self.display_subview, {"view": view, "hint": hint}))
 

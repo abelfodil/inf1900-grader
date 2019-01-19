@@ -3,7 +3,6 @@ from collections import Callable
 from urwid import Edit, Filler, IntEdit, WidgetDecoration, emit_signal
 
 from src.models.state import state
-from src.views.base.signal import SignalType
 from src.views.base.tui import TUI
 from src.views.widgets.button import Button
 from src.views.widgets.grid import Grid
@@ -12,9 +11,11 @@ WidgetDecoration.get_data = lambda wrapped_widget: wrapped_widget.base_widget.ge
 Edit.get_data = Edit.get_edit_text
 IntEdit.get_data = IntEdit.value
 
+QUIT_SIGNAL = "on_quit"
+
 
 class Form(Grid):
-    signals = [SignalType.QUIT]
+    signals = [QUIT_SIGNAL]
 
     def __init__(self, named_grid_elements: list, callback: Callable):
         self.named_widgets = {}
@@ -43,7 +44,7 @@ class Form(Grid):
 
     def __quit(self):
         TUI.clear()
-        emit_signal(self, SignalType.QUIT)
+        emit_signal(self, QUIT_SIGNAL)
         self.root.base_widget.focus_first()
 
     def __submit(self):

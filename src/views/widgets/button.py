@@ -2,14 +2,14 @@ from collections import Callable
 
 from urwid import AttrMap, LineBox, Text, WidgetWrap, connect_signal, emit_signal
 
-from src.views.base.signal import SignalType
+CLICK_SIGNAL = "on_click"
 
 
 class Button(WidgetWrap):
-    signals = [SignalType.CLICK]
+    signals = [CLICK_SIGNAL]
 
     def __init__(self, text: str, palette: str, callback: Callable):
-        connect_signal(self, SignalType.CLICK, callback)
+        connect_signal(self, CLICK_SIGNAL, callback)
 
         widget = LineBox(AttrMap(Text(f"[{text}]", align="center"), "default", palette))
         super().__init__(widget)
@@ -19,7 +19,7 @@ class Button(WidgetWrap):
 
     def keypress(self, size, key):
         if key == "enter":
-            emit_signal(self, SignalType.CLICK)
+            emit_signal(self, CLICK_SIGNAL)
             return None
 
         return key
