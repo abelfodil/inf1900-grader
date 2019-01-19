@@ -41,7 +41,7 @@ class TUI(metaclass=Singleton):
     palette = [
         ("blue_head", "dark blue", ""),
         ("red_head", "dark red", ""),
-        ("header", "bold, underline, dark green", ""),
+        ("header", "bold, underline, brown", ""),
         ("error", "bold, light red", ""),
         ("normal_box", "default", "default"),
         ("selected_box", "black", "light gray"),
@@ -49,14 +49,17 @@ class TUI(metaclass=Singleton):
         ("abort_button", "light red", "brown"),
         ("progress_low", "default", "yellow"),
         ("progress_hight", "default", "dark green"),
+        ("helper_key", "bold", "default"),
+        ("helper_text_brown", "black", "brown"),
+        ("helper_text_red", "black", "dark red"),
+        ("helper_text_green", "black", "dark green"),
+        ("helper_text_light", "white", "dark blue"),
     ]
 
     keybind = {}
 
-    def __init__(self, body, header=None, footer=None):
-        self.root = Frame(body,
-                          header,
-                          footer)
+    def __init__(self, body, header, footer):
+        self.root = Frame(body, header, footer)
 
         TUI.loop = MainLoop(self.root, TUI.palette,
                             unhandled_input=self.unhandled_input)

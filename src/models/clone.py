@@ -37,8 +37,6 @@ def clone_repos(grading_directory: str, student_list: list):
     for team in unique_team_list:
         team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
         output_directory = f"{grading_directory}/{team}"
-
-        print(f"Cloning team {team}'s repository...")
         Repo.clone_from(team_repo_url, output_directory)
 
 

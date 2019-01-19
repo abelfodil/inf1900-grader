@@ -1,6 +1,6 @@
 from collections import Callable
 
-from urwid import Edit, Filler, IntEdit, MetaSignals, WidgetDecoration, emit_signal
+from urwid import Edit, Filler, IntEdit, WidgetDecoration, emit_signal
 
 from src.models.state import state
 from src.views.base.signal import SignalType
@@ -13,7 +13,7 @@ Edit.get_data = Edit.get_edit_text
 IntEdit.get_data = IntEdit.value
 
 
-class Form(Grid, metaclass=MetaSignals):
+class Form(Grid):
     signals = [SignalType.QUIT]
 
     def __init__(self, named_grid_elements: list, callback: Callable):
@@ -28,8 +28,10 @@ class Form(Grid, metaclass=MetaSignals):
         unnamed_grid_elements.append([confirm, abort])
 
         super().__init__(unnamed_grid_elements)
-
         self.root = Filler(self, valign="top")
+
+        self.keybinds["f5"] = self.__confirm
+        self.keybinds["f10"] = self.__quit
         self.on_submit = callback
 
     def __confirm(self):

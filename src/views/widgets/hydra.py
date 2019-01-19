@@ -35,7 +35,10 @@ class HydraWidget(Text):
         self.set_text(markup)
 
     def keypress(self, size, key):
-        if key in self.heads:
+        if key in self.keybind:
+            self.keybind[key]()
+            return None
+        elif key in self.heads:
             self.heads[key]()
             return None
 

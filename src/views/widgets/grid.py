@@ -35,8 +35,8 @@ class Grid(WidgetWrap):
         }
 
         self.aliases = {
-            "ctrl f": "left",
-            "ctrl b": "right",
+            "ctrl f": "right",
+            "ctrl b": "left",
             "ctrl p": "up",
             "ctrl n": "down"
         }
