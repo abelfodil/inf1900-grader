@@ -67,10 +67,3 @@ class MainPanel(HydraWidget):
             markup.extend((("helper_key", key), " ", (text_palette, text), " "))
 
         return Text(markup, align="center")
-
-    def start_tui(self):
-        tui = TUI(self.root, footer=self.main_helper_text)
-        try:
-            tui()
-        finally:
-            tui.loop.screen.stop()
