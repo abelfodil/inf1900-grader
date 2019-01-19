@@ -40,10 +40,10 @@ class Form(Grid):
             self.__submit()
             self.__quit()
         except Exception as e:
-            TUI.print(("error", str(e)))
+            TUI().set_header_text(("error", str(e)))
 
     def __quit(self):
-        TUI.clear()
+        TUI().clear_header()
         emit_signal(self, QUIT_SIGNAL)
         self.root.base_widget.focus_first()
 

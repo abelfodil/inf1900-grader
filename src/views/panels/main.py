@@ -49,8 +49,8 @@ class MainPanel(HydraWidget):
     @staticmethod
     def __change_view(view, hint):
         tui = TUI()
-        tui.body(view.root)
-        tui.print(hint)
+        tui.root.body = view.root
+        tui.set_header_text(hint)
 
     def display_subview(self, view, hint):
         TUI().root.footer = self.subview_helper_text
@@ -69,9 +69,7 @@ class MainPanel(HydraWidget):
         return Text(markup, align="center")
 
     def start_tui(self):
-        tui = TUI(self.root, header=Text(("header", ""), "center"), footer=self.main_helper_text)
-        tui.bind_global("f10", tui.quit)
-
+        tui = TUI(self.root, footer=self.main_helper_text)
         try:
             tui()
         finally:
