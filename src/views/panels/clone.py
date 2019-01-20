@@ -18,4 +18,4 @@ class ClonePanel(Form):
             {"group_number": group_number, "team_type": team_type},
         ]
 
-        super().__init__(grid_elements, clone)
+        super().__init__("Clone", grid_elements, clone)

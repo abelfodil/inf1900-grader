@@ -20,4 +20,4 @@ class MailPanel(Form):
             {"message": message},
         ]
 
-        super().__init__(grid_elements, mail)
+        super().__init__("Mail", grid_elements, mail)

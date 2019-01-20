@@ -15,4 +15,4 @@ class AssemblePanel(Form):
             {"grading_directory": grading_directory, "assignment_sname": assignment_sname}
         ]
 
-        super().__init__(grid_elements, assemble)
+        super().__init__("Assemble", grid_elements, assemble)

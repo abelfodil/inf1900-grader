@@ -25,4 +25,4 @@ class GradePanel(Form):
             {"assignment_sname": assignment_sname, "assignment_lname": assignment_lname},
         ]
 
-        super().__init__(grid_elements, grade)
+        super().__init__("Grade", grid_elements, grade)

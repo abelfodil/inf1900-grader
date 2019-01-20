@@ -18,7 +18,8 @@ QUIT_SIGNAL = "on_quit"
 class Form(Grid):
     signals = [QUIT_SIGNAL]
 
-    def __init__(self, named_grid_elements: list, callback: Callable):
+    def __init__(self, name, named_grid_elements: list, callback: Callable):
+        self.name = name
         self.named_widgets = {}
         unnamed_grid_elements = []
         for row in named_grid_elements:
@@ -50,7 +51,7 @@ class Form(Grid):
         TUI().loop.draw_screen()
 
     def __confirm(self):
-        TUI().clear_header()
+        TUI().set_header_text(self.name)
         self.render_overlay()
 
         try:
@@ -62,7 +63,7 @@ class Form(Grid):
             self.render_form()
 
     def __quit(self):
-        TUI().clear_header()
+        TUI().set_header_text(self.name)
         emit_signal(self, QUIT_SIGNAL)
         self.overlay.bottom_w.base_widget.focus_first()
 
