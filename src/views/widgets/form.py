@@ -1,6 +1,7 @@
 from collections import Callable
 
-from urwid import Edit, Filler, IntEdit, WidgetDecoration, emit_signal
+from urwid import AttrWrap, Edit, Filler, IntEdit, Overlay, Text, WidgetDecoration, \
+    WidgetPlaceholder, emit_signal
 
 from src.models.state import state
 from src.views.base.tui import TUI
@@ -29,23 +30,41 @@ class Form(Grid):
         unnamed_grid_elements.append([confirm, abort])
 
         super().__init__(unnamed_grid_elements)
-        self.root = Filler(self, valign="top")
-
         self.keybind["f1"] = self.__confirm
         self.keybind["f5"] = self.__quit
+
         self.on_submit = callback
 
+        bottom = Filler(self, valign="top")
+        popup = AttrWrap(Filler(Text("Work in progress...\n\nPlease wait.", "center")), "popup")
+        self.overlay = Overlay(popup, bottom, "center", 30, "middle", 5)
+
+        self.root = WidgetPlaceholder(bottom)
+
+    def render_form(self):
+        self.root.original_widget = self.overlay.bottom_w
+        TUI().loop.draw_screen()
+
+    def render_overlay(self):
+        self.root.original_widget = self.overlay
+        TUI().loop.draw_screen()
+
     def __confirm(self):
+        TUI().clear_header()
+        self.render_overlay()
+
         try:
             self.__submit()
             self.__quit()
         except Exception as e:
             TUI().set_header_text(("error", str(e)))
+        finally:
+            self.render_form()
 
     def __quit(self):
         TUI().clear_header()
         emit_signal(self, QUIT_SIGNAL)
-        self.root.base_widget.focus_first()
+        self.overlay.bottom_w.base_widget.focus_first()
 
     def __submit(self):
         data = self.__get_form_data()

@@ -24,6 +24,7 @@ class TUI(metaclass=Singleton):
         ("helper_text_red", "black", "dark red"),
         ("helper_text_green", "black", "dark green"),
         ("helper_text_light", "white", "dark blue"),
+        ("popup", "white", "dark blue"),
     )
 
     def __init__(self, body, header=Text(("header", ""), "center"), footer=None):
@@ -70,7 +71,6 @@ class TUI(metaclass=Singleton):
         pass
 
     def handle_os_signals(self):
-
         if sys.platform != "win32":
             signal.signal(signal.SIGQUIT, self.quit)
             signal.signal(signal.SIGTSTP, self.pause)
