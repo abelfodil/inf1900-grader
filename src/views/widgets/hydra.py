@@ -1,4 +1,4 @@
-from urwid import Text
+from urwid import Filler, Text, WidgetWrap
 
 
 class HydraHead:
@@ -16,23 +16,23 @@ class HydraHead:
         self.func(**self.params)
 
 
-class HydraWidget(Text):
-    def __init__(self, info, *kargs, **kwargs):
-        super().__init__("", *kargs, **kwargs)
+class HydraWidget(WidgetWrap):
+    def __init__(self, info):
+        self.text = Text("", align="center")
+        self.text._selectable = True  # glitch to make it work
+
+        super().__init__(Filler(self.text, valign="middle"))
 
         self.keybind = {}
         self.heads = {}
         self.info = info
-
-        # Glitch to make it work
-        self._selectable = True
 
     def parse_hydra(self):
         markup = [("", f"{self.info}\n")]
         for letter, head in self.heads.items():
             markup.extend(head.urwid_text())
 
-        self.set_text(markup)
+        self.text.set_text(markup)
 
     def keypress(self, size, key):
         if key in self.keybind:
