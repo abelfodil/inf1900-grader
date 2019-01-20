@@ -4,7 +4,6 @@ from urwid import AttrWrap, Edit, Filler, IntEdit, Overlay, Text, WidgetDecorati
     WidgetPlaceholder, emit_signal
 
 from src.models.state import state
-from src.views.base.tui import TUI
 from src.views.widgets.button import Button
 from src.views.widgets.grid import Grid
 
@@ -12,11 +11,13 @@ WidgetDecoration.get_data = lambda wrapped_widget: wrapped_widget.base_widget.ge
 Edit.get_data = Edit.get_edit_text
 IntEdit.get_data = IntEdit.value
 
-QUIT_SIGNAL = "on_quit"
+QUIT_SIGNAL = "quit"
+SET_HEADER_TEXT_SIGNAL = "set_header"
+DRAW_SIGNAL = "draw"
 
 
 class Form(Grid):
-    signals = [QUIT_SIGNAL]
+    signals = [QUIT_SIGNAL, SET_HEADER_TEXT_SIGNAL, DRAW_SIGNAL]
 
     def __init__(self, name, named_grid_elements: list, callback: Callable):
         self.name = name
@@ -44,26 +45,26 @@ class Form(Grid):
 
     def render_form(self):
         self.root.original_widget = self.overlay.bottom_w
-        TUI().loop.draw_screen()
+        emit_signal(self, DRAW_SIGNAL)
 
     def render_overlay(self):
         self.root.original_widget = self.overlay
-        TUI().loop.draw_screen()
+        emit_signal(self, DRAW_SIGNAL)
 
     def __confirm(self):
-        TUI().set_header_text(self.name)
+        emit_signal(self, SET_HEADER_TEXT_SIGNAL, self.name)
         self.render_overlay()
 
         try:
             self.__submit()
             self.__quit()
         except Exception as e:
-            TUI().set_header_text(("error", str(e)))
+            emit_signal(self, SET_HEADER_TEXT_SIGNAL, ("error", str(e)))
         finally:
             self.render_form()
 
     def __quit(self):
-        TUI().set_header_text(self.name)
+        emit_signal(self, SET_HEADER_TEXT_SIGNAL, self.name)
         emit_signal(self, QUIT_SIGNAL)
         self.overlay.bottom_w.base_widget.focus_first()
 

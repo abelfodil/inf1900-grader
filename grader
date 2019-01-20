@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-from src.views.base.tui import TUI
-from src.views.panels.main import MainPanel
+from src.views.tui import TUI
 
 if __name__ == "__main__":
-    main_view = MainPanel()
-    TUI(main_view.root, footer=main_view.main_helper_text).start()
+    TUI().start()
