@@ -11,7 +11,7 @@ class RadioPolicy(IntEnum):
 
 
 class RadioGroup(Grid):
-    def __init__(self, title, enum_type, starting_value, policy=RadioPolicy.VERTICAL):
+    def __init__(self, markup, enum_type, starting_value, policy=RadioPolicy.VERTICAL):
         self.selected_value = starting_value
         self.enum_type = enum_type
 
@@ -22,7 +22,7 @@ class RadioGroup(Grid):
                         state=choice is starting_value)
 
         rows = [
-            [Text(("header", title))]
+            [Text(markup)]
         ]
 
         if policy is RadioPolicy.VERTICAL:

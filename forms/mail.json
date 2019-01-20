@@ -1,0 +1,39 @@
+{
+  "name": "Mail",
+  "callback": "mail",
+  "keybind": "m",
+  "inputs": [
+    [
+      {
+        "name": "sender_email",
+        "description": "Sender email",
+        "type": "Edit"
+      },
+      {
+        "name": "recipient_email",
+        "description": "Recipient email",
+        "type": "Edit"
+      }
+    ],
+    [
+      {
+        "name": "grading_directory",
+        "description": "Grading directory",
+        "type": "Edit"
+      },
+      {
+        "name": "subject",
+        "description": "Subject",
+        "type": "Edit"
+      }
+    ],
+    [
+      {
+        "name": "message",
+        "description": "Message",
+        "type": "Edit",
+        "multiline": true
+      }
+    ]
+  ]
+}

@@ -13,7 +13,7 @@ class GradePanel(Form):
         subdirectories = LineBox(Edit(("header", "Subdirectories\n\n"), state.subdirectories))
         grader_name = LineBox(Edit(("header", "Grader's name\n\n"), state.grader_name))
         group_number = LineBox(IntEdit(("header", "Group number\n\n"), state.group_number))
-        assignment_type = RadioGroup("Assignment type", AssignmentType, state.assignment_type)
+        assignment_type = RadioGroup(("header", "Assignment type"), AssignmentType, state.assignment_type)
         deadline = LineBox(Edit(("header", "Deadline\n\n"), state.deadline))
         assignment_sname = LineBox(Edit(("header", "Assignment short name\n\n"), state.assignment_sname))
         assignment_lname = LineBox(Edit(("header", "Assignment long name\n\n"), state.assignment_lname))

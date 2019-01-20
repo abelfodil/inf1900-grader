@@ -1,0 +1,19 @@
+{
+  "name": "Assemble",
+  "callback": "assemble",
+  "keybind": "a",
+  "inputs": [
+    [
+      {
+        "name": "grading_directory",
+        "description": "Grading directory",
+        "type": "Edit"
+      },
+      {
+        "name": "assignment_sname",
+        "description": "Assignment short name",
+        "type": "Edit"
+      }
+    ]
+  ]
+}

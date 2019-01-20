@@ -1,0 +1,56 @@
+{
+  "name": "Grade",
+  "callback": "grade",
+  "keybind": "g",
+  "inputs": [
+    [
+      {
+        "name": "grading_directory",
+        "description": "Grading directory",
+        "type": "Edit"
+      },
+      {
+        "name": "subdirectories",
+        "description": "Subdirectories",
+        "type": "Edit"
+      }
+    ],
+    [
+      {
+        "name": "grader_name",
+        "description": "Grader's name",
+        "type": "Edit"
+      },
+      {
+        "name": "group_number",
+        "description": "Group number",
+        "type": "IntEdit"
+      }
+    ],
+    [
+      {
+        "name": "assignment_type",
+        "description": "Assignment type",
+        "type": "RadioGroup",
+        "enum": "AssignmentType"
+      },
+      {
+        "name": "deadline",
+        "description": "Deadline",
+        "type": "Edit"
+      }
+    ],
+    [
+      {
+        "name": "assignment_sname",
+        "description": "Assignment short name",
+        "type": "Edit"
+      },
+      {
+        "name": "assignment_lname",
+        "description": "Assignment long name",
+        "type": "Edit"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Clone",
+  "callback": "clone",
+  "keybind": "c",
+  "inputs": [
+    [
+      {
+        "name": "grading_directory",
+        "description": "Grading directory",
+        "type": "Edit"
+      }
+    ],
+    [
+      {
+        "name": "group_number",
+        "description": "Group number",
+        "type": "IntEdit"
+      },
+      {
+        "name": "team_type",
+        "description": "Team type",
+        "type": "RadioGroup",
+        "enum": "TeamType"
+      }
+    ]
+  ]
+}
