@@ -1,6 +1,6 @@
 from enum import IntEnum, auto
 
-from urwid import RadioButton, Text
+from urwid import LineBox, RadioButton, Text
 
 from src.views.widgets.grid import Grid
 
@@ -35,6 +35,7 @@ class RadioGroup(Grid):
             rows.append(col)
 
         super().__init__(rows)
+        self._w = LineBox(self._w)
 
     def get_data(self):
         for radio in self.radio_group:

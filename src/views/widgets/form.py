@@ -93,27 +93,31 @@ class Form(Grid):
 
     @staticmethod
     def parse_from_file(file_path):
-        grid_elements = []
-        form_entries = {}
         with open(file_path, 'r') as f:
             form = load(f)
+
+        grid_elements = []
+        form_entries = {}
 
         for row in form["inputs"]:
             new_row = []
             for entry in row:
-                widget_type = symbols_dict[entry["type"]]
-                line_feed = "" if entry["type"] == "RadioGroup" else "\n\n"
-                markup = ("header", f"{entry['description']}{line_feed}")
+                is_radio = entry["type"] == "RadioGroup"
 
+                line_feed = "" if is_radio else "\n\n"
+                markup = ("header", f"{entry['description']}{line_feed}")
                 enum = {"enum_type": symbols_dict[entry["enum"]]} if "enum" in entry else {}
                 multiline = {"multiline": entry["multiline"]} if "multiline" in entry else {}
 
-                widget = LineBox(widget_type(
+                widget_type = symbols_dict[entry["type"]]
+                widget = widget_type(
                     markup,
                     state.__dict__[entry["name"]],
                     **enum,
                     **multiline
-                ))
+                )
+
+                widget = widget if is_radio else LineBox(widget)
 
                 new_row.append(widget)
                 form_entries[entry["name"]] = widget
