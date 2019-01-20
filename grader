@@ -5,8 +5,4 @@ from src.views.panels.main import MainPanel
 
 if __name__ == "__main__":
     main_view = MainPanel()
-    tui = TUI(main_view.root, footer=main_view.main_helper_text)
-    try:
-        tui()
-    finally:
-        tui.loop.screen.stop()
+    TUI(main_view.root, footer=main_view.main_helper_text).start()

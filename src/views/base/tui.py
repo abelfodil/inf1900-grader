@@ -36,8 +36,11 @@ class TUI(metaclass=Singleton):
         self.bind_global("f10", self.quit)
         self.handle_os_signals()
 
-    def __call__(self):
-        self.loop.run()
+    def start(self):
+        try:
+            self.loop.run()
+        finally:
+            self.loop.screen.stop()
 
     def unhandled_input(self, key):
         if key in self.keybind:
