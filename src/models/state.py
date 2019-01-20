@@ -29,10 +29,18 @@ class ApplicationState(metaclass=Singleton):
 
     @staticmethod
     def __default_state():
-        repo = Repo(script_root_directory)
+        name = ""
+        email = ""
+        try:
+            repo = Repo(script_root_directory)
+            name = repo.config_reader().get_value("user", "name")
+            email = repo.config_reader().get_value("user", "email")
+        except:
+            pass
+
         return {
-            "grader_name"      : repo.config_reader().get_value("user", "name"),
-            "sender_email"     : repo.config_reader().get_value("user", "email"),
+            "grader_name"      : name,
+            "sender_email"     : email,
             "recipient_email"  : "jerome.collin@polymtl.ca",
             "subject"          : "[inf1900-grader] TP#",
             "message"          : "Correction d'un travail terminée.",
