@@ -35,6 +35,25 @@ symbols_list = [
 symbols_dict = {symbol.__name__: symbol for symbol in symbols_list}
 
 
+def parse_row_entry(entry):
+    is_radio = entry["type"] == "RadioGroup"
+
+    line_feed = "" if is_radio else "\n\n"
+    markup = ("header", f"{entry['description']}{line_feed}")
+    enum = {"enum_type": symbols_dict[entry["enum"]]} if "enum" in entry else {}
+    multiline = {"multiline": entry["multiline"]} if "multiline" in entry else {}
+
+    widget_type = symbols_dict[entry["type"]]
+    widget = widget_type(
+        markup,
+        state.__dict__[entry["name"]],
+        **enum,
+        **multiline
+    )
+
+    return widget if is_radio else LineBox(widget)
+
+
 def parse_form_from_file(file_path):
     with open(file_path, 'r') as f:
         form = load(f)
@@ -45,23 +64,7 @@ def parse_form_from_file(file_path):
     for row in form["inputs"]:
         new_row = []
         for entry in row:
-            is_radio = entry["type"] == "RadioGroup"
-
-            line_feed = "" if is_radio else "\n\n"
-            markup = ("header", f"{entry['description']}{line_feed}")
-            enum = {"enum_type": symbols_dict[entry["enum"]]} if "enum" in entry else {}
-            multiline = {"multiline": entry["multiline"]} if "multiline" in entry else {}
-
-            widget_type = symbols_dict[entry["type"]]
-            widget = widget_type(
-                markup,
-                state.__dict__[entry["name"]],
-                **enum,
-                **multiline
-            )
-
-            widget = widget if is_radio else LineBox(widget)
-
+            widget = parse_row_entry(entry)
             new_row.append(widget)
             form_entries[entry["name"]] = widget
 
