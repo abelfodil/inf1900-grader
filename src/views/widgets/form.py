@@ -1,11 +1,17 @@
 from collections import Callable
+from json import load
 
-from urwid import AttrWrap, Edit, Filler, IntEdit, Overlay, Text, WidgetDecoration, \
+from urwid import AttrWrap, Edit, Filler, IntEdit, LineBox, Overlay, Text, WidgetDecoration, \
     WidgetPlaceholder, emit_signal
 
+from src.models.assemble import assemble
+from src.models.clone import TeamType, clone
+from src.models.grade import AssignmentType, grade
+from src.models.mail import mail
 from src.models.state import state
 from src.views.widgets.button import Button
 from src.views.widgets.grid import Grid
+from src.views.widgets.radio import RadioGroup
 
 WidgetDecoration.get_data = lambda wrapped_widget: wrapped_widget.base_widget.get_data()
 Edit.get_data = Edit.get_edit_text
@@ -15,23 +21,32 @@ QUIT_SIGNAL = "quit"
 SET_HEADER_TEXT_SIGNAL = "set_header"
 DRAW_SIGNAL = "draw"
 
+symbols_list = [
+    clone,
+    grade,
+    assemble,
+    mail,
+    RadioGroup,
+    IntEdit,
+    Edit,
+    AssignmentType,
+    TeamType
+]
+
+symbols_dict = {symbol.__name__: symbol for symbol in symbols_list}
+
 
 class Form(Grid):
     signals = [QUIT_SIGNAL, SET_HEADER_TEXT_SIGNAL, DRAW_SIGNAL]
 
-    def __init__(self, name, named_grid_elements: list, callback: Callable):
-        self.name = name
-        self.named_widgets = {}
-        unnamed_grid_elements = []
-        for row in named_grid_elements:
-            self.named_widgets.update(row)
-            unnamed_grid_elements.append(list(row.values()))
-
+    def __init__(self, name, grid_elements: list, form_entries: dict, callback: Callable):
         confirm = Button("Confirm", "confirm_button", self.__confirm)
         abort = Button("Abort", "abort_button", self.__quit)
-        unnamed_grid_elements.append([confirm, abort])
+        grid_elements.append([confirm, abort])
+        super().__init__(grid_elements)
+        self.form_entries = form_entries
 
-        super().__init__(unnamed_grid_elements)
+        self.name = name
         self.keybind["f1"] = self.__confirm
         self.keybind["f5"] = self.__quit
 
@@ -74,4 +89,38 @@ class Form(Grid):
         state.override_state(**data)
 
     def __get_form_data(self):
-        return {name: widget.get_data() for name, widget in self.named_widgets.items()}
+        return {name: widget.get_data() for name, widget in self.form_entries.items()}
+
+    @staticmethod
+    def parse_from_file(file_path):
+        grid_elements = []
+        form_entries = {}
+        with open(file_path, 'r') as f:
+            form = load(f)
+
+        for row in form["inputs"]:
+            new_row = []
+            for entry in row:
+                widget_type = symbols_dict[entry["type"]]
+                line_feed = "" if entry["type"] == "RadioGroup" else "\n\n"
+                markup = ("header", f"{entry['description']}{line_feed}")
+
+                enum = {"enum_type": symbols_dict[entry["enum"]]} if "enum" in entry else {}
+                multiline = {"multiline": entry["multiline"]} if "multiline" in entry else {}
+
+                widget = LineBox(widget_type(
+                    markup,
+                    state.__dict__[entry["name"]],
+                    **enum,
+                    **multiline
+                ))
+
+                new_row.append(widget)
+                form_entries[entry["name"]] = widget
+
+            grid_elements.append(new_row)
+
+        return (
+            form["keybind"],
+            Form(form["name"], grid_elements, form_entries, symbols_dict[form["callback"]])
+        )
