@@ -3,7 +3,7 @@ from pickle import dump, load
 from sys import argv
 from time import localtime, strftime
 
-from git import Repo
+from git import Git
 
 from src.models.clone import TeamType
 from src.models.grade import AssignmentType
@@ -29,18 +29,9 @@ class ApplicationState(metaclass=Singleton):
 
     @staticmethod
     def __default_state():
-        name = ""
-        email = ""
-        try:
-            repo = Repo(script_root_directory)
-            name = repo.config_reader().get_value("user", "name")
-            email = repo.config_reader().get_value("user", "email")
-        except:
-            pass
-
         return {
-            "grader_name"      : name,
-            "sender_email"     : email,
+            "grader_name"      : Git().config(["--get", "user.name"]),
+            "sender_email"     : Git().config(["--get", "user.email"]),
             "recipient_email"  : "jerome.collin@polymtl.ca",
             "subject"          : "[inf1900-grader] TP#",
             "message"          : "Correction d'un travail terminée.",
