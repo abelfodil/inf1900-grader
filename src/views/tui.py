@@ -1,12 +1,11 @@
 import os
 import signal
 import sys
-from os import listdir
-from os.path import dirname, join, realpath
 
 from urwid import ExitMainLoop, Frame, MainLoop, Text, connect_signal
 
-from src.views.widgets.form import DRAW_SIGNAL, Form, QUIT_SIGNAL, SET_HEADER_TEXT_SIGNAL
+from src.views.parser import parse_forms
+from src.views.widgets.form import DRAW_SIGNAL, QUIT_SIGNAL, SET_HEADER_TEXT_SIGNAL
 from src.views.widgets.hydra import HydraWidget
 
 palette = (
@@ -47,16 +46,8 @@ class TUI:
 
         self.main_view = HydraWidget("Welcome to INF1900 interactive grading tool!")
 
-        script_root_directory = dirname(realpath(sys.argv[0]))
-        forms_path = f"{script_root_directory}/forms"
-
-        subviews = (
-            Form.parse_from_file(join(forms_path, file_path))
-            for file_path in sorted(listdir(forms_path))
-        )
-
         heads = []
-        for letter, view, in subviews:
+        for letter, view, in parse_forms():
             hint = view.name
             connect_signal(view, QUIT_SIGNAL, self.display_main)
             connect_signal(view, SET_HEADER_TEXT_SIGNAL, self.set_header_text)
