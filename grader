@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from src.views.base.tui import TUI
+from src.views.tui import TUI
 
 if __name__ == "__main__":
     TUI().start()
