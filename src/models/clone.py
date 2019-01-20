@@ -62,7 +62,7 @@ def clone(grading_directory: str, group_number: int, team_type: TeamType):
     ensure_grading_directory_available(grading_directory)
     ensure_not_empty(group_number, "Group number")
 
-    mkdir(grading_directory)
     student_list = fetch_student_list(group_number, team_type)
+    mkdir(grading_directory)
     write_student_list(grading_directory, student_list)
     clone_repos(grading_directory, student_list)
