@@ -8,13 +8,12 @@ from git import Git
 from src.models.clone import TeamType
 from src.models.grade import AssignmentType
 from src.models.validate import time_format
-from src.util.singleton import Singleton
 
 script_root_directory = dirname(realpath(argv[0]))
 state_file_path = f"{script_root_directory}/user.bin"
 
 
-class ApplicationState(metaclass=Singleton):
+class ApplicationState:
     def __init__(self):
         loaded_state = self.__load_state()
         self.__dict__ = loaded_state if loaded_state else self.__default_state()
