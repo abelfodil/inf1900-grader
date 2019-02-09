@@ -1,6 +1,7 @@
 from csv import writer
 from datetime import datetime
 
+import numpy as np
 from git import Repo
 
 from src.models.clone import read_grading_info
@@ -20,7 +21,7 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
     return float(grade.replace("Total: ", "").replace("/20", "").strip())
 
 
-def write_grades_file(grading_directory: str, grades: dict, assignment_name: str):
+def write_grades_file(grading_directory: str, grades_map: dict, assignment_name: str):
     info = read_grading_info(grading_directory)
     group_number = info["group_number"]
 
@@ -34,11 +35,16 @@ def write_grades_file(grading_directory: str, grades: dict, assignment_name: str
         csv_writer.writerow(["Date:", datetime.now().strftime(time_format)])
         csv_writer.writerow(["Travail:", assignment_name])
 
+        grades = np.array(list(grades_map.values()), dtype="float32")
+        csv_writer.writerow([])
+        csv_writer.writerow(["Moyenne:", np.mean(grades)])
+        csv_writer.writerow(["Écart-type:", np.std(grades)])
+
         csv_writer.writerow([])
         csv_writer.writerow(["Nom", "Prénom", "Équipe", "Note"])
 
         for student_info in info["students"]:
-            student_info["grade"] = str(grades[student_info["team"]]).replace(".", ",")
+            student_info["grade"] = str(grades_map[student_info["team"]]).replace(".", ",")
             csv_writer.writerow(student_info.values())
 
 
