@@ -1,4 +1,4 @@
-from os.path import isdir, isfile
+from os.path import isdir
 from time import strptime
 
 from validate_email import validate_email
@@ -38,8 +38,3 @@ def validate_datetime(datetime: str):
     except ValueError:
         raise InvalidInput(f"Incorrect datetime format. "
                            f"Please use the following format: {time_format}")
-
-
-def validate_grades_path(grades_path: str):
-    if not isfile(grades_path):
-        raise InvalidInput(f"The grades file \"{grades_path}\" does not exist.")

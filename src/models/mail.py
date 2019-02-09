@@ -2,9 +2,11 @@ import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from os import listdir
+from os.path import basename, isfile, join
 
-from src.models.assemble import generate_grades_path
-from src.models.validate import ensure_not_empty, validate_email_address, validate_grades_path
+from src.models.validate import InvalidInput, ensure_grading_directory_exists, ensure_not_empty, \
+    validate_email_address
 
 
 class MailException(Exception):
@@ -57,16 +59,26 @@ class Mail:
         self.sent = True
 
 
+def get_grade_file_path(grading_directory: str):
+    grades_files = [join(grading_directory, file) for file in listdir(grading_directory)
+                    if isfile(join(grading_directory, file)) and file.endswith(".csv")]
+
+    if len(grades_files) < 1:
+        raise InvalidInput(f"No grades file found. "
+                           f"Please make sure to assemble grades first.")
+
+    return grades_files[0]
+
+
 def mail(sender_email: str, recipient_email: str,
          subject: str, message: str, grading_directory: str):
-    grades_path = generate_grades_path(grading_directory)
-
+    ensure_grading_directory_exists(grading_directory)
     validate_email_address(sender_email)
     validate_email_address(recipient_email)
     ensure_not_empty(subject, "Subject")
     ensure_not_empty(message, "Message")
-    validate_grades_path(grades_path)
 
-    attachment_name = subject.lower().replace(" ", "_")
-    attachments = [MailAttachment("text/csv", grades_path, attachment_name)]
+    grades_file = get_grade_file_path(grading_directory)
+    attachment_name = basename(grades_file)
+    attachments = [MailAttachment("text/csv", grades_file, attachment_name)]
     Mail(sender_email, recipient_email, subject, message, attachments).send()
