@@ -1,14 +1,11 @@
 from csv import writer
+from datetime import datetime
 
 from git import Repo
 
-from src.models.clone import read_student_list
+from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list
-from src.models.validate import ensure_grading_directory_exists, ensure_not_empty
-
-
-def generate_grades_path(grading_directory: str):
-    return f"{grading_directory}/grades.csv"
+from src.models.validate import ensure_grading_directory_exists, ensure_not_empty, time_format
 
 
 def read_grade(grading_directory: str, team: str, assignment_name: str):
@@ -20,20 +17,28 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
 
     grade = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
 
-    return str(float(grade.replace("Total: ", "").replace("/20", "").strip())).replace(".", ",")
+    return float(grade.replace("Total: ", "").replace("/20", "").strip())
 
 
 def write_grades_file(grading_directory: str, grades: dict, assignment_name: str):
-    student_list = read_student_list(grading_directory)
+    info = read_grading_info(grading_directory)
+    group_number = info["group_number"]
 
-    with open(generate_grades_path(grading_directory), 'w', newline='', encoding="utf-8") as csvfile:
-        csv_writer = writer(csvfile)
+    grades_path = f"{grading_directory}/notes-inf1900-sect0{group_number}-{assignment_name}.csv"
+    with open(grades_path, 'w', newline='', encoding="utf-8") as csvfile:
+        csv_writer = writer(csvfile, delimiter=';')
 
+        csv_writer.writerow(["Cours:", "INF1900"])
+        csv_writer.writerow(["Correcteur:", info["grader_name"]])
+        csv_writer.writerow(["Section:", group_number])
+        csv_writer.writerow(["Date:", datetime.now().strftime(time_format)])
         csv_writer.writerow(["Travail:", assignment_name])
+
+        csv_writer.writerow([])
         csv_writer.writerow(["Nom", "Prénom", "Équipe", "Note"])
 
-        for student_info in student_list:
-            student_info["grade"] = grades[student_info["team"]]
+        for student_info in info["students"]:
+            student_info["grade"] = str(grades[student_info["team"]]).replace(".", ",")
             csv_writer.writerow(student_info.values())
 
 
@@ -56,9 +61,7 @@ def assemble(grading_directory: str, assignment_sname: str):
     ensure_not_empty(assignment_sname, "Assignment short name")
 
     grades = {}
-
-    teams = get_teams_list(grading_directory)
-    for team in teams:
+    for team in get_teams_list(grading_directory):
         commit_and_merge(grading_directory, team, assignment_sname)
         grades[team] = read_grade(grading_directory, team, assignment_sname)
 

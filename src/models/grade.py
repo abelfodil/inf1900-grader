@@ -95,8 +95,7 @@ def grade(grading_directory: str, subdirectories: str,
                                                                  assignment_type, assignment_lname)
 
     subdirectories_list = subdirectories.split(" ")
-    teams = get_teams_list(grading_directory)
-    for team in teams:
+    for team in get_teams_list(grading_directory):
         repo_path = f"{grading_directory}/{team}"
         create_branch(repo_path, deadline, generate_grading_name(assignment_sname)).checkout()
 
