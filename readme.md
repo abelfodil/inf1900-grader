@@ -19,9 +19,9 @@
   répétitif est déjà automatisée.
 
 - `assemble` créera un commit et merge sur chaque repo, puis générera un
-  fichier de notes `grades.csv`.
+  fichier de notes `notes-inf1900-sectionXX-nom_travail.csv`.
   
-- `mail` enverra un email à Jérôme et joindra le fichier `grades.csv`.
+- `mail` enverra un email à Jérôme et joindra le fichier de notes `csv`.
 
 # Notes
 - Certaines informations sont redemandées entre plusieurs étapes afin
