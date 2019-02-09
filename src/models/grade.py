@@ -6,6 +6,7 @@ from sys import argv
 
 from git import Repo
 
+from src.models.clone import read_grading_info
 from src.models.validate import ensure_grading_directory_exists, ensure_not_empty, validate_datetime
 
 script_root_directory = dirname(realpath(argv[0]))
@@ -78,18 +79,19 @@ def generate_grading_file_name(assignment_short_name: str):
     return f"{generate_grading_name(assignment_short_name)}.txt"
 
 
-def grade(grading_directory: str, subdirectories: str, grader_name: str, group_number: int,
+def grade(grading_directory: str, subdirectories: str,
           assignment_type: AssignmentType, deadline: str,
           assignment_sname: str, assignment_lname: str):
     ensure_grading_directory_exists(grading_directory)
     validate_datetime(deadline)
     subdirectories = subdirectories.strip()
     ensure_not_empty(subdirectories, "Subdirectories")
-    ensure_not_empty(grader_name, "Grader's name")
     ensure_not_empty(assignment_sname, "Assignment short name")
     ensure_not_empty(assignment_lname, "Assignment long name")
 
-    partial_grading_text = generate_partial_grading_file_content(grader_name, group_number,
+    info = read_grading_info(grading_directory)
+    partial_grading_text = generate_partial_grading_file_content(info["grader_name"],
+                                                                 info["group_number"],
                                                                  assignment_type, assignment_lname)
 
     subdirectories_list = subdirectories.split(" ")

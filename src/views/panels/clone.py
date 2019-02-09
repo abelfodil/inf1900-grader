@@ -10,11 +10,12 @@ class ClonePanel(Form):
 
     def __init__(self):
         grading_directory = LineBox(Edit(("header", "Grading directory\n\n"), state.grading_directory))
+        grader_name = LineBox(Edit(("header", "Grader's name\n\n"), state.grader_name))
         group_number = LineBox(IntEdit(("header", "Group number\n\n"), state.group_number))
         team_type = RadioGroup("Team type", TeamType, state.team_type)
 
         grid_elements = [
-            {"grading_directory": grading_directory},
+            {"grading_directory": grading_directory, "grader_name": grader_name},
             {"group_number": group_number, "team_type": team_type},
         ]
 

@@ -1,6 +1,6 @@
 from enum import Enum
 from json import dump, load
-from os import mkdir, path
+from os import mkdir
 from urllib import request
 
 from bs4 import BeautifulSoup
@@ -14,22 +14,26 @@ class TeamType(Enum):
     QUARTET = "quatuors"
 
 
-def get_student_list_path(grading_directory: str):
-    return f"{grading_directory}/students.json"
+def get_grading_info_path(grading_directory: str):
+    return f"{grading_directory}/info.json"
 
 
-def write_student_list(grading_directory: str, student_list: list):
-    with open(get_student_list_path(grading_directory), 'w') as f:
-        dump(student_list, f)
+def write_grading_info(grading_directory: str,
+                       grader_name: str, group_number: int,
+                       student_list: list):
+    with open(get_grading_info_path(grading_directory), 'w') as f:
+        dump(
+            {
+                "grader_name" : grader_name,
+                "group_number": group_number,
+                "students"    : student_list
+            },
+            f)
 
 
-def read_student_list(grading_directory: str):
-    student_list_path = get_student_list_path(grading_directory)
-    if path.isfile(student_list_path):
-        with open(student_list_path, 'r') as f:
-            return load(f)
-    else:
-        return []
+def read_grading_info(grading_directory: str):
+    with open(get_grading_info_path(grading_directory), 'r') as f:
+        return load(f)
 
 
 def clone_repos(grading_directory: str, student_list: list):
@@ -55,14 +59,14 @@ def fetch_student_list(group_number: int, team_type: TeamType):
             "team"      : html_student[2].text.strip(),
         })
 
-    return student_list
+    return sorted(student_list, key=lambda i: i["last_name"])
 
 
-def clone(grading_directory: str, group_number: int, team_type: TeamType):
+def clone(grading_directory: str, grader_name: str, group_number: int, team_type: TeamType):
     ensure_grading_directory_available(grading_directory)
     ensure_not_empty(group_number, "Group number")
 
-    student_list = fetch_student_list(group_number, team_type)
     mkdir(grading_directory)
-    write_student_list(grading_directory, student_list)
+    student_list = fetch_student_list(group_number, team_type)
+    write_grading_info(grading_directory, grader_name, group_number, student_list)
     clone_repos(grading_directory, student_list)
