@@ -8,7 +8,8 @@
 *.csv
 *.bin
 
-__pycache__/
+*.pyc
+
 correction*/
 grading*/
 
