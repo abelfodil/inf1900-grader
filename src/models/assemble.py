@@ -48,18 +48,20 @@ def write_grades_file(grading_directory: str, grades_map: dict, assignment_name:
             csv_writer.writerow(student_info.values())
 
 
-def commit_and_merge(grading_directory: str, team: str, assignment_name: str):
+def merge(grading_directory: str, team: str, assignment_name: str):
     repo = Repo(f"{grading_directory}/{team}")
+
     repo.index.add([generate_grading_file_name(assignment_name)])
     repo.index.commit(f"Correction du {assignment_name}.")
 
-    grading_branch = repo.active_branch
-    master = repo.branches["master"]
+    repo.git.add(".")
+    repo.git.stash()
 
-    repo.git.pull('origin', master)
-    repo.git.checkout("master")
+    grading_branch = repo.active_branch
+    repo.heads.master.checkout()
+    repo.remotes.origin.pull()
     repo.git.merge(grading_branch)
-    repo.git.push('origin', master)
+    repo.remotes.origin.push()
 
 
 def assemble(grading_directory: str, assignment_sname: str):
@@ -68,7 +70,7 @@ def assemble(grading_directory: str, assignment_sname: str):
 
     grades = {}
     for team in get_teams_list(grading_directory):
-        commit_and_merge(grading_directory, team, assignment_sname)
+        merge(grading_directory, team, assignment_sname)
         grades[team] = read_grade(grading_directory, team, assignment_sname)
 
     write_grades_file(grading_directory, grades, assignment_sname)
