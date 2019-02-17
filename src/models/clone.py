@@ -1,5 +1,7 @@
 from enum import Enum
+from functools import partial
 from json import dump, load
+from multiprocessing import Pool
 from os import mkdir
 from urllib import request
 
@@ -36,12 +38,16 @@ def read_grading_info(grading_directory: str):
         return load(f)
 
 
+def clone_repo(team: str, grading_directory: str):
+    team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
+    output_directory = f"{grading_directory}/{team}"
+    Repo.clone_from(team_repo_url, output_directory)
+
+
 def clone_repos(grading_directory: str, student_list: list):
-    unique_team_list = sorted(set([student['team'] for student in student_list]))
-    for team in unique_team_list:
-        team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
-        output_directory = f"{grading_directory}/{team}"
-        Repo.clone_from(team_repo_url, output_directory)
+    unique_team_list = set([student['team'] for student in student_list])
+    with Pool(len(unique_team_list)) as p:
+        p.map(partial(clone_repo, grading_directory=grading_directory), unique_team_list)
 
 
 def fetch_student_list(group_number: int, team_type: TeamType):
