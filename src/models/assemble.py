@@ -17,10 +17,9 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
 
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
+    grade_line = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
 
-    grade = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
-
-    return float(grade.replace("Total: ", "").replace("/20", "").strip())
+    return float(grade_line.replace("Total:", "").replace("/20", "").strip())
 
 
 def write_grades_file(grading_directory: str, grades_map: dict, assignment_name: str):
@@ -63,7 +62,7 @@ def merge(team: str, grading_directory: str, assignment_sname: str):
     repo.heads.master.checkout()
     repo.remotes.origin.pull()
     repo.git.merge(grading_branch)
-    # repo.remotes.origin.push()
+    repo.remotes.origin.push()
 
 
 def assemble(grading_directory: str, assignment_sname: str):
