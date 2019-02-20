@@ -1,4 +1,6 @@
 from enum import Enum
+from functools import partial
+from multiprocessing import Pool
 from os import listdir
 from os.path import dirname, isdir, join, realpath
 from subprocess import PIPE, STDOUT, run
@@ -79,6 +81,21 @@ def generate_grading_file_name(assignment_short_name: str):
     return f"{generate_grading_name(assignment_short_name)}.txt"
 
 
+def grade_team(team: str, grading_directory: str, subdirectories: list,
+               partial_grading_text: str, deadline: str, assignment_sname: str):
+    team_path = f"{grading_directory}/{team}"
+    create_branch(team_path, deadline, generate_grading_name(assignment_sname)).checkout()
+
+    grading_text = partial_grading_text.replace("__TEAM_NUMBER__", team)
+    grading_text += get_commit_info(team_path)
+    grading_text += get_useless_files(team_path)
+    grading_text += get_make_output(team_path, subdirectories)
+
+    grade_file_path = f"{team_path}/{generate_grading_file_name(assignment_sname)}"
+    with open(grade_file_path, 'w') as f:
+        f.write(grading_text)
+
+
 def grade(grading_directory: str, subdirectories: str,
           assignment_type: AssignmentType, deadline: str,
           assignment_sname: str, assignment_lname: str):
@@ -94,16 +111,12 @@ def grade(grading_directory: str, subdirectories: str,
                                                                  info["group_number"],
                                                                  assignment_type, assignment_lname)
 
-    subdirectories_list = subdirectories.split(" ")
-    for team in get_teams_list(grading_directory):
-        repo_path = f"{grading_directory}/{team}"
-        create_branch(repo_path, deadline, generate_grading_name(assignment_sname)).checkout()
-
-        grading_text = partial_grading_text.replace("__TEAM_NUMBER__", team)
-        grading_text += get_commit_info(repo_path)
-        grading_text += get_useless_files(repo_path)
-        grading_text += get_make_output(repo_path, subdirectories_list)
-
-        grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
-        with open(grade_file_path, 'w') as f:
-            f.write(grading_text)
+    teams = get_teams_list(grading_directory)
+    with Pool(len(teams)) as p:
+        partial_grade_team = partial(grade_team,
+                                     grading_directory=grading_directory,
+                                     partial_grading_text=partial_grading_text,
+                                     deadline=deadline,
+                                     assignment_sname=assignment_sname,
+                                     subdirectories=subdirectories.split(" "))
+        p.map(partial_grade_team, teams)
