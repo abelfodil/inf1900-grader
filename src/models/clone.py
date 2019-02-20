@@ -44,12 +44,6 @@ def clone_repo(team: str, grading_directory: str):
     Repo.clone_from(team_repo_url, output_directory)
 
 
-def clone_repos(grading_directory: str, student_list: list):
-    unique_team_list = set([student['team'] for student in student_list])
-    with Pool(len(unique_team_list)) as p:
-        p.map(partial(clone_repo, grading_directory=grading_directory), unique_team_list)
-
-
 def fetch_student_list(group_number: int, team_type: TeamType):
     group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type.value}Section{group_number}.php"
     html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
@@ -75,4 +69,7 @@ def clone(grading_directory: str, grader_name: str, group_number: int, team_type
     mkdir(grading_directory)
     student_list = fetch_student_list(group_number, team_type)
     write_grading_info(grading_directory, grader_name, group_number, student_list)
-    clone_repos(grading_directory, student_list)
+
+    unique_team_list = set([student['team'] for student in student_list])
+    with Pool(len(unique_team_list)) as p:
+        p.map(partial(clone_repo, grading_directory=grading_directory), unique_team_list)
