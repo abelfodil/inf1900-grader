@@ -11,9 +11,9 @@ from src.models.grade import generate_grading_file_name, get_teams_list
 from src.models.validate import ensure_grading_directory_exists, ensure_not_empty, time_format
 
 
-def read_grade(grading_directory: str, team: str, assignment_name: str):
+def extract_grade(team: str, grading_directory: str, assignment_sname: str):
     repo_path = f"{grading_directory}/{team}"
-    grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_name)}"
+    grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
 
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
@@ -22,11 +22,11 @@ def read_grade(grading_directory: str, team: str, assignment_name: str):
     return float(grade_line.replace("Total:", "").replace("/20", "").strip())
 
 
-def write_grades_file(grading_directory: str, grades_map: dict, assignment_name: str):
+def write_grades_file(grading_directory: str, grades_map: dict, assignment_sname: str):
     info = read_grading_info(grading_directory)
     group_number = info["group_number"]
 
-    grades_path = f"{grading_directory}/notes-inf1900-sect0{group_number}-{assignment_name}.csv"
+    grades_path = f"{grading_directory}/notes-inf1900-sect0{group_number}-{assignment_sname}.csv"
     with open(grades_path, 'w', newline='', encoding="utf-8") as csvfile:
         csv_writer = writer(csvfile, delimiter=';')
 
@@ -34,7 +34,7 @@ def write_grades_file(grading_directory: str, grades_map: dict, assignment_name:
         csv_writer.writerow(["Correcteur:", info["grader_name"]])
         csv_writer.writerow(["Section:", group_number])
         csv_writer.writerow(["Date:", datetime.now().strftime(time_format)])
-        csv_writer.writerow(["Travail:", assignment_name])
+        csv_writer.writerow(["Travail:", assignment_sname])
 
         grades = np.array(list(grades_map.values()), dtype="float32")
         csv_writer.writerow([])
@@ -76,5 +76,5 @@ def assemble(grading_directory: str, assignment_sname: str):
                                 assignment_sname=assignment_sname)
         p.map(partial_merge, teams)
 
-    grades = {team: read_grade(grading_directory, team, assignment_sname) for team in teams}
+    grades = {team: extract_grade(team, grading_directory, assignment_sname) for team in teams}
     write_grades_file(grading_directory, grades, assignment_sname)
