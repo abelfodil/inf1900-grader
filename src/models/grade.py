@@ -56,17 +56,17 @@ def get_commit_info(repo_path: str):
 
 
 def get_useless_files(repo_path: str):
-    header = f"\n\n{bannerize('Fichiers Indésirables')}"
+    header = f"\n\n{bannerize('Fichiers indésirables')}"
     useless_file_list = Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}")
     return f"{header}\n{useless_file_list}"
 
 
 def get_make_output(repo_path: str, subdirectories: list):
-    header = f"\n\n{bannerize('Output de make pour les problemes')}"
+    header = f"\n\n{bannerize('Sortie de make dans les sous-répertoires')}"
 
     make_output = ""
     for subdirectory in subdirectories:
-        make_output += f"{bannerize(f'output de make dans {subdirectory}')}"
+        make_output += f"{bannerize(f'Sortie de make dans {subdirectory}')}"
         result = run(["make", "-C", f"{repo_path}/{subdirectory}"], stdout=PIPE, stderr=STDOUT)
         make_output += "\n" + result.stdout.decode('utf-8') + "\n"
 
