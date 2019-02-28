@@ -65,16 +65,17 @@ def merge(team: str, grading_directory: str, assignment_sname: str):
     repo.remotes.origin.push()
 
 
-def assemble(grading_directory: str, assignment_sname: str):
+def assemble(grading_directory: str, assignment_sname: str, should_merge: bool):
     ensure_grading_directory_exists(grading_directory)
     ensure_not_empty(assignment_sname, "Assignment short name")
 
     teams = get_teams_list(grading_directory)
-    with Pool(len(teams)) as p:
-        partial_merge = partial(merge,
-                                grading_directory=grading_directory,
-                                assignment_sname=assignment_sname)
-        p.map(partial_merge, teams)
+    if should_merge:
+        with Pool(len(teams)) as p:
+            partial_merge = partial(merge,
+                                    grading_directory=grading_directory,
+                                    assignment_sname=assignment_sname)
+            p.map(partial_merge, teams)
 
     grades = {team: extract_grade(team, grading_directory, assignment_sname) for team in teams}
     write_grades_file(grading_directory, grades, assignment_sname)
