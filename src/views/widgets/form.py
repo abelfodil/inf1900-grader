@@ -1,7 +1,7 @@
 from collections import Callable
 
 from urwid import AttrWrap, Edit, Filler, IntEdit, Overlay, Text, WidgetDecoration, \
-    WidgetPlaceholder, emit_signal
+    WidgetPlaceholder, emit_signal, CheckBox
 
 from src.models.state import state
 from src.views.widgets.button import Button
@@ -10,6 +10,7 @@ from src.views.widgets.grid import Grid
 WidgetDecoration.get_data = lambda wrapped_widget: wrapped_widget.base_widget.get_data()
 Edit.get_data = Edit.get_edit_text
 IntEdit.get_data = IntEdit.value
+CheckBox.get_data = lambda self: self.state
 
 QUIT_SIGNAL = "quit"
 SET_HEADER_TEXT_SIGNAL = "set_header"
