@@ -47,7 +47,16 @@ class TUI:
             ("S-TAB", "Previous", "helper_text_light")
         ])
 
-        self.main_view = HydraWidget("Welcome to INF1900 interactive grading tool!")
+        self.root = Frame(self.generate_main_view(),
+                          Text(("header", ""), "center"),
+                          self.main_helper_text)
+        self.loop = MainLoop(self.root, palette, unhandled_input=self.unhandled_input)
+
+        self.bind_global("f10", self.quit)
+        self.handle_os_signals()
+
+    def generate_main_view(self):
+        main_view = HydraWidget("Welcome to INF1900 interactive grading tool!")
 
         subviews = (
             ("c", ClonePanel()),
@@ -65,14 +74,9 @@ class TUI:
             heads.append(
                 (letter, "blue_head", hint, self.display_subview, {"view": view, "hint": hint}))
 
-        self.main_view.add_heads(heads)
+        main_view.add_heads(heads)
 
-        self.root = Frame(self.main_view, Text(("header", ""), "center"), self.main_helper_text)
-        self.loop = MainLoop(self.root, palette,
-                             unhandled_input=self.unhandled_input)
-
-        self.bind_global("f10", self.quit)
-        self.handle_os_signals()
+        return main_view
 
     def start(self):
         try:
@@ -140,4 +144,5 @@ class TUI:
 
     def display_main(self, *kargs):
         self.root.footer = self.main_helper_text
-        self.__change_view(self.main_view, "")
+        self.root.body = self.generate_main_view()  # to reload data from app state
+        self.__change_view(self.root.body, "")
