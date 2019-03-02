@@ -1,10 +1,7 @@
 from csv import writer
 from datetime import datetime
-from functools import partial
-from multiprocessing import Pool
 
 import numpy as np
-from git import Repo
 
 from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list
@@ -49,33 +46,10 @@ def write_grades_file(grading_directory: str, grades_map: dict, assignment_sname
             csv_writer.writerow(student_info.values())
 
 
-def merge(team: str, grading_directory: str, assignment_sname: str):
-    repo = Repo(f"{grading_directory}/{team}")
-
-    repo.index.add([generate_grading_file_name(assignment_sname)])
-    repo.index.commit(f"Correction du {assignment_sname}.")
-
-    repo.git.add(".")
-    repo.git.stash()
-
-    grading_branch = repo.active_branch
-    repo.heads.master.checkout()
-    repo.remotes.origin.pull()
-    repo.git.merge(grading_branch)
-    repo.remotes.origin.push()
-
-
-def assemble(grading_directory: str, assignment_sname: str, should_merge: bool):
+def assemble(grading_directory: str, assignment_sname: str):
     ensure_grading_directory_exists(grading_directory)
     ensure_not_empty(assignment_sname, "Assignment short name")
 
     teams = get_teams_list(grading_directory)
-    if should_merge:
-        with Pool(len(teams)) as p:
-            partial_merge = partial(merge,
-                                    grading_directory=grading_directory,
-                                    assignment_sname=assignment_sname)
-            p.map(partial_merge, teams)
-
     grades = {team: extract_grade(team, grading_directory, assignment_sname) for team in teams}
     write_grades_file(grading_directory, grades, assignment_sname)
