@@ -1,7 +1,7 @@
 from collections import Callable
 
-from urwid import AttrWrap, Edit, Filler, IntEdit, Overlay, Text, WidgetDecoration, \
-    WidgetPlaceholder, emit_signal, CheckBox
+from urwid import AttrWrap, CheckBox, Edit, Filler, IntEdit, Overlay, Text, WidgetDecoration, \
+    WidgetPlaceholder, emit_signal
 
 from src.models.state import state
 from src.views.widgets.button import Button
@@ -33,8 +33,8 @@ class Form(Grid):
         unnamed_grid_elements.append([confirm, abort])
 
         super().__init__(unnamed_grid_elements)
-        self.keybind["f1"] = self.__confirm
-        self.keybind["f5"] = self.__quit
+        self.keybind["f1"] = self.keybind["ctrl x"] = self.__confirm
+        self.keybind["f5"] = self.keybind["ctrl g"] = self.__quit
 
         self.on_submit = callback
 
