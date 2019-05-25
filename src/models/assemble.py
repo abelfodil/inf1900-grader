@@ -5,7 +5,8 @@ import numpy as np
 
 from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list
-from src.models.validate import ensure_grading_directory_exists, ensure_not_empty, time_format
+from src.models.validate import InvalidInput, ensure_grading_directory_exists, ensure_not_empty, \
+    time_format
 
 
 def extract_grade(team: str, grading_directory: str, assignment_sname: str):
@@ -14,9 +15,12 @@ def extract_grade(team: str, grading_directory: str, assignment_sname: str):
 
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
-    grade_line = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
+        grade_line = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
 
-    return float(grade_line.replace("Total:", "").replace("/20", "").strip())
+    try:
+        return float(grade_line.replace("Total:", "").replace("/20", "").strip())
+    except:
+        raise InvalidInput(f"Missing or invalid grade for team {team}.")
 
 
 def write_grades_file(grading_directory: str, grades_map: dict, assignment_sname: str):
