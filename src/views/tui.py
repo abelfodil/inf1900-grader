@@ -1,6 +1,5 @@
 import os
 import signal
-import sys
 
 from urwid import ExitMainLoop, Frame, MainLoop, Text, connect_signal
 
@@ -111,18 +110,8 @@ class TUI:
         pass
 
     def handle_os_signals(self):
-        if sys.platform != "win32":
-            signal.signal(signal.SIGQUIT, self.quit)
-            signal.signal(signal.SIGTSTP, self.pause)
-
-        ###############################################################
-        # TODO Windows:                                               #
-        #                                                             #
-        # sys.platform == win32 Should test for                       #
-        # signal.CTRL_BREAK_EVENT and signal.CTRL_C_EVENT and hook to #
-        # appropriate callback                                        #
-        ###############################################################
-
+        signal.signal(signal.SIGQUIT, self.quit)
+        signal.signal(signal.SIGTSTP, self.pause)
         signal.signal(signal.SIGINT, self.interrupt)
 
     @staticmethod
