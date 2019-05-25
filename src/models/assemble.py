@@ -13,12 +13,14 @@ def extract_grade(team: str, grading_directory: str, assignment_sname: str):
     repo_path = f"{grading_directory}/{team}"
     grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
 
+    total_keyword = "Total:"
+
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
-        grade_line = [line for line in grading_file_content.split('\n') if "Total: " in line][0]
+        grade_line = [line for line in grading_file_content.split('\n') if total_keyword in line][0]
 
     try:
-        return float(grade_line.replace("Total:", "").replace("/20", "").strip())
+        return float(grade_line.replace(total_keyword, "").replace("/20", "").strip())
     except:
         raise InvalidInput(f"Missing or invalid grade for team {team}.")
 
