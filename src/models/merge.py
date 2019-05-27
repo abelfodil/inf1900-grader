@@ -7,7 +7,7 @@ from src.models.grade import generate_grading_file_name, get_teams_list
 from src.models.validate import ensure_grading_directory_exists, ensure_not_empty
 
 
-def merge_team(team: str, grading_directory: str, assignment_sname: str):
+def merge_team_grade(team: str, grading_directory: str, assignment_sname: str):
     repo = Repo(f"{grading_directory}/{team}")
     repo.index.add([generate_grading_file_name(assignment_sname)])
     repo.git.stash('--keep-index')
@@ -23,7 +23,7 @@ def merge(grading_directory: str, assignment_sname: str):
 
     teams = get_teams_list(grading_directory)
     with Pool(len(teams)) as p:
-        partial_merge = partial(merge_team,
+        partial_merge = partial(merge_team_grade,
                                 grading_directory=grading_directory,
                                 assignment_sname=assignment_sname)
         p.map(partial_merge, teams)
