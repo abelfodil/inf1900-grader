@@ -18,8 +18,8 @@
   attribuer les notes manuellement, mais la majorité du travail
   répétitif est déjà automatisée.
 
-- `merge` créera un commit, ira merge ce commit sur le master puis ira push
- sur chaque repo des équipes de la section à corriger.
+- `merge` pushera un commit sur le master de chaque repo des équipes de
+ la section à corriger.
   
 - `assemble` générera un fichier de notes `notes-inf1900-sectionXX-nom_travail.csv`
  à partir des notes entrées par le correcteur.
@@ -27,5 +27,5 @@
 - `mail` enverra un email à Jérôme et joindra le fichier de notes `csv`.
 
 # Ce qui manque
-- Utiliser clang-format et clang-tidy pour plus d'automatisations.
-- Simuler le matériel pour plus d'automatisations.
+- Intégration à `clang-format` et `clang-tidy`.
+- Simuler les programmes des étudiants à l'aide de `simavr`.
