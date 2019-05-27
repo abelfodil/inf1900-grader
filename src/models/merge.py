@@ -9,17 +9,11 @@ from src.models.validate import ensure_grading_directory_exists, ensure_not_empt
 
 def merge_team(team: str, grading_directory: str, assignment_sname: str):
     repo = Repo(f"{grading_directory}/{team}")
-
     repo.index.add([generate_grading_file_name(assignment_sname)])
-    repo.index.commit(f"Correction du {assignment_sname}.")
-
-    repo.git.add(".")
-    repo.git.stash()
-
-    grading_branch = repo.active_branch
+    repo.git.stash('--keep-index')
     repo.heads.master.checkout()
     repo.remotes.origin.pull()
-    repo.git.merge(grading_branch)
+    repo.index.commit(f"Correction du {assignment_sname}.")
     repo.remotes.origin.push()
 
 
