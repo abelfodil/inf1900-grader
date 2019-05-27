@@ -1,7 +1,6 @@
 from csv import writer
 from datetime import datetime
-
-import numpy as np
+from statistics import mean, stdev
 
 from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list
@@ -39,10 +38,9 @@ def write_grades_file(grading_directory: str, grades_map: dict, assignment_sname
         csv_writer.writerow(["Date:", datetime.now().strftime(time_format)])
         csv_writer.writerow(["Travail:", assignment_sname])
 
-        grades = np.array(list(grades_map.values()), dtype="float32")
         csv_writer.writerow([])
-        csv_writer.writerow(["Moyenne:", np.mean(grades)])
-        csv_writer.writerow(["Écart-type:", np.std(grades)])
+        csv_writer.writerow(["Moyenne:", mean(grades_map.values())])
+        csv_writer.writerow(["Écart-type:", stdev(grades_map.values())])
 
         csv_writer.writerow([])
         csv_writer.writerow(["Nom", "Prénom", "Équipe", "Note"])
