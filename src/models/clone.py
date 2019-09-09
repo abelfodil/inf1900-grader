@@ -45,7 +45,7 @@ def clone_repo(team: str, grading_directory: str):
 
 
 def fetch_student_list(group_number: int, team_type: TeamType):
-    group_url = f"http://www.groupes.polymtl.ca/inf1900/equipes/{team_type.value}Section{group_number}.php"
+    group_url = f"http://cours.polymtl.ca/inf1900/equipes/{team_type.value}Section{group_number}.php"
     html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
 
     html_student_list = html.find_all("table")[-1].find_all("tr")[1:-1]
