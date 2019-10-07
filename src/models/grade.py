@@ -88,7 +88,7 @@ def grade_team(team: str, grading_directory: str, subdirectories: list,
     team_path = f"{grading_directory}/{team}"
     create_branch(team_path, deadline, generate_grading_name(assignment_sname)).checkout()
 
-    grading_text = partial_grading_text.replace("__TEAM_NUMBER__", team)
+    grading_text = partial_grading_text.replace("__EQUIPE_NO__", team)
     grading_text += get_commit_info(team_path)
     grading_text += get_useless_files(team_path)
     grading_text += get_make_output(team_path, subdirectories)
