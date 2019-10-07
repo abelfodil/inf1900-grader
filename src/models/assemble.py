@@ -12,7 +12,7 @@ def extract_grade(team: str, grading_directory: str, assignment_sname: str):
     repo_path = f"{grading_directory}/{team}"
     grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
 
-    total_keyword = "Total:"
+    total_keyword = "__Total des points:"
 
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
