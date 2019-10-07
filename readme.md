@@ -5,14 +5,7 @@
 - `$ pip3 install --user -r requirements.txt`
 - [Outils AVR](http://www.groupes.polymtl.ca/inf1900/fichiers/)
 
-<aside class="warning">
-Notez que la commande `$ git config --global credential.helper store` sauvegarde vos informations (id et mdp) en texte dans le fichier `~/.git-credentials`. Vous pouvez supprimer le fichier à la fin de l'utilisation ou pour plus de sécurité, utiliser un keyring.
-</aside>
-
-
-
-> [!WARNING]
-> Notez que la commande `$ git config --global credential.helper store` sauvegarde vos informations (id et mdp) en texte dans le fichier `~/.git-credentials`. Vous pouvez supprimer le fichier à la fin de l'utilisation ou pour plus de sécurité, utiliser un keyring.
+> :warning: Notez que la commande `$ git config --global credential.helper store` sauvegarde vos informations (id et mdp) en texte dans le fichier `~/.git-credentials`. Vous pouvez supprimer le fichier à la fin de l'utilisation ou pour plus de sécurité, utiliser un keyring.
 
 # Comment ça marche
 - Lancez le script `./grader`.
