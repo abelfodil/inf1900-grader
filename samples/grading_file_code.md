@@ -82,7 +82,7 @@ Bonnes raisons d'un commentaire
 ## Git
 
 | Points importants                            | Poids      |
-| -------------------------------------------- |            |
+| -------------------------------------------- | ---------- |
 | Fichiers aux bons endroits                   | (/1.5)     |
 | Absence de fichiers inutiles                 | (/1.5)     |
 | __Résultat partiel__                         | __(/3.0)__ |
@@ -100,7 +100,7 @@ Bonnes raisons d'un commentaire
 ## Évaluation boîte noire  
 
 | Points importants                            | Poids      |
-| -------------------------------------------- |            |
+| -------------------------------------------- | ---------- |
 | Cas normal de fonctionnement                 | (/2.5)     |
 | Cas limites observables                      | (/2.5)     |
 | __Résultat partiel__                         | __(/5.0)__ |
