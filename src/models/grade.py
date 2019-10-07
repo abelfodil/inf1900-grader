@@ -16,8 +16,8 @@ bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
 
 
 class AssignmentType(Enum):
-    CODE = f"{script_root_directory}/samples/grading_file_code.txt"
-    REPORT = f"{script_root_directory}/samples/grading_file_report.txt"
+    CODE = f"{script_root_directory}/samples/grading_file_code.md"
+    REPORT = f"{script_root_directory}/samples/grading_file_report.md"
 
 
 def get_teams_list(grading_directory: str):
@@ -78,7 +78,7 @@ def generate_grading_name(assignment_short_name: str):
 
 
 def generate_grading_file_name(assignment_short_name: str):
-    return f"{generate_grading_name(assignment_short_name)}.txt"
+    return f"{generate_grading_name(assignment_short_name)}.md"
 
 
 def grade_team(team: str, grading_directory: str, subdirectories: list,
