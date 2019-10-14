@@ -19,7 +19,6 @@ Identification:
 | -------------------------------------------- | ---------- |
 | Noms des auteurs                             |            |
 | Description du programme                     |            |
-| Noms de fonctions décrivent l'intention      |            |
 | Identifications matérielles (Broches I/O)    |            |
 | Table des états ou autres s'il y a lieu      |            |
 | __Résultat partiel__                         | __(/1.5)__ |
