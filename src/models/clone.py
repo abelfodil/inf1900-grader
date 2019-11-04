@@ -3,7 +3,7 @@ from functools import partial
 from json import dump, load
 from multiprocessing import Pool
 from os import mkdir
-from urllib import request
+from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
 from git import Repo
@@ -46,7 +46,10 @@ def clone_repo(team: str, grading_directory: str):
 
 def fetch_student_list(group_number: int, team_type: TeamType):
     group_url = f"http://cours.polymtl.ca/inf1900/equipes/{team_type.value}Section{group_number}.php"
-    html = BeautifulSoup(request.urlopen(group_url).read().decode("utf8"), features="html5lib")
+
+    req = Request(group_url, headers={'User-Agent': 'Mozilla/5.0'})
+    html = BeautifulSoup(urlopen(req).read().decode(
+        "utf8"), features="html5lib")
 
     html_student_list = html.find_all("table")[-1].find_all("tr")[1:-1]
     student_list = []
