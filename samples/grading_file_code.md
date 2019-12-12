@@ -89,10 +89,10 @@ Bonnes raisons d'un commentaire
 
 ## Compilation    
 
-| Pénalité par erreur                          | -2.0       |
+| Pénalité par erreur                          | Poids      |
 | -------------------------------------------- | ---------- |
-| Absence de messages d'erreurs de compilation |            |
-| Absence de messages d'attention (*warning*)  |            |
+| Absence de messages d'erreurs de compilation | (/1.5)     |
+| Absence de messages d'attention (*warning*)  | (/0.5)     |
 | __Résultat partiel__                         | __(/2.0)__ |
    
 
