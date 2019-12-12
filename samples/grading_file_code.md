@@ -35,9 +35,9 @@ Identification:
 ## Commentaires pertinents
 
 Bonnes raisons d'un commentaire
- + Explication d'un algorithme ou procédure 
- + peu évidente (ou *hack*)
- + Référence d'extraits de code copiés d'internet
+ + Explication d'un algorithme 
+ + Procédure peu évidente (ou *hack*)
+ + Référence d'extraits de code copiés d'Internet
  + Détail du POURQUOI d'un extrait de code
 
 | Pénalité par erreur                          | -0.5       |
@@ -69,11 +69,11 @@ Bonnes raisons d'un commentaire
 
 | Pénalité par erreur                          | -1.0       |
 | -------------------------------------------- | ---------- |
-| Utilisation des registres appropriée         |            |
+| Utilisation appropriée des registres         |            |
 | Machine à états codée clairement             |            |
 | Délais et minuteries utilisés judicieusement |            |
 | PWM bien établi                              |            |
-| Scrutation et interruptions bien utilisés    |            |
+| Scrutation et interruptions bien utilisées   |            |
 | etc                                          |            |
 | __Résultat partiel__                         | __(/4.0)__ |
 
