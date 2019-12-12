@@ -89,7 +89,7 @@ Bonnes raisons d'un commentaire
 
 ## Compilation    
 
-| Pénalité par erreur                          | Poids      |
+| Points importants                            | Poids      |
 | -------------------------------------------- | ---------- |
 | Absence de messages d'erreurs de compilation | (/1.5)     |
 | Absence de messages d'attention (*warning*)  | (/0.5)     |
