@@ -19,7 +19,7 @@ def extract_grade(team: str, grading_directory: str, assignment_sname: str):
         grade_line = [line for line in grading_file_content.split('\n') if total_keyword in line][0]
 
     try:
-        return float(grade_line.replace(total_keyword, "").replace("/20", "").strip())
+        return float(grade_line.replace(total_keyword, "").replace("/20__", "").strip())
     except:
         raise InvalidInput(f"Missing or invalid grade for team {team}.")
 
