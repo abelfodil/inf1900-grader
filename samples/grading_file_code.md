@@ -47,10 +47,10 @@ Bonnes raisons d'un commentaire
 
 ## Indentation   
 
-| Pénalité par erreur                          | -0.5       |
+| Points importants                            | Poids      |
 | -------------------------------------------- | ---------- |
-| Indentation structurée                       |            |
-| Indentation uniforme dans le programme       |            |
+| Indentation structurée                       | (/0.5)     |
+| Indentation uniforme dans le programme       | (/0.5)     |
 | __Résultat partiel__                         | __(/1.0)__ |
 
 
@@ -62,10 +62,11 @@ Bonnes raisons d'un commentaire
 | Responsabilité unique d'une fonction         |            |
 | Maximum de 4 paramètres                      |            |
 | Absence de code dupliqué                     |            |
+| etc                                          |            |
 | __Résultat partiel__                         | __(/1.0)__ |
 
 
-## Bonne application des concepts de systèmes embarqués
+## Bonne application des concepts de programmation et systèmes embarqués
 
 | Pénalité par erreur                          | -1.0       |
 | -------------------------------------------- | ---------- |
