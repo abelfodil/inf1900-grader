@@ -4,111 +4,79 @@ Département de génie informatique et génie logiciel
 
 INF1900: Projet initial de système embarqué
 
-# Grille de correction des programmes:
+## Grille de correction du projet final
+
+### Robot conservant ses distances sociales
 
 Identification:
+
 + Travail    : __TRAVAIL_PRATIQUE__
 + Section #  : __SECTION__
 + Équipe #   : __EQUIPE_NO__
 + Correcteur : __CORRECTEUR__
 
-# LISIBILITÉ
-## En-têtes en début de programme   
+__Barème:__  
+1,2,3 : Très faible  4,5 : Faible  6,7 : Bon  8,9 : Très bon 10 : Excellent  
+(Établir une échelle proportionnelle pour les notes sur 20 et sur 40.)
 
-| Pénalité par erreur                          | -1.5       |
-| -------------------------------------------- | ---------- |
-| Noms des auteurs                             |            |
-| Description du programme                     |            |
-| Identifications matérielles (Broches I/O)    |            |
-| Table des états ou autres s'il y a lieu      |            |
-| __Résultat partiel__                         | __(/1.5)__ |
+### Écran LCD
 
-## Identificateurs significatifs (Autodocumentation)
+- Le message "manoeuvre x" est affiché pendant l'exécution d'une manœuvre.
+- Le message "Combinaison non evaluee" est affiché lorsque nécessaire.
+- En mode détection, le message affiché respecte le bon format et les catégories  
+  correspondent bien aux distances.  
 
-| Points importants                            | Poids      |
-| -------------------------------------------- | ---------- |
-| Absence de *chiffres magiques*               | (/0.5)     |
-| Noms de variables décrivent l'intention      | (/0.5)     |
-| Noms de fonctions décrivent l'intention      | (/0.5)     |
-| __Résultat partiel__                         | __(/1.5)__ |
+|__Pondération:  /10__|
+|---------------------|
 
-## Commentaires pertinents
+### Sonar
 
-Bonnes raisons d'un commentaire
- + Explication d'un algorithme 
- + Procédure peu évidente (ou *hack*)
- + Référence d'extraits de code copiés d'Internet
- + Détail du POURQUOI d'un extrait de code
+- Les distances affichées correspondent bien aux voltages des sources de  
+ tensions. (+/- 0.1 mètre d'écart est toléré)
+- La détection des distances et l'affichage de celles-ci se font au moins  
+  4 fois par seconde.
 
-| Pénalité par erreur                          | -0.5       |
-| -------------------------------------------- | ---------- |
-| __Résultat partiel__                         | __(/1.0)__ |
+|__Pondération:  /10__|
+|---------------------|
 
+### Transitions
 
-## Indentation   
+- Appuyer sur le bouton poussoir fait passer au mode manœuvre.
+- Le système retourne au mode détection après l'exécution d'une manœuvre.
 
-| Points importants                            | Poids      |
-| -------------------------------------------- | ---------- |
-| Indentation structurée                       | (/0.5)     |
-| Indentation uniforme dans le programme       | (/0.5)     |
-| __Résultat partiel__                         | __(/1.0)__ |
+|__Pondération:  /20__|
+|---------------------|
 
+### Manoeuvre
 
-# MODULARITÉ ET COMPRÉHENSION
-## Fonctions bien définies
+- Pour chaque manœuvre, toutes les étapes sont présentes et exécutées  
+  dans l'ordre demandé.
+- Les délais demandés sont de la bonne durée. ("On laisse passer x ms")
+- Les bons pourcentages de puissance des roues sont présentés sur les  
+  afficheurs 7 segments.
+- Les bons signaux PWM sont générés sur les broches 4 et 5 du port D.
+- Les DEL de direction appropriées sont allumées en fonction du sens des roues.
+- Les montées et descentes de vitesse graduelles sont correctement exécutées.  
+  (manœuvres 1, 2, 5 et 6)
 
-| Pénalité par erreur                          | -0.5       |
-| -------------------------------------------- | ---------- |
-| Responsabilité unique d'une fonction         |            |
-| Maximum de 4 paramètres                      |            |
-| Absence de code dupliqué                     |            |
-| etc                                          |            |
-| __Résultat partiel__                         | __(/1.0)__ |
+|__Pondération:  /40__|
+|---------------------|
 
+### Afficheur 7 segments
 
-## Bonne application des concepts de programmation et systèmes embarqués
+- L'affichage de tous les chiffres et du trait d'union ont été implémentés.
+- Le taux de rafraichissement des afficheurs donne une impression  
+  d'affichage continu. Il n'y a pas d'effet de clignotement et on ne se  
+  rend pas compte que les afficheurs sont activés individuellement à tour  
+  de rôle.
 
-| Pénalité par erreur                          | -1.0       |
-| -------------------------------------------- | ---------- |
-| Utilisation appropriée des registres         |            |
-| Machine à états codée clairement             |            |
-| Délais et minuteries utilisés judicieusement |            |
-| PWM bien établi                              |            |
-| Scrutation et interruptions bien utilisées   |            |
-| etc                                          |            |
-| __Résultat partiel__                         | __(/4.0)__ |
-
-# FONCTIONNALITÉS
-## Git
-
-| Points importants                            | Poids      |
-| -------------------------------------------- | ---------- |
-| Fichiers aux bons endroits                   | (/1.5)     |
-| Absence de fichiers inutiles                 | (/1.5)     |
-| __Résultat partiel__                         | __(/3.0)__ |
-
-
-## Compilation    
-
-| Points importants                            | Poids      |
-| -------------------------------------------- | ---------- |
-| Absence de messages d'erreurs de compilation | (/1.5)     |
-| Absence de messages d'attention (*warning*)  | (/0.5)     |
-| __Résultat partiel__                         | __(/2.0)__ |
-   
-
-## Évaluation boîte noire  
-
-| Points importants                            | Poids      |
-| -------------------------------------------- | ---------- |
-| Cas normal de fonctionnement                 | (/2.5)     |
-| Cas limites observables                      | (/2.5)     |
-| __Résultat partiel__                         | __(/5.0)__ |
+|__Pondération:  /20__|
+|---------------------|
 
 # Résultat
 
-__Total des points: /20__
+__Total des points: /100__
 
-# Commentaires du correcteur:
+# Commentaires du correcteur
 
 À remplir par l'évaluateur
