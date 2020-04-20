@@ -1,32 +1,62 @@
-Polytechnique Montréal
+# Polytechnique Montréal
 
 Département de génie informatique et génie logiciel
 
 INF1900: Projet initial de système embarqué
 
-Grille de correction des programmes:
+## Grille de correction du rapport final
+### Robot conservant ses distances sociales
 
 Identification:
-  Travail    : __TRAVAIL_PRATIQUE__
-  Section #  : __SECTION__
-  Équipe #   : __TEAM_NUMBER__
-  Correcteur : __CORRECTEUR__
++ Travail    : __TRAVAIL_PRATIQUE__
++ Section #  : __SECTION__
++ Équipe #   : __EQUIPE_NO__
++ Correcteur : __CORRECTEUR__
 
-Code:
-– La qualités et le choix de vos portions de code choisies   (/5)
-– La qualités de vos modifications aux Makefiles             (/5)
+__Barème:__  
+1,2,3 : Très faible  4,5 : Faible  6,7 : Bon  8,9 : Très bon 10 : Excellent  
+(Établir une échelle proportionnelle pour les notes sur 5.)
 
-Le rapport:
-– Explications cohérentes par rapport au code retenu
-  pour former la librairie                                   (/2)
-– Explications cohérentes par rapport aux Makefiles modifiés (/2)
-– Explications claires avec un bon niveau de détails         (/2)
-– Bon français                                               (/1)
+### Respect des consignes
+- Nom et numéro d'équipe.
+- Rapport ni trop court, ni trop long.
+- Police en 12 points
+- 2 sections présentes.
+- Rapport remis au bon endroit en PDF
+- Aucun propos hors contexte.
 
-Généralités:
-– Bonne soumission de l'ensemble du code (compilation sans
-  erreurs, …) et du rapport selon le format demandé          (/3)
+|__Pondération:  /5__|
+|---------------------|
 
-Total: /20
+### Bon français
+- Phrases courtes et compréhensibles
+- Syntaxe et orthographe
+- Idées bien exprimées
 
-Commentaires du correcteur:
+|__Pondération:  /5__|
+|---------------------|
+
+### Structure du code et fonctionnement
+- Présentation appropriée
+- Justifications éclairantes
+- Qualité de l'analyse
+- Précision et concision des propos
+
+|__Pondération:  /10__|
+|---------------------|
+### Expérience de travail à distance
+- Profondeur de la réflexion
+- Expérience d'équipe
+- Communication entre les membres
+- Moyens pris pour réaliser le projet à distance
+
+|__Pondération:  /10__|
+|---------------------|
+
+# Résultat
+
+__Total des points: /30__
+
+# Commentaires du correcteur:
+
+À remplir par l'évaluateur
