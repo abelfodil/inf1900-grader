@@ -14,30 +14,49 @@
 > :information_source: Pour la première utilisation, après avoir fait la commande `$ git config --global credential.helper store`, clonez un répertoire d'étudiant manuellement, entrez vos informations et suprimez le par la suite, sinon vous ne réussirez pas à utiliser le `./grader`.
 
 # Résumé des différentes étapes
+1. [clone](#clone)
+2. [grade](#grade)
+3. [merge](#merge)
+4. [assemble](#assemble)
+5. [mail](#mail)
+
 ## clone
 - `clone` récupérera les informations des élèves (nom, prénom, équipe,
-  groupe) depuis le site du cours et clonera le repo de chaque équipe.
+  groupe) depuis le site du cours et clonera le repo de chaque équipe du groue spécifié par `Group number` dans le répertoire spécifié par `Grading directory`.
   ![clone](resources/clone.png)
 
 ## grade
-- `grade` vérifiera les fichiers inutiles, compilera le code des
-  élèves et écrira un fichier de notes dans chaque repo.  Il faut
-  attribuer les notes manuellement, mais la majorité du travail
-  répétitif est déjà automatisée.
+- `grade` vérifiera les fichiers inutiles, compilera le code des élèves et écrira un fichier de notes dans chaque repo. Il faut attribuer les notes manuellement, mais la majorité du travail répétitif est déjà automatisée. 
+- `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
+- `Subdirectories` sont la liste des dossiers où le code aurait dû être déposé pour la correction.
+- `Assigment type` correspond au type de correction. `Code` pour la correction du code et `Report` pour la correction d'un rapport.
+- `Deadline` correspond à la date de re mise de l'évaluation.
+- `Assignment short name` correspond à tpx ou à projet et `Assignment long name` correspond à la description de l'évaluation.
+  
   ![grade](resources/grade.png)
 
 ## merge
-- `merge` pushera un commit sur le master de chaque repo des équipes de
- la section à corriger.
+- `merge` pushera un commit sur le master de chaque repo des équipes de la section à corriger.
+- `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
+- `Assignment short name` correspond à `tpx` ou à `projet` (voir section [grade](#grade)).
+  
   ![merge](resources/merge.png)
 
 ## assemble
-- `assemble` générera un fichier de notes `notes-inf1900-sectionXX-nom_travail.csv`
- à partir des notes entrées par le correcteur.
+- `assemble` générera un fichier de notes `notes-inf1900-sectionXX-nom_travail.csv` à partir des notes entrées par le correcteur.
+- `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
+- `Assignment short name` correspond à `tpx` ou à `projet` (voir section [grade](#grade)).
+  
   ![assemble](resources/assemble.png)
   
 ## mail
-- `mail` enverra un email à Jérôme et joindra le fichier de notes `csv`.
+- `mail` enverra un email à Jérôme et joindra le fichier de notes `csv` (voir section [assemble](#assemble)).
+- `Sender email` est votre adresse email.
+- `Recipient email` est le responsable du cours.
+- `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
+- `Subject` le sujet du email.
+- `Message` correspond au message du email.
+
   ![mail](resources/mail.png)
 
 # Ce qui manque
