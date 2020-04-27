@@ -36,7 +36,7 @@ __Barème:__
 - La détection des distances et l'affichage de celles-ci se font au moins  
   4 fois par seconde.
 
-|__Pondération:  /10__|
+|__Pondération:  /20__|
 |---------------------|
 
 ### Transitions
@@ -44,7 +44,7 @@ __Barème:__
 - Appuyer sur le bouton poussoir fait passer au mode manœuvre.
 - Le système retourne au mode détection après l'exécution d'une manœuvre.
 
-|__Pondération:  /20__|
+|__Pondération:  /10__|
 |---------------------|
 
 ### Manoeuvre
