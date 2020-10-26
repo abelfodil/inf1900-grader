@@ -35,9 +35,9 @@ Identification:
 ## Commentaires pertinents
 
 Bonnes raisons d'un commentaire
- + Explication d'un algorithme ou procédure 
- + peu évidente (ou *hack*)
- + Référence d'extraits de code copiés d'internet
+ + Explication d'un algorithme 
+ + Procédure peu évidente (ou *hack*)
+ + Référence d'extraits de code copiés d'Internet
  + Détail du POURQUOI d'un extrait de code
 
 | Pénalité par erreur                          | -0.5       |
@@ -47,10 +47,10 @@ Bonnes raisons d'un commentaire
 
 ## Indentation   
 
-| Pénalité par erreur                          | -0.5       |
+| Points importants                            | Poids      |
 | -------------------------------------------- | ---------- |
-| Indentation structurée                       |            |
-| Indentation uniforme dans le programme       |            |
+| Indentation structurée                       | (/0.5)     |
+| Indentation uniforme dans le programme       | (/0.5)     |
 | __Résultat partiel__                         | __(/1.0)__ |
 
 
@@ -62,18 +62,19 @@ Bonnes raisons d'un commentaire
 | Responsabilité unique d'une fonction         |            |
 | Maximum de 4 paramètres                      |            |
 | Absence de code dupliqué                     |            |
+| etc                                          |            |
 | __Résultat partiel__                         | __(/1.0)__ |
 
 
-## Bonne application des concepts de systèmes embarqués
+## Bonne application des concepts de programmation et systèmes embarqués
 
 | Pénalité par erreur                          | -1.0       |
 | -------------------------------------------- | ---------- |
-| Utilisation des registres appropriée         |            |
+| Utilisation appropriée des registres         |            |
 | Machine à états codée clairement             |            |
 | Délais et minuteries utilisés judicieusement |            |
 | PWM bien établi                              |            |
-| Scrutation et interruptions bien utilisés    |            |
+| Scrutation et interruptions bien utilisées   |            |
 | etc                                          |            |
 | __Résultat partiel__                         | __(/4.0)__ |
 
@@ -89,10 +90,10 @@ Bonnes raisons d'un commentaire
 
 ## Compilation    
 
-| Pénalité par erreur                          | -2.0       |
+| Points importants                            | Poids      |
 | -------------------------------------------- | ---------- |
-| Absence de messages d'erreurs de compilation |            |
-| Absence de messages d'attention (*warning*)  |            |
+| Absence de messages d'erreurs de compilation | (/1.5)     |
+| Absence de messages d'attention (*warning*)  | (/0.5)     |
 | __Résultat partiel__                         | __(/2.0)__ |
    
 
