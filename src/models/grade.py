@@ -18,6 +18,7 @@ bad_files_list = f"{script_root_directory}/samples/bad-files.gitignore"
 class AssignmentType(Enum):
     CODE = f"{script_root_directory}/samples/grading_file_code.md"
     REPORT = f"{script_root_directory}/samples/grading_file_report.md"
+    PROJECT = f"{script_root_directory}/samples/grading_file_project.md"
 
 
 def get_teams_list(grading_directory: str):
