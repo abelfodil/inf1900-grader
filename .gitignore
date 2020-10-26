@@ -13,9 +13,7 @@
 correction*/
 grading*/
 
-.idea/dictionaries/
-.idea/workspace.xml
-.idea/vcs.xml
+.idea/
 
 # virtualenv
 env/
