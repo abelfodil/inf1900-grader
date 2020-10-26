@@ -1,25 +1,28 @@
 from csv import writer
 from datetime import datetime
 from statistics import mean, stdev
+import re
 
 from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list
 from src.models.validate import InvalidInput, ensure_grading_directory_exists, ensure_not_empty, \
     time_format
 
+TOTAL_KEYWORD = "Total"
+GRADE_REGEX = fr"{TOTAL_KEYWORD}\D*(\d+(?:\.|,)\d+|\d+)\s*/"
+
 
 def extract_grade(team: str, grading_directory: str, assignment_sname: str):
     repo_path = f"{grading_directory}/{team}"
     grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
 
-    total_keyword = "__Total des points:"
-
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
-        grade_line = [line for line in grading_file_content.split('\n') if total_keyword in line][0]
 
     try:
-        return float(grade_line.replace(total_keyword, "").replace("/20__", "").strip())
+        raw_grade = re.search(GRADE_REGEX, grading_file_content).group(1)
+        grade = float(raw_grade.replace(',', '.'))
+        return grade
     except:
         raise InvalidInput(f"Missing or invalid grade for team {team}.")
 
