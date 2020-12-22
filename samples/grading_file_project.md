@@ -126,6 +126,7 @@ Identification:
 
 
 # Sonar (Points 10)
+| Pénalité par erreur                          |            |
 | -------------------------------------------- | ---------- |
 | La simulation est mise en pause à moins de 2m|   (/4.0)   |   
 | La simulation est en cours à plus de 2m      |   (/4.0)   |
