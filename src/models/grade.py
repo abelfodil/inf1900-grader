@@ -60,9 +60,20 @@ def get_commit_info(repo_path: str):
     return f"{header}\n{md_coderize(commit_info)}"
 
 
-def get_useless_files(repo_path: str):
-    header = f"\n\n# Fichiers indésirables"
-    useless_file_list = Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}")
+def get_useless_files(repo_path: str, subdirectories: list):
+    return Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}", *subdirectories)
+
+
+def get_relevant_useless_files(repo_path: str, subdirectories: list):
+    header = f"\n\n# Fichiers indésirables pertinents"
+    useless_file_list = get_useless_files(repo_path, subdirectories)
+    formatted_useless_file_list = md_coderize(useless_file_list) if useless_file_list else 'Aucun'
+    return f"{header}\n{formatted_useless_file_list}"
+
+
+def get_all_useless_files(repo_path: str):
+    header = f"\n\n# Tous les fichiers indésirables"
+    useless_file_list = get_useless_files(repo_path, [])
     formatted_useless_file_list = md_coderize(useless_file_list) if useless_file_list else 'Aucun'
     return f"{header}\n{formatted_useless_file_list}"
 
@@ -94,7 +105,8 @@ def grade_team(team: str, grading_directory: str, subdirectories: list,
 
     grading_text = partial_grading_text.replace("__EQUIPE_NO__", team)
     grading_text += get_commit_info(team_path)
-    grading_text += get_useless_files(team_path)
+    grading_text += get_relevant_useless_files(team_path, subdirectories)
+    grading_text += get_all_useless_files(team_path)
     grading_text += get_make_output(team_path, subdirectories)
 
     grade_file_path = f"{team_path}/{generate_grading_file_name(assignment_sname)}"
