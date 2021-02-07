@@ -15,6 +15,11 @@ grading*/
 
 .idea/
 
+# PyInstaller
+dist/
+build/
+*.spec
+
 # virtualenv
 env/
 .venv/
