@@ -40,10 +40,6 @@ def generate_partial_grading_file_content(grader_name: str, group_number: int,
     return partial_grading_file_content
 
 
-def bannerize(entry):
-    return f"======================= {entry} ============================="
-
-
 def md_coderize(entry):
     return f"```\n{entry}\n```"
 
@@ -78,16 +74,24 @@ def get_all_useless_files(repo_path: str):
     return f"{header}\n{formatted_useless_file_list}"
 
 
-def get_make_output(repo_path: str, subdirectories: list):
-    header = f"\n\n# Sortie de make dans les sous-répertoires"
+def make(repo_path: str, subdirectory: str):
+    run(["make", "-C", f"{repo_path}/{subdirectory}", "clean"], stdout=PIPE, stderr=STDOUT)
+    return run(["make", "-C", f"{repo_path}/{subdirectory}"], stdout=PIPE, stderr=STDOUT).stdout.decode('utf-8')
 
-    make_output = ""
-    for subdirectory in subdirectories:
-        make_output += f"{bannerize(f'Sortie de make dans {subdirectory}')}"
-        result = run(["make", "-C", f"{repo_path}/{subdirectory}"], stdout=PIPE, stderr=STDOUT)
-        make_output += "\n" + result.stdout.decode('utf-8') + "\n"
 
-    return f"{header}\n{md_coderize(make_output)}"
+def formatted_make(repo_path: str, subdirectory: str):
+    header = f'\n## Sortie de `make` dans `{subdirectory}`'
+    result = make(repo_path, subdirectory)
+    return f"{header}\n{md_coderize(result)}\n"
+
+
+def get_formatted_make_outputs(repo_path: str, subdirectories: list):
+    header = f"\n\n# Sorties de `make` dans les sous-répertoires"
+
+    formatted_outputs = [formatted_make(repo_path, subdirectory) for subdirectory in subdirectories]
+    formatted_outputs = ''.join(formatted_outputs)
+
+    return f"{header}\n{formatted_outputs}"
 
 
 def generate_grading_name(assignment_short_name: str):
@@ -107,7 +111,7 @@ def grade_team(team: str, grading_directory: str, subdirectories: list,
     grading_text += get_commit_info(team_path)
     grading_text += get_relevant_useless_files(team_path, subdirectories)
     grading_text += get_all_useless_files(team_path)
-    grading_text += get_make_output(team_path, subdirectories)
+    grading_text += get_formatted_make_outputs(team_path, subdirectories)
 
     grade_file_path = f"{team_path}/{generate_grading_file_name(assignment_sname)}"
     with open(grade_file_path, 'w') as f:
