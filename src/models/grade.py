@@ -44,10 +44,10 @@ def md_coderize(entry):
     return f"```\n{entry}\n```"
 
 
-def create_branch(repo_path: str, deadline: str, grading_name: str):
+def checkout_commit_before_deadline(repo_path: str, deadline: str):
     repo = Repo(repo_path)
     deadline_commit = repo.git.rev_list("-n 1", f'--before="{deadline}"', "master")
-    return repo.create_head(grading_name, deadline_commit)
+    repo.git.checkout(deadline_commit)
 
 
 def get_commit_info(repo_path: str):
@@ -94,18 +94,15 @@ def get_formatted_make_outputs(repo_path: str, subdirectories: list):
     return f"{header}\n{formatted_outputs}"
 
 
-def generate_grading_name(assignment_short_name: str):
-    return f"Correction_{assignment_short_name}"
-
-
 def generate_grading_file_name(assignment_short_name: str):
-    return f"{generate_grading_name(assignment_short_name)}.md"
+    return f"Correction_{assignment_short_name}.md"
 
 
 def grade_team(team: str, grading_directory: str, subdirectories: list,
                partial_grading_text: str, deadline: str, assignment_sname: str):
     team_path = f"{grading_directory}/{team}"
-    create_branch(team_path, deadline, generate_grading_name(assignment_sname)).checkout()
+
+    checkout_commit_before_deadline(team_path, deadline)
 
     grading_text = partial_grading_text.replace("__EQUIPE_NO__", team)
     grading_text += get_commit_info(team_path)

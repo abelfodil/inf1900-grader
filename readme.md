@@ -16,7 +16,7 @@
 # Résumé des différentes étapes
 1. [clone](#clone)
 2. [grade](#grade)
-3. [merge](#merge)
+3. [push](#push)
 4. [assemble](#assemble)
 5. [mail](#mail)
 
@@ -35,12 +35,12 @@
   
   ![grade](resources/grade.png)
 
-## merge
-- `merge` pushera un commit sur le master de chaque repo des équipes de la section à corriger.
+## push
+- `push` pushera un commit sur le master de chaque repo des équipes de la section à corriger.
 - `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
 - `Assignment short name` correspond à `tpx` ou à `projet` (voir section [grade](#grade)).
   
-  ![merge](resources/merge.png)
+  ![push](resources/push.png)
 
 ## assemble
 - `assemble` générera un fichier de notes `notes-inf1900-sectionXX-nom_travail.csv` à partir des notes entrées par le correcteur.

@@ -41,8 +41,7 @@ class ApplicationState:
             "team_type": TeamType.DUOS,
             "grading_directory": "correction_tp6",
             "assignment_type": AssignmentType.CODE,
-            "subdirectories": "tp/tp6/pb1 tp/tp6/pb2",
-            "should_merge": True
+            "subdirectories": "tp/tp6/pb1 tp/tp6/pb2"
         }
 
     @staticmethod

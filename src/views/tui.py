@@ -7,7 +7,7 @@ from src.views.panels.assemble import AssemblePanel
 from src.views.panels.clone import ClonePanel
 from src.views.panels.grade import GradePanel
 from src.views.panels.mail import MailPanel
-from src.views.panels.merge import MergePanel
+from src.views.panels.push import PushPanel
 from src.views.widgets.form import DRAW_SIGNAL, QUIT_SIGNAL, SET_HEADER_TEXT_SIGNAL
 from src.views.widgets.hydra import HydraWidget
 
@@ -61,7 +61,7 @@ class TUI:
         subviews = (
             ("c", ClonePanel()),
             ("g", GradePanel()),
-            ("f", MergePanel()),
+            ("p", PushPanel()),
             ("a", AssemblePanel()),
             ("m", MailPanel())
         )
