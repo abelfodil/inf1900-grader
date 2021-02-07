@@ -1,8 +1,8 @@
+import re
 from csv import writer
 from datetime import datetime
-from statistics import mean, stdev
-import re
 from io import StringIO
+from statistics import mean, stdev
 
 from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list

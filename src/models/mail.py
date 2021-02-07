@@ -5,8 +5,7 @@ from email.mime.text import MIMEText
 from os import listdir
 from os.path import basename, isfile, join
 
-from src.models.validate import InvalidInput, ensure_grading_directory_exists, ensure_not_empty, \
-    validate_email_address
+from src.models.validate import InvalidInput, ensure_grading_directory_exists, ensure_not_empty, validate_email_address
 
 
 class MailException(Exception):

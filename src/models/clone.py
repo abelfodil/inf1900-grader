@@ -1,6 +1,6 @@
+import json
 from enum import Enum
 from functools import partial
-import json
 from multiprocessing import Pool
 from os import mkdir
 from urllib.request import Request, urlopen
