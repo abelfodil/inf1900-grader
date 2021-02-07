@@ -63,7 +63,8 @@ def get_commit_info(repo_path: str):
 def get_useless_files(repo_path: str):
     header = f"\n\n# Fichiers indésirables"
     useless_file_list = Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}")
-    return f"{header}\n{md_coderize(useless_file_list)}"
+    formatted_useless_file_list = md_coderize(useless_file_list) if useless_file_list else 'Aucun'
+    return f"{header}\n{formatted_useless_file_list}"
 
 
 def get_make_output(repo_path: str, subdirectories: list):
