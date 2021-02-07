@@ -28,9 +28,9 @@ class Grid(WidgetWrap):
         self.focus(self.i, self.j)
 
         self.keybind = {
-            "down"     : lambda: self.focus_recursive(forward=True, horizontal=False),
-            "up"       : lambda: self.focus_recursive(forward=False, horizontal=False),
-            "tab"      : lambda: self.focus_recursive(forward=True, horizontal=True),
+            "down": lambda: self.focus_recursive(forward=True, horizontal=False),
+            "up": lambda: self.focus_recursive(forward=False, horizontal=False),
+            "tab": lambda: self.focus_recursive(forward=True, horizontal=True),
             "shift tab": lambda: self.focus_recursive(forward=False, horizontal=True)
         }
 

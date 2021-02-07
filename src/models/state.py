@@ -29,20 +29,20 @@ class ApplicationState:
     @staticmethod
     def __default_state():
         return {
-            "grader_name"      : Git().config(["--get", "user.name"]),
-            "sender_email"     : Git().config(["--get", "user.email"]),
-            "recipient_email"  : "jerome.collin@polymtl.ca",
-            "subject"          : "[inf1900-grader] TP#",
-            "message"          : "Correction d'un travail terminée.",
-            "deadline"         : strftime(time_format, localtime()),
-            "assignment_sname" : "tp6",
-            "assignment_lname" : "Capteurs et conversion analogique/numérique",
-            "group_number"     : 1,
-            "team_type"        : TeamType.DUOS,
+            "grader_name": Git().config(["--get", "user.name"]),
+            "sender_email": Git().config(["--get", "user.email"]),
+            "recipient_email": "jerome.collin@polymtl.ca",
+            "subject": "[inf1900-grader] TP#",
+            "message": "Correction d'un travail terminée.",
+            "deadline": strftime(time_format, localtime()),
+            "assignment_sname": "tp6",
+            "assignment_lname": "Capteurs et conversion analogique/numérique",
+            "group_number": 1,
+            "team_type": TeamType.DUOS,
             "grading_directory": "correction_tp6",
-            "assignment_type"  : AssignmentType.CODE,
-            "subdirectories"   : "tp/tp6/pb1 tp/tp6/pb2",
-            "should_merge"     : True
+            "assignment_type": AssignmentType.CODE,
+            "subdirectories": "tp/tp6/pb1 tp/tp6/pb2",
+            "should_merge": True
         }
 
     @staticmethod

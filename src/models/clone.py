@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import partial
-from json import dump, load
+import json
 from multiprocessing import Pool
 from os import mkdir
 from urllib.request import Request, urlopen
@@ -24,18 +24,16 @@ def write_grading_info(grading_directory: str,
                        grader_name: str, group_number: int,
                        student_list: list):
     with open(get_grading_info_path(grading_directory), 'w') as f:
-        dump(
-            {
-                "grader_name" : grader_name,
-                "group_number": group_number,
-                "students"    : student_list
-            },
-            f)
+        json.dump({
+            "grader_name": grader_name,
+            "group_number": group_number,
+            "students": student_list
+        }, f)
 
 
 def read_grading_info(grading_directory: str):
     with open(get_grading_info_path(grading_directory), 'r') as f:
-        return load(f)
+        return json.load(f)
 
 
 def clone_repo(team: str, grading_directory: str):
@@ -57,9 +55,9 @@ def fetch_student_list(group_number: int, team_type: TeamType):
         html_student = html_student.find_all("td")
 
         student_list.append({
-            "last_name" : html_student[0].text.strip(),
+            "last_name": html_student[0].text.strip(),
             "first_name": html_student[1].text.strip(),
-            "team"      : html_student[2].text.strip(),
+            "team": html_student[2].text.strip(),
         })
 
     return sorted(student_list, key=lambda i: i["last_name"])

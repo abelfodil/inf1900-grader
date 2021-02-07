@@ -7,7 +7,7 @@ from src.views.widgets.grid import Grid
 
 class RadioPolicy(IntEnum):
     HORIZONTAL = auto()
-    VERTICAL   = auto()
+    VERTICAL = auto()
 
 
 class RadioGroup(Grid):

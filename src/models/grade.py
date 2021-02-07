@@ -43,8 +43,10 @@ def generate_partial_grading_file_content(grader_name: str, group_number: int,
 def bannerize(entry):
     return f"======================= {entry} ============================="
 
+
 def md_coderize(entry):
     return f"```\n{entry}\n```"
+
 
 def create_branch(repo_path: str, deadline: str, grading_name: str):
     repo = Repo(repo_path)
