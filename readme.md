@@ -16,8 +16,8 @@
 # Résumé des différentes étapes
 1. [clone](#clone)
 2. [grade](#grade)
-3. [push](#push)
-4. [assemble](#assemble)
+3. [assemble](#assemble)
+4. [push](#push)
 5. [mail](#mail)
 
 ## clone
@@ -35,6 +35,13 @@
   
   ![grade](resources/grade.png)
 
+## assemble
+- `assemble` calcule le total des points pour chaque équipe et générera un fichier de notes `notes-inf1900-sectionXX-nom_travail.csv` à partir des notes entrées par le correcteur.
+- `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
+- `Assignment short name` correspond à `tpx` ou à `projet` (voir section [grade](#grade)).
+  
+  ![assemble](resources/assemble.png)
+  
 ## push
 - `push` pushera un commit sur le master de chaque repo des équipes de la section à corriger.
 - `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
@@ -42,13 +49,6 @@
   
   ![push](resources/push.png)
 
-## assemble
-- `assemble` générera un fichier de notes `notes-inf1900-sectionXX-nom_travail.csv` à partir des notes entrées par le correcteur.
-- `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
-- `Assignment short name` correspond à `tpx` ou à `projet` (voir section [grade](#grade)).
-  
-  ![assemble](resources/assemble.png)
-  
 ## mail
 - `mail` enverra un email à Jérôme et joindra le fichier de notes `csv` (voir section [assemble](#assemble)).
 - `Sender email` est votre adresse email.

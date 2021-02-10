@@ -61,8 +61,8 @@ class TUI:
         subviews = (
             ("c", ClonePanel()),
             ("g", GradePanel()),
-            ("p", PushPanel()),
             ("a", AssemblePanel()),
+            ("p", PushPanel()),
             ("m", MailPanel())
         )
 

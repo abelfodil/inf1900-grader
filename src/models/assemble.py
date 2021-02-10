@@ -8,23 +8,47 @@ from src.models.clone import read_grading_info
 from src.models.grade import generate_grading_file_name, get_teams_list
 from src.models.validate import InvalidInput, ensure_grading_directory_exists, ensure_not_empty, time_format
 
-TOTAL_KEYWORD = "Total"
-GRADE_REGEX = fr"{TOTAL_KEYWORD}\D*(\d+(?:\.|,)\d+|\d+)\s*/"
+
+def parse_grade(number: str):
+    return float(number.strip().replace(',', '.'))
 
 
-def extract_grade(team: str, grading_directory: str, assignment_sname: str):
-    repo_path = f"{grading_directory}/{team}"
-    grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
-
+def sum_partial_grades(team: str, grade_file_path: str):
     with open(grade_file_path, 'r') as f:
         grading_file_content = f.read()
 
+    BASE_GRADE_REGEX = r"[^\d,.]*(\d*[.,]?[\d\s]*)/"
+    PARTIAL_GRADE_REGEX = "Résultat partiel" + BASE_GRADE_REGEX
+
     try:
-        raw_grade = re.search(GRADE_REGEX, grading_file_content).group(1)
-        grade = float(raw_grade.replace(',', '.'))
-        return grade
+        raw_grades = re.findall(PARTIAL_GRADE_REGEX, grading_file_content)
+        partial_grades = [parse_grade(grade) for grade in raw_grades]
+        total_grade = sum(partial_grades)
     except:
-        raise InvalidInput(f"Missing or invalid grade for team {team}.")
+        raise InvalidInput(f"Missing or invalid partial grade for team {team}.")
+
+    return total_grade
+
+
+def write_total_grade(grade_file_path: str, grade: int):
+    with open(grade_file_path, 'r') as f:
+        grading_file_content = f.read()
+
+    TOTAL_STRING = "Total des points"
+    grading_file_content = re.sub(f".*{TOTAL_STRING}.*", f"__{TOTAL_STRING}: {grade}/20__", grading_file_content)
+
+    with open(grade_file_path, 'w') as f:
+        f.write(grading_file_content)
+
+
+def extract_total_grade(team: str, grading_directory: str, assignment_sname: str):
+    repo_path = f"{grading_directory}/{team}"
+    grade_file_path = f"{repo_path}/{generate_grading_file_name(assignment_sname)}"
+
+    total_grade = sum_partial_grades(team, grade_file_path)
+    write_total_grade(grade_file_path, total_grade)
+
+    return total_grade
 
 
 def add_grade_to_student_info(student_info: list, grades_map: dict):
@@ -66,5 +90,5 @@ def assemble(grading_directory: str, assignment_sname: str):
     ensure_not_empty(assignment_sname, "Assignment short name")
 
     teams = get_teams_list(grading_directory)
-    grades = {team: extract_grade(team, grading_directory, assignment_sname) for team in teams}
+    grades = {team: extract_total_grade(team, grading_directory, assignment_sname) for team in teams}
     write_grades_file(grading_directory, grades, assignment_sname)
