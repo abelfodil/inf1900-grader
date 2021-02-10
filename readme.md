@@ -3,7 +3,7 @@
 - `$ git config --global user.name "Votre Nom"`
 - `$ git config --global user.email prenom.nom@polymtl.ca`
 - `$ pip3 install --user -r requirements.txt`
-- [Outils AVR](http://www.groupes.polymtl.ca/inf1900/fichiers/)
+- [Outils AVR](https://cours.polymtl.ca/inf1900/logiciel/installation/)
 
 > :warning: Notez que la commande `$ git config --global credential.helper store` sauvegarde vos informations (id et mdp) en texte dans le fichier `~/.git-credentials`. Vous pouvez supprimer le fichier à la fin de l'utilisation ou pour plus de sécurité, utiliser un keyring.
 
