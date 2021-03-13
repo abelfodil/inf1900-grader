@@ -1,4 +1,5 @@
 import json
+import sys
 from enum import Enum
 from functools import partial
 from multiprocessing import Pool
@@ -7,8 +8,8 @@ from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
 from git import Repo
-
-from src.models.validate import ensure_grading_directory_available, ensure_not_empty
+from src.models.validate import (ensure_grading_directory_available,
+                                 ensure_not_empty)
 
 
 class TeamType(Enum):
@@ -37,7 +38,10 @@ def read_grading_info(grading_directory: str):
 
 
 def clone_repo(team: str, grading_directory: str):
-    team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
+    redmine_username = sys.argv[1]
+    redmine_password = sys.argv[2]
+
+    team_repo_url = f"https://{redmine_username}:{redmine_password}@githost.gi.polymtl.ca/git/inf1900-{team}"
     output_directory = f"{grading_directory}/{team}"
     Repo.clone_from(team_repo_url, output_directory)
 

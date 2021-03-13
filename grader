@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+#!/bin/bash
+read -p "Redmine username: " REDMINE_USERNAME
+read -s -p "Redmine password: " REDMINE_PASSWORD
+echo 
 
-from src.views.tui import TUI
-
-if __name__ == "__main__":
-    TUI().start()
+python3 gui.py $REDMINE_USERNAME $REDMINE_PASSWORD
