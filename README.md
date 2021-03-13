@@ -1,17 +1,13 @@
 # Prérequis
-- `$ git config --global credential.helper store`
 - `$ git config --global user.name "Votre Nom"`
-- `$ git config --global user.email prenom.nom@polymtl.ca`
+- `$ git config --global user.email "prenom.nom@polymtl.ca"`
 - `$ pip3 install --user -r requirements.txt`
 - [Outils AVR](https://cours.polymtl.ca/inf1900/logiciel/installation/)
-
-> :warning: Notez que la commande `$ git config --global credential.helper store` sauvegarde vos informations (id et mdp) en texte dans le fichier `~/.git-credentials`. Vous pouvez supprimer le fichier à la fin de l'utilisation ou pour plus de sécurité, utiliser un keyring.
 
 # Comment ça marche
 - Lancez le script `./grader`.
 - Suivez les étapes dans l'ordre dans lequel elles sont présentées.
 ![grader](resources/grader.png)
-> :information_source: Pour la première utilisation, après avoir fait la commande `$ git config --global credential.helper store`, clonez un répertoire d'étudiant manuellement, entrez vos informations et suprimez le par la suite, sinon vous ne réussirez pas à utiliser le `./grader`.
 
 # Résumé des différentes étapes
 1. [clone](#clone)
