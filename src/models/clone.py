@@ -36,8 +36,20 @@ def read_grading_info(grading_directory: str):
         return json.load(f)
 
 
-def clone_repo(team: str, grading_directory: str):
-    team_repo_url = f"https://githost.gi.polymtl.ca/git/inf1900-{team}"
+def generate_auth_string(username: str, password: str):
+    username = username.strip()
+    if username == "":
+        return ""
+
+    if password == "":
+        return f"{username}@"
+
+    return f"{username}:{password}@"
+
+
+def clone_repo(team: str, grading_directory: str, username: str, password: str):
+    auth_string = generate_auth_string(username, password)
+    team_repo_url = f"https://{auth_string}githost.gi.polymtl.ca/git/inf1900-{team}"
     output_directory = f"{grading_directory}/{team}"
     Repo.clone_from(team_repo_url, output_directory)
 
@@ -62,7 +74,7 @@ def fetch_student_list(group_number: int, team_type: TeamType):
     return sorted(student_list, key=lambda i: i["last_name"])
 
 
-def clone(grading_directory: str, grader_name: str, group_number: int, team_type: TeamType):
+def clone(grading_directory: str, grader_name: str, group_number: int, team_type: TeamType, username: str, password: str):
     ensure_grading_directory_available(grading_directory)
     ensure_not_empty(group_number, "Group number")
 
@@ -72,4 +84,4 @@ def clone(grading_directory: str, grader_name: str, group_number: int, team_type
 
     unique_team_list = set([student['team'] for student in student_list])
     with Pool(len(unique_team_list)) as p:
-        p.map(partial(clone_repo, grading_directory=grading_directory), unique_team_list)
+        p.map(partial(clone_repo, username=username, password=password, grading_directory=grading_directory), unique_team_list)
