@@ -1,5 +1,8 @@
 from functools import partial
 from multiprocessing import Pool
+from shutil import make_archive
+from datetime import datetime
+
 
 from git import Repo
 
@@ -7,8 +10,18 @@ from src.models.grade import generate_grading_file_name, get_teams_list
 from src.models.validate import ensure_grading_directory_exists, ensure_not_empty
 
 
+def backup_repo(repo_path: str):
+    now = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+    output_path = f"{repo_path}.{now}"
+    make_archive(output_path, 'zip', repo_path)
+
+
 def push_team_grade_file(team: str, grading_directory: str, assignment_sname: str):
-    repo = Repo(f"{grading_directory}/{team}")
+    repo_path = f"{grading_directory}/{team}"
+
+    backup_repo(repo_path)
+
+    repo = Repo(repo_path)
     repo.index.add([generate_grading_file_name(assignment_sname)])
     repo.git.clean('-ffxd')
     repo.git.restore('.')
