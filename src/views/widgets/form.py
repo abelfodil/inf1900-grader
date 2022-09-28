@@ -1,4 +1,4 @@
-from collections import Callable
+from collections.abc import Callable
 
 from urwid import AttrWrap, CheckBox, Edit, Filler, IntEdit, Overlay, Text, WidgetDecoration, \
     WidgetPlaceholder, emit_signal

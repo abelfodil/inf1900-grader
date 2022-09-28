@@ -1,4 +1,4 @@
-from collections import Callable
+from collections.abc import Callable
 
 from urwid import AttrMap, LineBox, Text, WidgetWrap, connect_signal, emit_signal
 
