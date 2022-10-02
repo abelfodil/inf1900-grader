@@ -57,7 +57,7 @@ def get_commit_info(repo_path: str):
 
 
 def get_useless_files(repo_path: str, subdirectories: list):
-    return Repo(repo_path).git.ls_files("-i", f"--exclude-from={bad_files_list}", *subdirectories)
+    return Repo(repo_path).git.ls_files("-ico", f"--exclude-from={bad_files_list}", *subdirectories)
 
 
 def get_relevant_useless_files(repo_path: str, subdirectories: list):
