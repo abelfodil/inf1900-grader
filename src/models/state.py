@@ -33,7 +33,7 @@ class ApplicationState:
             "sender_email": Git().config(["--get", "user.email"]),
             "recipient_email": "jerome.collin@polymtl.ca",
             "subject": "[inf1900-grader] TP#",
-            "message": "Correction d'un travail terminée.",
+            "message": "Correction d'un travail terminé.",
             "deadline": strftime(time_format, localtime()),
             "assignment_sname": "tp6",
             "assignment_lname": "Capteurs et conversion analogique/numérique",
