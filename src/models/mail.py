@@ -46,12 +46,16 @@ class Mail:
         self.msg = msg
         self.sent = False
 
-    def send(self, smtp_addr: str = "smtp.polymtl.ca", port: int = 587):
+    def send(self, username: str, password: str, smtp_addr: str = "smtp.polymtl.ca", port: int = 587):
 
         if self.sent:
             raise MailException("Mail was already sent!")
 
         smtp = smtplib.SMTP(smtp_addr, port)
+
+        smtp.starttls()
+        smtp.login(username, password)
+
         smtp.send_message(self.msg, self.msg["From"], self.msg["To"])
         smtp.quit()
 
@@ -70,7 +74,7 @@ def get_grade_file_path(grading_directory: str):
 
 
 def mail(sender_email: str, recipient_email: str,
-         subject: str, message: str, grading_directory: str):
+         subject: str, message: str, grading_directory: str, username: str, password: str):
     ensure_grading_directory_exists(grading_directory)
     validate_email_address(sender_email)
     validate_email_address(recipient_email)
@@ -80,4 +84,4 @@ def mail(sender_email: str, recipient_email: str,
     grades_file = get_grade_file_path(grading_directory)
     attachment_name = basename(grades_file)
     attachments = [MailAttachment("text/csv", grades_file, attachment_name)]
-    Mail(sender_email, recipient_email, subject, message, attachments).send()
+    Mail(sender_email, recipient_email, subject, message, attachments).send(username, password)
