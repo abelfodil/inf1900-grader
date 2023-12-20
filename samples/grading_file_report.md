@@ -4,7 +4,7 @@ Département de génie informatique et génie logiciel
 
 INF1900: Projet initial de système embarqué
 
-# Grille de correction des programmes:
+# Grille de correction des programmes
 
 Identification:
 + Travail    : __TRAVAIL_PRATIQUE__
@@ -31,7 +31,7 @@ Identification:
 | __Résultat partiel__                                                        | __(/7.0)__ |
 
 # GÉNÉRALITÉS
-## Bonne soumission de l'ensemble du code et du rapport selon le format demandé 
+## Bonne soumission de l'ensemble du code et du rapport selon le format demandé
 
 | Pénalité par erreur      | -0.5       |
 | ------------------------ | ---------- |
@@ -44,6 +44,6 @@ Identification:
 
 __Total des points: /20__
 
-# Commentaires du correcteur:
+# Commentaires du correcteur :
 
 À remplir par l'évaluateur
