@@ -49,10 +49,12 @@
 
 ## mail
 - `mail` enverra un email à Jérôme et joindra le fichier de notes `csv` (voir section [assemble](#assemble)).
-- `Sender email` est votre adresse email.
-- `Recipient email` est le responsable du cours.
 - `Grading directory` correspond au dossier de correction où les répertoires du groupe ont été clonés (voir section [clone](#clone)).
 - `Subject` le sujet du email.
+- `Sender email` est votre adresse email.
+- `Recipient email` est le responsable du cours.
+- `Username` est le nom d'utilisateur polytechnique lié au email d'envoi.
+- `Password` est le mot de passe polytechnique lié au email d'envoi.
 - `Message` correspond au message du email.
 
   ![mail](resources/mail.png)

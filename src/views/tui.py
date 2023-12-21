@@ -36,13 +36,13 @@ class TUI:
         self.keybind = {}
 
         self.main_helper_text = self.generate_helper_text([
-            ("F10", "Quit", "helper_text_red"),
+            ("F10 / ALT+Q", "Quit", "helper_text_red"),
         ])
 
         self.subview_helper_text = self.generate_helper_text([
             ("F1", "Confirm", "helper_text_green"),
             ("F5", "Abort", "helper_text_brown"),
-            ("F10", "Quit", "helper_text_red"),
+            ("F10 / ALT+Q", "Quit", "helper_text_red"),
             ("TAB", "Next", "helper_text_light"),
             ("S-TAB", "Previous", "helper_text_light")
         ])
@@ -53,6 +53,7 @@ class TUI:
         self.loop = MainLoop(self.root, palette, unhandled_input=self.unhandled_input)
 
         self.bind_global("f10", self.quit)
+        self.bind_global("meta q", self.quit)
         self.handle_os_signals()
 
     def generate_main_view(self):

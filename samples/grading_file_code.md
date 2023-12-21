@@ -4,7 +4,7 @@ Département de génie informatique et génie logiciel
 
 INF1900: Projet initial de système embarqué
 
-# Grille de correction des programmes:
+# Grille de correction des programmes
 
 Identification:
 + Travail    : __TRAVAIL_PRATIQUE__
@@ -13,7 +13,7 @@ Identification:
 + Correcteur : __CORRECTEUR__
 
 # LISIBILITÉ
-## En-têtes en début de programme   
+## En-têtes en début de programme
 
 | Pénalité par erreur                          | -1.5       |
 | -------------------------------------------- | ---------- |
@@ -45,7 +45,7 @@ Bonnes raisons d'un commentaire
 | __Résultat partiel__                         | __(/1.0)__ |
 
 
-## Indentation   
+## Indentation
 
 | Points importants                            | Poids      |
 | -------------------------------------------- | ---------- |
@@ -88,14 +88,14 @@ Bonnes raisons d'un commentaire
 | __Résultat partiel__                         | __(/3.0)__ |
 
 
-## Compilation    
+## Compilation
 
 | Points importants                            | Poids      |
 | -------------------------------------------- | ---------- |
 | Absence de messages d'erreurs de compilation | (/1.5)     |
 | Absence de messages d'attention (*warning*)  | (/0.5)     |
 | __Résultat partiel__                         | __(/2.0)__ |
-   
+
 
 ## Évaluation boîte noire  
 
@@ -109,6 +109,6 @@ Bonnes raisons d'un commentaire
 
 __Total des points: /20__
 
-# Commentaires du correcteur:
+# Commentaires du correcteur :
 
 À remplir par l'évaluateur

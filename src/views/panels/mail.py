@@ -14,9 +14,13 @@ class MailPanel(Form):
         subject = LineBox(Edit(("header", "Subject\n\n"), state.subject))
         message = LineBox(Edit(("header", "Message\n\n"), state.message, multiline=True))
 
+        username = LineBox(Edit(("header", "Username\n\n"), ""))
+        password = LineBox(Edit(("header", "Password\n\n"), "", mask="*"))
+
         grid_elements = [
-            {"sender_email": sender, "recipient_email": recipient},
             {"grading_directory": grading_directory, "subject": subject},
+            {"sender_email": sender, "recipient_email": recipient},
+            {"username": username, "password": password},
             {"message": message},
         ]
 
