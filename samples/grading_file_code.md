@@ -35,7 +35,7 @@ Identification:
 ## Commentaires pertinents
 
 Bonnes raisons d'un commentaire
- + Explication d'un algorithme 
+ + Explication d'un algorithme
  + Procédure peu évidente (ou *hack*)
  + Référence d'extraits de code copiés d'Internet
  + Détail du POURQUOI d'un extrait de code
