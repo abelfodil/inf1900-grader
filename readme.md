@@ -3,9 +3,10 @@
 - `$ git config --global user.email "prenom.nom@polymtl.ca"`
 - `$ pip3 install --user -r requirements.txt`
 - [Outils AVR](https://cours.polymtl.ca/inf1900/logiciel/installation/)
+- [Outil de correction](https://github.com/abelfodil/inf1900-grader/releases/latest)
 
 # Comment ça marche
-- Lancez le script `./grader`.
+- Lancez le programme `./grader`.
 - Suivez les étapes dans l'ordre dans lequel elles sont présentées.
 ![grader](resources/grader.png)
 
